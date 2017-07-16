@@ -51,12 +51,14 @@ public class TipView extends RelativeLayout implements ITipView {
         this.mContext = context;
         mViewList = new ArrayList<View>();
         setGravity(Gravity.CENTER);
+        setVisibility(INVISIBLE);
 
     }
 
 
     @Override
     public void emptyTip(String tip) {
+        setVisibility(VISIBLE);
 
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.layout_empty, this, false);
@@ -74,6 +76,8 @@ public class TipView extends RelativeLayout implements ITipView {
     @Override
     public void netErrorTip(String tip) {
 
+        setVisibility(VISIBLE);
+
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.layout_net_error, this, false);
         TextView tvErrorTip = view.findViewById(R.id.tv_error);
@@ -86,6 +90,7 @@ public class TipView extends RelativeLayout implements ITipView {
     @Override
     public void loading() {
 
+        setVisibility(VISIBLE);
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.layout_loading, this, false);
         LVEatBeans eatBeans = view.findViewById(R.id.lvEatBeans);
@@ -103,6 +108,7 @@ public class TipView extends RelativeLayout implements ITipView {
     @Override
     public void loadingCompleted() {
 
+        setVisibility(INVISIBLE);
         mBindView.setVisibility(VISIBLE);
 
     }

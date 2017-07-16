@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.common.widget.TipView;
 import com.merpyzf.kangyuanmilk.ui.login.model.User;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.LoginPresenterImpl;
 
@@ -22,6 +23,9 @@ public class MainActivity extends BaseActivity implements ILogin,View.OnClickLis
     Button btn_login;
     @BindView(R.id.btn_clear)
     Button btn_clear;
+    @BindView(R.id.tipView)
+    TipView tipView;
+
 
     private LoginPresenterImpl loginPresenter;
 
@@ -39,7 +43,12 @@ public class MainActivity extends BaseActivity implements ILogin,View.OnClickLis
     }
     @Override
     protected void initData() {
+//
 
+
+        tipView.netErrorTip("没网啦");
+//        tipView.emptyTip("null");
+//       tipView.loading();
     }
 
     @Override

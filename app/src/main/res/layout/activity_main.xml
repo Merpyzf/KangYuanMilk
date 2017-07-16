@@ -41,6 +41,17 @@
 
     </LinearLayout>
 
+    <com.merpyzf.kangyuanmilk.common.widget.TipView
+        android:id="@+id/tipView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
+    </com.merpyzf.kangyuanmilk.common.widget.TipView>
+
+
 
 
 </LinearLayout>

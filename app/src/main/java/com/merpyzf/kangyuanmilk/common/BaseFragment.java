@@ -101,7 +101,7 @@ public abstract class BaseFragment extends Fragment {
      * 获取传递过来的参数
      * @param arguments
      */
-    private void initArgs(Bundle arguments) {
+    protected void initArgs(Bundle arguments) {
 
     }
 

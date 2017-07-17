@@ -40,6 +40,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     /**
+     * 初始化窗体,setContentView之前调用
+     */
+    protected void initWindow() {
+
+
+    }
+
+    /**
      * 获取从Activity传递过来的布局参数
      *
      * @param bundle 封装要进行传递的值
@@ -50,20 +58,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         return true;
     }
-
-
-    /**
-     * 初始化窗体,setContentView之前调用
-     */
-    protected void initWindow() {
-
-
-    }
-
-    /**
-     * 初始化数据
-     */
-    protected abstract void initData();
 
     /**
      * 获取当前Activity的布局id
@@ -82,6 +76,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public abstract void initEvent();
 
+    /**
+     * 初始化数据
+     */
+    protected abstract void initData();
 
     /**
      * 进行页面的跳转
@@ -90,10 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         startActivity(new Intent(this, this.getClass()));
 
-    }
-
-    ;
-
+    };
 
     @Override
     protected void onDestroy() {

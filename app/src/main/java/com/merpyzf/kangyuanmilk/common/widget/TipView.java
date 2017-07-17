@@ -64,7 +64,6 @@ public class TipView extends RelativeLayout implements ITipView {
                 .inflate(R.layout.layout_empty, this, false);
         TextView tvemptyTip = view.findViewById(R.id.tv_empty);
         tvemptyTip.setText(tip);
-
         removeOtherView(view);
         addView(view);
 
@@ -82,7 +81,6 @@ public class TipView extends RelativeLayout implements ITipView {
                 .inflate(R.layout.layout_net_error, this, false);
         TextView tvErrorTip = view.findViewById(R.id.tv_error);
         tvErrorTip.setText(tip);
-
         removeOtherView(view);
         addView(view);
     }
@@ -97,7 +95,6 @@ public class TipView extends RelativeLayout implements ITipView {
         eatBeans.setEyeColor(Resource.Color.WHITE);
         eatBeans.setViewColor(Resource.Color.CYAN);
         eatBeans.startAnim(2000);
-
         //隐藏bind的View和其他的错误其实的view
         removeOtherView(view);
         this.addView(view);
@@ -124,7 +121,6 @@ public class TipView extends RelativeLayout implements ITipView {
         int childCount = this.getChildCount();
 
         this.removeAllViews();
-
 
         if (mBindView != null) {
             mBindView.setVisibility(INVISIBLE);

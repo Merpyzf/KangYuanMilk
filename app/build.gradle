@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.merpyzf.kangyuanmilk"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -27,4 +27,15 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+
+    //J神的注解框架
+    compile 'com.jakewharton:butterknife:8.7.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+
+    //loading动画
+    compile 'com.ldoublem.loadingview:loadingviewlib:1.0'
+
+    //ui工具类
+    compile 'net.qiujuer.genius:ui:2.0.0'
+    compile 'net.qiujuer.genius:res:2.0.0'
 }

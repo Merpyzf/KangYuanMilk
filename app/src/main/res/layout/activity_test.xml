@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/xRecyclerview"
+    <ImageView
+        android:id="@+id/iv_test"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.jcodecraeer.xrecyclerview.XRecyclerView>
+        android:layout_height="match_parent" />
+
 
 
 </LinearLayout>

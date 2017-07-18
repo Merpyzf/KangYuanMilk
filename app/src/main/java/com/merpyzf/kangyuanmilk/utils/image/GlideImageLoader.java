@@ -97,4 +97,14 @@ public  class  GlideImageLoader  {
         }
     }
 
+    /*
+    * 使用:
+    *      ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
+        ImageLoaderOptions options = bulider.isCenterCrop(true)
+                .size(new ImageLoaderOptions.ImageReSize(100, 100))
+                .build();
+        GlideImageLoader.showImage(imageView,"https://user-gold-cdn.xitu.io/2017/6/26/f004a43bd15451f54759a32e31e41089",options);
+
+    *
+    * */
 }

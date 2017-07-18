@@ -1,12 +1,17 @@
 package com.merpyzf.kangyuanmilk.ui.login.view;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
 import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -16,8 +21,10 @@ import butterknife.BindView;
 
 public class TestActivity extends BaseActivity {
 
-    @BindView(R.id.iv_test)
-    ImageView imageView;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    private ArrayList<String> mDatas = new ArrayList<>();
+
 
     @Override
     public int getLayoutId() {
@@ -32,16 +39,20 @@ public class TestActivity extends BaseActivity {
     @Override
     public void initEvent() {
 
+
     }
 
     @Override
     protected void initData() {
 
-        ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
-        ImageLoaderOptions options = bulider.isCenterCrop(true)
-                .size(new ImageLoaderOptions.ImageReSize(100, 100))
-                .build();
-        GlideImageLoader.showImage(imageView,"https://user-gold-cdn.xitu.io/2017/6/26/f004a43bd15451f54759a32e31e41089",options);
+        for(int i=0;i<100;i++){
 
+            mDatas.add(i,"test==>"+i);
+
+        }
+
+        MyAdapter myAdapter = new MyAdapter(mDatas, this,recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(myAdapter);
     }
 }

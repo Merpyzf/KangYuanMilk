@@ -31,6 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             setContentView(getLayoutId());
             unbinder = ButterKnife.bind(this);
+
             initWidget();
             initEvent();
             initData();

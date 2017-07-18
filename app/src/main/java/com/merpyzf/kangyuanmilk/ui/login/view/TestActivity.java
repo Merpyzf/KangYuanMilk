@@ -21,9 +21,6 @@ import butterknife.BindView;
 
 public class TestActivity extends BaseActivity {
 
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    private ArrayList<String> mDatas = new ArrayList<>();
 
 
     @Override
@@ -45,14 +42,6 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-        for(int i=0;i<100;i++){
 
-            mDatas.add(i,"test==>"+i);
-
-        }
-
-        MyAdapter myAdapter = new MyAdapter(mDatas, this,recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(myAdapter);
     }
 }

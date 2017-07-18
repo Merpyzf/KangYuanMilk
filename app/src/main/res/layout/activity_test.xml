@@ -4,11 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.merpyzf.kangyuanmilk.common.widget.GalleryView
+        android:id="@+id/galleryview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
+        android:layout_height="match_parent"></com.merpyzf.kangyuanmilk.common.widget.GalleryView>
 
 </LinearLayout>

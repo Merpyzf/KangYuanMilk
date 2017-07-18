@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.merpyzf.kangyuanmilk.R;
 
+import java.nio.file.OpenOption;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     protected RecyclerView mRecyclerView;
     private LinearLayoutManager manager = null;
     protected boolean isAutoLoadStatus = true;
+    private boolean isOpenAutoLoad = false;
 
 
     public RecyclerAdapter(List<Data> mDatas, Context mContext, final RecyclerView mRecyclerView) {
@@ -62,56 +64,58 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
         holder.bind(mDatas.get(position),position);
 
 
-        if(mRecyclerView!=null ) {
+        if(isOpenAutoLoad) {
 
-            manager = (LinearLayoutManager)mRecyclerView.getLayoutManager();
+            if (mRecyclerView != null) {
 
-            if(manager!=null) {
+                manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
 
-                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
+                if (manager != null) {
 
-
-
-                    }
-
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-
-                        int itemCount = manager.getItemCount();
-
-                        int lastVisibleItemPosition = manager.findLastVisibleItemPosition();
-
-                        Log.i("wk","当前滑动的状态: "+"itemCount: "+itemCount+"lastVisibleItemPosition: "+lastVisibleItemPosition);
-
-                        // 当距离滑动到底部还有三条数据的时候,开始进行数据的预先加载
-                        if(lastVisibleItemPosition>itemCount-3){
-
-                            if(isAutoLoadStatus){
-
-                                Log.i("wk","开始预先加载数据==>"+lastVisibleItemPosition);
-
-                                //设置标记位，避免多次加载0
-                                isAutoLoadStatus = false;
-                                //调用预先加载的方法
-                                if(mAutoLoadListener!=null){
-                                    mAutoLoadListener.startLoading(lastVisibleItemPosition);
-                                }
-
-                            }
+                    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
 
 
                         }
-                    }
-                });
+
+                        @Override
+                        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+
+                            int itemCount = manager.getItemCount();
+
+                            int lastVisibleItemPosition = manager.findLastVisibleItemPosition();
+
+                            Log.i("wk", "当前滑动的状态: " + "itemCount: " + itemCount + "lastVisibleItemPosition: " + lastVisibleItemPosition);
+
+                            // 当距离滑动到底部还有三条数据的时候,开始进行数据的预先加载
+                            if (lastVisibleItemPosition > itemCount - 3) {
+
+                                if (isAutoLoadStatus) {
+
+                                    Log.i("wk", "开始预先加载数据==>" + lastVisibleItemPosition);
+
+                                    //设置标记位，避免多次加载0
+                                    isAutoLoadStatus = false;
+                                    //调用预先加载的方法
+                                    if (mAutoLoadListener != null) {
+                                        mAutoLoadListener.startLoading(lastVisibleItemPosition);
+                                    }
+
+                                }
+
+
+                            }
+                        }
+                    });
+                }
+
             }
 
         }
-
-    }
+        }
 
     /**
      * 获取item的总数
@@ -186,6 +190,15 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
         notifyItemChanged(position);
 
     }
+
+    /**
+     * 刷新指定位置
+     * @param position
+     */
+    public void updateItem(int position){
+        notifyItemChanged(position);
+    }
+
 
     /**
      * 重新设置数据

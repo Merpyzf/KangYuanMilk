@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="120dp"
+    android:layout_height="120dp">
+
+    <ImageView
+        android:padding="2dp"
+        android:id="@+id/iv_gallery"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_default"
+        android:scaleType="centerCrop"
+        />
+
+    <View
+        android:id="@+id/view_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+        android:background="@color/black_alpha_16"
+        android:visibility="invisible"
+        />
+
+    <CheckBox
+        android:id="@+id/cb_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_checkbox"
+        android:button="@null"
+        android:layout_gravity="end"
+        android:clickable="false"
+        android:layout_margin="2dp"
+        android:backgroundTint="@color/deep_orange_500"
+        />
+
+
+
+</FrameLayout>

@@ -7,10 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.merpyzf.kangyuanmilk.R;
 
-import java.nio.file.OpenOption;
 import java.util.List;
 
 /**
@@ -197,6 +195,25 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
      */
     public void updateItem(int position){
         notifyItemChanged(position);
+    }
+
+    /**
+     * 根据传入的对象找到位置并刷新view
+     * @param data
+     */
+    public void updateItem(Data data){
+
+        for(int i=0;i<mDatas.size();i++){
+
+            if(mDatas.get(i) == data){
+
+                notifyItemChanged(i);
+
+            }
+
+        }
+
+
     }
 
 

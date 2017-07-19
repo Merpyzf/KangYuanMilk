@@ -195,14 +195,15 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 mPaths.add(image);
                 //将选中的图片回调给外界调用的地方
 
-                if (mImageSelectedChangedListener != null) {
-                    mImageSelectedChangedListener.onSelectedChange(mImages, mImages.size());
-                }
 
             }
 
             //刷新当前选中的条目
             mGalleryAdapter.updateItem(position, image);
+
+            if (mImageSelectedChangedListener != null) {
+                mImageSelectedChangedListener.onSelectedChange(mPaths, mPaths.size());
+            }
 
 
         } else {
@@ -316,7 +317,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     /**
      * 封装Image类的信息
      */
-    static class Image {
+    public static class Image {
 
         private String id;
         //路径

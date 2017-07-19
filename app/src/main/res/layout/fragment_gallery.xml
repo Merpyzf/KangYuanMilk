@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,8 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.merpyzf.kangyuanmilk.common.widget.GalleryView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_croup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/len_4"
+        android:src="@drawable/ic_cut"
+        android:layout_margin="20dp"
+        android:visibility="visible"
+        android:tint="@color/white"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true" />
 
 
 
-
-</LinearLayout>
+</RelativeLayout>

@@ -396,12 +396,10 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
                     View cellCameraView = LayoutInflater.from(mContext)
                             .inflate(R.layout.item_camera_gallery, parent, false);
-
-
                     return new GalleryCameraHolder(cellCameraView);
 
-            }
 
+            }
 
             return null;
         }

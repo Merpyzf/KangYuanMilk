@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
 import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
+
+import net.qiujuer.genius.ui.Ui;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -47,12 +50,16 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     private static final int ITEM_TYPE_CAMERA = 0;
     private static final int LOAD_IMAGE = 1;
     private static final int MAX_SELECTED = 3;
+    private static final String TAG = GalleryView.class.getSimpleName() ;
     private Context mContext;
     private List<Image> mImages = null;
     private GalleryAdapter mGalleryAdapter;
     private List<Image> mPaths = null;
     private Loader<Cursor> mLoader;
     private ImageSelectedChangedListener mImageSelectedChangedListener = null;
+    private int mItemWidth = 0;
+    private int mItemHeight = 0;
+    private int mScrollerTotalHeight = 0;
 
 
     public GalleryView(Context context) {
@@ -88,6 +95,30 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         mGalleryAdapter.setOnItemClickListener(this);
 
+        // TODO: 2017-07-19 此处耦合太高，item的高度应想办法从RecyclerView中获取
+        mItemWidth = mItemHeight = (int) Ui.dipToPx(getResources(),120);
+
+
+
+
+        addOnScrollListener(new OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                mScrollerTotalHeight+=dy;
+                Log.i("wk","滑动高度==>"+mScrollerTotalHeight+"滑动到第几列==>"+mScrollerTotalHeight/mItemHeight);
+
+            }
+        });
+
+
     }
 
 
@@ -111,23 +142,18 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         int count = 0;
         while (cursor.moveToNext()) {
 
-            Log.i("wk", "count==>" + count++);
-
             String id = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
             String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
             String add_date = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED));
 
             File file = new File(path);
 
-            Log.i("wk", "文件长度:" + file.length());
-
-            if (file != null && file.length() > 200) {
+            if (file != null && file.length() > 2000) {
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
                 Date date = new Date(Long.valueOf(add_date));
                 String sDate = dateFormat.format(date);
-                Log.i("wk", "id==> " + id + "path==>" + path + "add_date==>" + sDate);
 
                 Image image = new Image(id, path, sDate);
                 mImages.add(image);
@@ -137,6 +163,9 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         //刷新适配器
 
         mGalleryAdapter.notifyDataSetChanged();
+
+
+
     }
 
     @Override
@@ -194,6 +223,14 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         } else {
 
             Toast.makeText(mContext, "跳转到拍照页面", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+
+
 
         }
     }
@@ -315,7 +352,12 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                     View cellView = LayoutInflater.from(mContext)
                             .inflate(R.layout.item_gallery, parent, false);
 
-                    GalleryHolder galleryHolder = galleryHolder = new GalleryHolder(cellView);
+
+
+                    GalleryHolder galleryHolder  = new GalleryHolder(cellView);
+
+
+
 
                     return galleryHolder;
 
@@ -362,9 +404,10 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         CheckBox cb_gallery;
 
 
+
+
         public GalleryHolder(View itemView) {
             super(itemView);
-
             iv_gallery = (ImageView) itemView.findViewById(R.id.iv_gallery);
             view_cover = (View) itemView.findViewById(R.id.view_cover);
             cb_gallery = (CheckBox) itemView.findViewById(R.id.cb_gallery);
@@ -372,6 +415,8 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         @Override
         protected void onBindWidget(Image image) {
+
+
 
             ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
 
@@ -421,4 +466,53 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     public void setOnImageSelectedChangedListener(ImageSelectedChangedListener ImageSelectedChangedListener) {
         this.mImageSelectedChangedListener = ImageSelectedChangedListener;
     }
+
+    /**
+     * 手指触摸事件的监听，实现对图片的滑动多选
+     * @param e
+     * @return
+     */
+
+
+
+    private int lastPosition = -1;
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+
+        switch (e.getAction()){
+
+
+            case MotionEvent.ACTION_MOVE:
+
+
+
+                int rowPosition = (int) (e.getX()/mItemWidth);
+
+                if(lastPosition != rowPosition){
+
+                    Log.i("wwk","所选列所在位置的下标:"+lastPosition);
+
+                }
+
+                lastPosition = rowPosition;
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+
+
+
+                break;
+
+        }
+
+
+
+        return super.onTouchEvent(e);
+
+    }
+
+
+
+
 }

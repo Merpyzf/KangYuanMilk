@@ -16,7 +16,7 @@ import java.util.List;
  * 封装RecclerView,简化开发中adpter的书写
  */
 
-public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHolder<Data>> implements View.OnClickListener,View.OnLongClickListener{
+public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHolder<Data>> implements View.OnClickListener, View.OnLongClickListener {
 
     protected List<Data> mDatas;
     protected Context mContext;
@@ -26,6 +26,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     private LinearLayoutManager manager = null;
     protected boolean isAutoLoadStatus = true;
     private boolean isOpenAutoLoad = false;
+    private View mItemView;
 
 
     public RecyclerAdapter(List<Data> mDatas, Context mContext, final RecyclerView mRecyclerView) {
@@ -40,29 +41,30 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
         //创建ViewHolder
 
-        ViewHolder viewHolder = createHolder(parent,viewType);
-        View itemView = viewHolder.getItemView();
+        ViewHolder viewHolder = createHolder(parent, viewType);
+        mItemView = viewHolder.getItemView();
 
-        itemView.setOnClickListener(this);
-        itemView.setOnLongClickListener(this);
+        mItemView.setOnClickListener(this);
+        mItemView.setOnLongClickListener(this);
         //给每一个itemview存储对应着的ViewHolder
-        itemView.setTag(R.id.tag_holder,viewHolder);
+        mItemView.setTag(R.id.tag_holder, viewHolder);
 
         return viewHolder;
     }
 
     /**
      * 将数据绑定到ViewHolder中的控件
+     *
      * @param holder
      * @param position
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         //给ViewHodler设置数据
-        holder.bind(mDatas.get(position),position);
+        holder.bind(mDatas.get(position), position);
 
 
-        if(isOpenAutoLoad) {
+        if (isOpenAutoLoad) {
 
             if (mRecyclerView != null) {
 
@@ -113,10 +115,11 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
             }
 
         }
-        }
+    }
 
     /**
      * 获取item的总数
+     *
      * @return
      */
     @Override
@@ -126,6 +129,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     /**
      * 子类实现创建ViewHolder
+     *
      * @param parent
      * @param viewType
      * @return
@@ -135,37 +139,39 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     /**
      * 手指点击的事件回调
+     *
      * @param view
      */
     @Override
     public void onClick(View view) {
 
-        if(mItemClickListener!=null){
+        if (mItemClickListener != null) {
 
             ViewHolder<Data> viewHolder = (ViewHolder) view.getTag(R.id.tag_holder);
             Data data = viewHolder.getData();
             int position = viewHolder.getAdapterPosition();
 
-            mItemClickListener.onItemClick(viewHolder,data,position);
+            mItemClickListener.onItemClick(viewHolder, data, position);
         }
 
     }
 
     /**
      * 手指长按的事件回调
+     *
      * @param view
      * @return
      */
     @Override
     public boolean onLongClick(View view) {
 
-        if(mItemClickListener!=null){
+        if (mItemClickListener != null) {
 
             ViewHolder<Data> viewHolder = (ViewHolder) view.getTag(R.id.tag_holder);
             Data data = viewHolder.getData();
             int position = viewHolder.getAdapterPosition();
 
-            return mItemClickListener.onItemLongClick(viewHolder,data,position);
+            return mItemClickListener.onItemLongClick(viewHolder, data, position);
         }
 
 
@@ -179,33 +185,36 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     /**
      * 更新指定位置的值
+     *
      * @param position
      * @param data
      */
-    public void updataItem(int position,Data data){
+    public void updataItem(int position, Data data) {
         mDatas.remove(position);
-        mDatas.add(position,data);
+        mDatas.add(position, data);
         notifyItemChanged(position);
 
     }
 
     /**
      * 刷新指定位置
+     *
      * @param position
      */
-    public void updateItem(int position){
+    public void updateItem(int position) {
         notifyItemChanged(position);
     }
 
     /**
      * 根据传入的对象找到位置并刷新view
+     *
      * @param data
      */
-    public void updateItem(Data data){
+    public void updateItem(Data data) {
 
-        for(int i=0;i<mDatas.size();i++){
+        for (int i = 0; i < mDatas.size(); i++) {
 
-            if(mDatas.get(i) == data){
+            if (mDatas.get(i) == data) {
 
                 notifyItemChanged(i);
 
@@ -219,9 +228,10 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     /**
      * 重新设置数据
+     *
      * @param dataList
      */
-    public void resetData(List<Data> dataList){
+    public void resetData(List<Data> dataList) {
 
         mDatas.clear();
         mDatas.addAll(dataList);
@@ -231,32 +241,40 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     /**
      * 向尾部添加一条数据
+     *
      * @param data
      */
-    public void addData(Data data){
+    public void addData(Data data) {
 
         mDatas.add(data);
-        notifyItemChanged(mDatas.size()-1);
+        notifyItemChanged(mDatas.size() - 1);
 
     }
 
     /**
      * 向尾部添加多条数据
+     *
      * @param dataList
      */
-    public void addDatas(List<Data> dataList){
+    public void addDatas(List<Data> dataList) {
 
         int start = dataList.size();
         mDatas.addAll(dataList);
-        int end = dataList.size()-1;
-        notifyItemRangeChanged(start,end);
+        int end = dataList.size() - 1;
+        notifyItemRangeChanged(start, end);
 
+    }
+
+
+    public View getItemView() {
+
+        return mItemView;
     }
 
     /**
      * 设置完成自动预加载
      */
-    public void setAutoLoadCompleted(){
+    public void setAutoLoadCompleted() {
         isAutoLoadStatus = true;
     }
 
@@ -264,23 +282,27 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     /**
      * 设置item点击事件的兼听
      * todo 这里的范型有点问题！！！
+     *
      * @param <Data>
      */
-    interface ItemClickListener<Data>{
-        void onItemClick(ViewHolder viewHolder,Data data,int position);
-        boolean onItemLongClick(ViewHolder viewHolder,Data data,int position);
+    interface ItemClickListener<Data> {
+        void onItemClick(ViewHolder viewHolder, Data data, int position);
+
+        boolean onItemLongClick(ViewHolder viewHolder, Data data, int position);
     }
-    public void setOnItemClickListener(ItemClickListener<Data> itemClickListener){
+
+    public void setOnItemClickListener(ItemClickListener<Data> itemClickListener) {
         this.mItemClickListener = itemClickListener;
     }
 
     /**
      * 设置预先加载的事件监听(成功加载之后调用setAutoLoadCompleted方法将标记位重置为true)
      */
-    interface AutoLoadListener{
+    interface AutoLoadListener {
         void startLoading(int position);
     }
-    public void setOnAutoLoadListener(AutoLoadListener autoLoadListener){
+
+    public void setOnAutoLoadListener(AutoLoadListener autoLoadListener) {
         this.mAutoLoadListener = autoLoadListener;
     }
 

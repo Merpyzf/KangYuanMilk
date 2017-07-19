@@ -189,11 +189,22 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
      * @param position
      * @param data
      */
-    public void updataItem(int position, Data data) {
+    public void updateItem(int position, Data data) {
         mDatas.remove(position);
         mDatas.add(position, data);
         notifyItemChanged(position);
 
+    }
+
+    /**
+     * 插入到指定位置
+     * @param position
+     * @param data
+     */
+    public void insertItem(int position,Data data){
+
+        mDatas.add(position,data);
+        notifyItemInserted(position);
     }
 
     /**

@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.merpyzf.kangyuanmilk.ui.login.view.GalleryFragment">
+
+
+    <com.merpyzf.kangyuanmilk.common.widget.GalleryView
+        android:clipToPadding="false"
+        android:paddingTop="2dp"
+        android:id="@+id/galleryView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.merpyzf.kangyuanmilk.common.widget.GalleryView>
+
+
+
+
+
+</LinearLayout>

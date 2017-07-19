@@ -1,12 +1,15 @@
 package com.merpyzf.kangyuanmilk.common.widget;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -24,8 +26,6 @@ import android.widget.Toast;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
 import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
-
-import net.qiujuer.genius.ui.Ui;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -38,7 +38,7 @@ import butterknife.BindView;
 /**
  * Created by wangke on 2017-07-18.
  * 图片选择器
- * 计划实现功能: 1. cell中的第一项默认为拍照,拍照成功后返回当前图片选择的页面
+ * 计划实现功能: 1. item中的第一项默认为拍照,拍照成功后返回当前图片选择的页面
  * 2.滑动多选:
  * 列值等于x轴移动的距离／每个item 的宽度
  * 行值等于（RecyclerView滑动的距离＋手指滑动的距离－RecylerView距离顶部偏移）（一般不设置magin就是0，兼容多种情况）
@@ -49,43 +49,44 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     private static final int ITEM_TYPE_COMMON = 1;
     private static final int ITEM_TYPE_CAMERA = 0;
     private static final int LOAD_IMAGE = 1;
-    private static final int MAX_SELECTED = 3;
-    private static final String TAG = GalleryView.class.getSimpleName() ;
+    private static int MAX_SELECTED = 3;
+    private static final String TAG = GalleryView.class.getSimpleName();
     private Context mContext;
     private List<Image> mImages = null;
     private GalleryAdapter mGalleryAdapter;
     private List<Image> mPaths = null;
     private Loader<Cursor> mLoader;
     private ImageSelectedChangedListener mImageSelectedChangedListener = null;
-    private int mItemWidth = 0;
-    private int mItemHeight = 0;
     private int mScrollerTotalHeight = 0;
-
+    private LoaderManager mLoadManager = null;
+    private String mAvatarFilePath;
 
     public GalleryView(Context context) {
         super(context);
-        init(context);
     }
 
     public GalleryView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
     public GalleryView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
 
     }
 
-    private void init(Context context) {
+    public void init(Context context, LoaderManager loaderManager) {
 
         mContext = context;
 
         mImages = mImages == null ? new ArrayList<Image>() : mImages;
         mPaths = mPaths == null ? new ArrayList<Image>() : mPaths;
 
-        mLoader = ((Activity) context).getLoaderManager().initLoader(LOAD_IMAGE, null, this);
+        //作为全局变量保存,用于销毁(一定要销毁，不然会报错)
+
+        mLoadManager = loaderManager;
+
+        mLoader = loaderManager.initLoader(LOAD_IMAGE, null, this);
+
 
         setLayoutManager(new GridLayoutManager(mContext, 3));
 
@@ -95,37 +96,12 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         mGalleryAdapter.setOnItemClickListener(this);
 
-        // TODO: 2017-07-19 此处耦合太高，item的高度应想办法从RecyclerView中获取
-        mItemWidth = mItemHeight = (int) Ui.dipToPx(getResources(),120);
-
-
-
-
-        addOnScrollListener(new OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                mScrollerTotalHeight+=dy;
-                Log.i("wk","滑动高度==>"+mScrollerTotalHeight+"滑动到第几列==>"+mScrollerTotalHeight/mItemHeight);
-
-            }
-        });
-
-
     }
 
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        Log.i("wk", "i==>" + i);
 
         if (i == LOAD_IMAGE) {
 
@@ -136,8 +112,16 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         return null;
     }
 
+    /**
+     * 获取加载的数据，并刷新适配器进行UI的更新
+     *
+     * @param loader
+     * @param cursor
+     */
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor cursor) {
+
+        Log.i("wk", "onLoadFinished==>");
 
         int count = 0;
         while (cursor.moveToNext()) {
@@ -148,7 +132,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
             File file = new File(path);
 
-            if (file != null && file.length() > 2000) {
+            if (file.length() > 2000) {
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
@@ -160,16 +144,17 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
             }
         }
 
-        //刷新适配器
+        Log.i("wk", "图片数量:" + mImages.size());
 
+        Log.i("wk", "刷新适配器");
         mGalleryAdapter.notifyDataSetChanged();
-
 
 
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
+
 
     }
 
@@ -210,14 +195,14 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 mPaths.add(image);
                 //将选中的图片回调给外界调用的地方
 
-                if(mImageSelectedChangedListener!=null){
-                    mImageSelectedChangedListener.onSelectedChange(mImages,mImages.size());
+                if (mImageSelectedChangedListener != null) {
+                    mImageSelectedChangedListener.onSelectedChange(mImages, mImages.size());
                 }
 
             }
 
             //刷新当前选中的条目
-            mGalleryAdapter.updataItem(position, image);
+            mGalleryAdapter.updateItem(position, image);
 
 
         } else {
@@ -225,12 +210,40 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
             Toast.makeText(mContext, "跳转到拍照页面", Toast.LENGTH_SHORT).show();
 
 
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
 
+                File ParentFile = new File(Environment.getExternalStorageDirectory(), "/Avatar");
+
+                //如果文件夹不存在，就进行创建
+                if (!ParentFile.exists()) {
+
+                    boolean mkdirs = ParentFile.mkdir();
+                    Log.i("wk", "创建结果:" + mkdirs);
+
+                }
+                // TODO: 2017-07-19
+                //因为Glide加载图片的缓存问题,使用相同的文件名会导致不能及时显示当前最新的图片，而是会去寻找缓存
+                //那个文件名所对应的缓存,采取方案：在刚进入App的时候进行清理如果>20张的时候
+                File AvatarFile = new File(ParentFile, System.currentTimeMillis()+".jpg");
+                AvatarFile.setWritable(true);
+
+                mAvatarFilePath = AvatarFile.getPath();
 
 
+                // TODO: 2017-07-19 需要针对Android N以上的设备做适配
+                Intent intent = new Intent();
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                //设置保存拍摄图片的所在目录
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AvatarFile));
 
+                ((Activity) mContext).startActivityForResult(intent, 0);
 
+            } else {
+
+                Toast.makeText(mContext, "没有找到可用的存储位置", Toast.LENGTH_SHORT).show();
+
+            }
 
         }
     }
@@ -239,7 +252,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     public boolean onItemLongClick(com.merpyzf.kangyuanmilk.common.widget.ViewHolder viewHolder, Image image, int position) {
 
         clearAllSelected();
-        Toast.makeText(mContext,"清除所有",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "清除所有", Toast.LENGTH_SHORT).show();
 
         return true;
     }
@@ -247,13 +260,13 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     /**
      * 清除所有选择
      */
-    public void clearAllSelected(){
+    public void clearAllSelected() {
 
         List<Image> datas = mGalleryAdapter.getDatas();
 
         for (Image image : datas) {
 
-            if(image.isSelected){
+            if (image.isSelected) {
                 //如果是选中状态,就将其设置为未选中状态
                 image.isSelected = false;
                 //刷新当前item
@@ -267,13 +280,37 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     }
 
 
-
     /**
-     * 使用结束的时候调用此方法销销毁Loader对象
+     * 使用结束的时候调用此方法销销毁LoadManager对象,和容器的生命周期进行绑定
      */
     public void destory() {
 
-        mLoader.abandon();
+        mLoadManager.destroyLoader(LOAD_IMAGE);
+    }
+
+    /**
+     * 更新拍摄的照片,使显示在GalleryView上面去
+     */
+    public void updatePhoto() {
+
+
+        Image image = new Image("", mAvatarFilePath, "");
+
+        Log.i("wk","刷新的文件的路径:"+mAvatarFilePath);
+
+
+        mGalleryAdapter.insertItem(1, image);
+
+    }
+
+    /**
+     * 设置最大可选择图片的数量
+     * @param num 可选择的图片的数量
+     */
+    public void setMaxSelected(int num) {
+
+        MAX_SELECTED = num;
+
     }
 
     /**
@@ -300,7 +337,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
             this.add_date = add_date;
         }
 
-        public Image(String id, String path, String add_date) {
+        Image(String id, String path, String add_date) {
             this.id = id;
             this.path = path;
             this.add_date = add_date;
@@ -353,22 +390,15 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                             .inflate(R.layout.item_gallery, parent, false);
 
 
-
-                    GalleryHolder galleryHolder  = new GalleryHolder(cellView);
-
-
-
-
-                    return galleryHolder;
+                    return new GalleryHolder(cellView);
 
                 case ITEM_TYPE_CAMERA:
 
                     View cellCameraView = LayoutInflater.from(mContext)
                             .inflate(R.layout.item_camera_gallery, parent, false);
 
-                    GalleryCameraHolder galleryCameraHolder = new GalleryCameraHolder(cellCameraView);
 
-                    return galleryCameraHolder;
+                    return new GalleryCameraHolder(cellCameraView);
 
             }
 
@@ -404,8 +434,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         CheckBox cb_gallery;
 
 
-
-
         public GalleryHolder(View itemView) {
             super(itemView);
             iv_gallery = (ImageView) itemView.findViewById(R.id.iv_gallery);
@@ -415,7 +443,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         @Override
         protected void onBindWidget(Image image) {
-
 
 
             ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
@@ -431,12 +458,8 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
             cb_gallery.setChecked(image.isSelected());
 
-            if (image.isSelected) {
-
-                view_cover.setVisibility(VISIBLE);
-
-            } else {
-
+            if (image.isSelected) view_cover.setVisibility(VISIBLE);
+            else {
                 view_cover.setVisibility(INVISIBLE);
             }
 
@@ -444,7 +467,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         }
     }
 
-    class GalleryCameraHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder {
+    private class GalleryCameraHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder {
 
         public GalleryCameraHolder(View itemView) {
             super(itemView);
@@ -466,53 +489,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     public void setOnImageSelectedChangedListener(ImageSelectedChangedListener ImageSelectedChangedListener) {
         this.mImageSelectedChangedListener = ImageSelectedChangedListener;
     }
-
-    /**
-     * 手指触摸事件的监听，实现对图片的滑动多选
-     * @param e
-     * @return
-     */
-
-
-
-    private int lastPosition = -1;
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-
-        switch (e.getAction()){
-
-
-            case MotionEvent.ACTION_MOVE:
-
-
-
-                int rowPosition = (int) (e.getX()/mItemWidth);
-
-                if(lastPosition != rowPosition){
-
-                    Log.i("wwk","所选列所在位置的下标:"+lastPosition);
-
-                }
-
-                lastPosition = rowPosition;
-
-                break;
-
-            case MotionEvent.ACTION_UP:
-
-
-
-                break;
-
-        }
-
-
-
-        return super.onTouchEvent(e);
-
-    }
-
-
 
 
 }

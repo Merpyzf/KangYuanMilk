@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.GalleryFragment;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
@@ -52,6 +53,8 @@ public class TestActivity extends BaseActivity implements View.OnClickListener{
         // TODO: 2017-07-20 当用户点击顶部的标题栏时候,GalleryView自动滚动到初始位置
 
 
+        ApplyPermissionFragment applyPermissionFragment = new ApplyPermissionFragment();
+        applyPermissionFragment.havaAll(getSupportFragmentManager());
 
     }
 

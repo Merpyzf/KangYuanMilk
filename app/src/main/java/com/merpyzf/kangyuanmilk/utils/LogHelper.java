@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.utils;
 import android.util.Log;
 /**
- * 进行日志打印的工具类
+ * 进行日志打印的工具类 t
  * @author wangke
  *
  */

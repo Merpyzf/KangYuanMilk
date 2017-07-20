@@ -49,6 +49,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     private static final int ITEM_TYPE_COMMON = 1;
     private static final int ITEM_TYPE_CAMERA = 0;
     private static final int LOAD_IMAGE = 1;
+    public static final int GALLERYVIEW_TAKEPHOTO = 0x00001;
     private static int MAX_SELECTED = 3;
     private static final String TAG = GalleryView.class.getSimpleName();
     private Context mContext;
@@ -226,19 +227,19 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 // TODO: 2017-07-19
                 //因为Glide加载图片的缓存问题,使用相同的文件名会导致不能及时显示当前最新的图片，而是会去寻找缓存
                 //那个文件名所对应的缓存,采取方案：在刚进入App的时候进行清理如果>20张的时候
-                File AvatarFile = new File(ParentFile, System.currentTimeMillis()+".jpg");
+                File AvatarFile = new File(ParentFile, System.currentTimeMillis() + ".jpg");
                 AvatarFile.setWritable(true);
 
                 mAvatarFilePath = AvatarFile.getPath();
 
 
-                // TODO: 2017-07-19 需要针对Android N以上的设备做适配
+                // TODO: 2017-07-19 调用相机拍照 需要针对Android N以上的设备做适配
                 Intent intent = new Intent();
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                 //设置保存拍摄图片的所在目录
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AvatarFile));
 
-                ((Activity) mContext).startActivityForResult(intent, 0);
+                ((Activity) mContext).startActivityForResult(intent, GALLERYVIEW_TAKEPHOTO);
 
             } else {
 
@@ -278,6 +279,9 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         mPaths.clear();
 
+        if (mImageSelectedChangedListener != null) {
+            mImageSelectedChangedListener.onSelectedChange(mPaths, mPaths.size());
+        }
     }
 
 
@@ -297,7 +301,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         Image image = new Image("", mAvatarFilePath, "");
 
-        Log.i("wk","刷新的文件的路径:"+mAvatarFilePath);
+        Log.i("wk", "刷新的文件的路径:" + mAvatarFilePath);
 
 
         mGalleryAdapter.insertItem(1, image);
@@ -306,6 +310,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
     /**
      * 设置最大可选择图片的数量
+     *
      * @param num 可选择的图片的数量
      */
     public void setMaxSelected(int num) {

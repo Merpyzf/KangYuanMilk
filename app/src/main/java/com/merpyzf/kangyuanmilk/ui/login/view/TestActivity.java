@@ -2,12 +2,12 @@ package com.merpyzf.kangyuanmilk.ui.login.view;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.common.GalleryFragment;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.qiniu.UpLoadHelper;

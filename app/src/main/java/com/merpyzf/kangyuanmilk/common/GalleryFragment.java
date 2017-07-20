@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.ui.login.view;
+package com.merpyzf.kangyuanmilk.common;
 
 
 import android.animation.Animator;

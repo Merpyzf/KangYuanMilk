@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="120dp"
-    android:layout_height="120dp">
+<com.merpyzf.kangyuanmilk.common.widget.SquareView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="2dp"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iv_camera"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_margin="2dp"
-        android:src="@drawable/ic_default"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:scaleType="centerCrop"
-        />
-
+        android:src="@drawable/ic_default" />
 
 
     <View
         android:id="@+id/view_cover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="2dp"
-        android:background="@color/black_alpha_80"
-        />
+        android:background="@color/black_alpha_80" />
+
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_margin="2dp"
         android:src="@drawable/ic_camera"
-        android:tint="@color/orange_800"
-        />
+        android:tint="@color/orange_800" />
 
 
-
-</FrameLayout>
+</com.merpyzf.kangyuanmilk.common.widget.SquareView>

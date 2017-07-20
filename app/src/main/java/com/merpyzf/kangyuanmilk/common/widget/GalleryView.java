@@ -2,12 +2,14 @@ package com.merpyzf.kangyuanmilk.common.widget;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -215,7 +217,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
 
-                File ParentFile = new File(Environment.getExternalStorageDirectory(), "/Avatar");
+                File ParentFile = new File(mContext.getCacheDir(), "/Avatar");
 
                 //如果文件夹不存在，就进行创建
                 if (!ParentFile.exists()) {
@@ -236,9 +238,15 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 // TODO: 2017-07-19 调用相机拍照 需要针对Android N以上的设备做适配
                 Intent intent = new Intent();
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                //设置保存拍摄图片的所在目录
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AvatarFile));
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    ContentValues contentValues = new ContentValues(1);
+                    contentValues.put(MediaStore.Images.Media.DATA,  AvatarFile.getPath());
+                }else {
+
+                    //设置保存拍摄图片的所在目录
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AvatarFile));
+                }
                 ((Activity) mContext).startActivityForResult(intent, GALLERYVIEW_TAKEPHOTO);
 
             } else {

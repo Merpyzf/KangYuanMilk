@@ -12,12 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -29,8 +33,29 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 public class ApplyPermissionFragment extends BottomSheetDialogFragment implements EasyPermissions.PermissionCallbacks {
 
+    private static final int RC_CAMERA_AND_LOCATION = 1;
     private Activity mActivity = null;
     private Unbinder unbinder;
+
+    @BindView(R.id.iv_perms_camera)
+    ImageView iv_perms_camera;
+
+    @BindView(R.id.iv_perms_storage)
+    ImageView iv_perms_storage;
+
+    @BindView(R.id.iv_perms_sms)
+    ImageView iv_perms_sms;
+
+    @BindView(R.id.iv_perms_net)
+    ImageView iv_perms_net;
+
+    private List<String[]> mPermsList = new ArrayList<>();
+
+    private String[] perms_camera;
+    private String[] perms_storage;
+    private String[] perms_sms;
+    private String[] perms_net;
+
 
 
     /**
@@ -56,23 +81,25 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
         unbinder = ButterKnife.bind(this, view);
 
-        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
+        //拍照权限
+        perms_camera = new String[]{Manifest.permission.CAMERA};
 
-        //判断权限是否授予
-        if(EasyPermissions.hasPermissions(mActivity,perms)){
+        mPermsList.add(perms_camera);
+        //读取sdk权限
+        perms_storage = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
+        mPermsList.add(perms_storage);
+        //读取短信的权限
+        perms_sms = new String[]{Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS};
+        mPermsList.add(perms_sms);
+        //获取网络状态的权限
+        perms_net = new String[]{Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.CHANGE_NETWORK_STATE};
+        mPermsList.add(perms_net);
 
 
 
 
-        }else{
 
-            // 没有权限就去申请权限
-           /* EasyPermissions.requestPermissions(this, getString(R.string.camera_and_location_rationale),
-                    RC_CAMERA_AND_LOCATION, perms);*/
-
-
-        }
-
+        checkAndRequest(true);
 
 
 
@@ -83,11 +110,44 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
         return view;
     }
 
+    /**
+     * 检查和申请权限
+     * @param isRequest true: 检查的同时如果没有权限就去申请
+     *                  false： 只检查不申请
+     */
+    private void checkAndRequest(boolean isRequest) {
+
+        for (int i = 0; i< mPermsList.size();i++) {
+
+            //检查拍照相关的权限
+            if (EasyPermissions.hasPermissions(mActivity, mPermsList.get(i))) {
+
+                LogHelper.i("已有权限");
+                iv_perms_camera.setVisibility(View.VISIBLE);
+
+
+            } else {
+
+                iv_perms_camera.setVisibility(View.INVISIBLE);
+
+                if (isRequest) {
+                    //申请权限
+                    EasyPermissions.requestPermissions(this, "拍照需要的权限"
+                            , i, perms_camera);
+
+                }
+            }
+
+        }
+
+
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
 
-        return new TransStatusBottomSheetDialog(getContext());
+        return new TransStatusBottomSheetDialog(getActivity());
     }
 
     @Override
@@ -111,9 +171,8 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        //进行权限的授予
-//        EasyPermissions.onRequestPermissionsResult();
-
+        //在本身的权限回调方法中讲处理结果交给EasyPermissions处理
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
 
     }
 
@@ -121,12 +180,13 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         //通过申请
-
+        LogHelper.i("权限通过");
 
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         //申请被拒绝
+        LogHelper.i("权限被拒绝");
     }
 }

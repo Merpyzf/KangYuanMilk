@@ -2,6 +2,8 @@ package com.merpyzf.kangyuanmilk;
 
 import android.util.Log;
 
+import com.merpyzf.kangyuanmilk.utils.qiniu.Auth;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,21 +19,9 @@ public class ExampleUnitTest {
     @Test
     public void myTest(){
 
-        ArrayList<Integer> mDatas = new ArrayList<>();
-
-        mDatas.add(1);
-        mDatas.add(2);
-        mDatas.add(3);
-
-        mDatas.remove(1);
-        mDatas.add(1,9);
-
-        for (int i = 0; i < mDatas.size(); i++) {
-
-            System.out.println(mDatas.get(i));
-
-        }
-
+        Auth auth = Auth.create("KXLzuFCOxgNar5whqU3-0bmrH6rTHOqaidcohRes", "aiw1aAh-dwA9k6nkWAQLExy2Taz9cE1nFYA_01WY");
+        String uploadToken = auth.uploadToken("kangyuanmilk", "/avater");
+        System.out.println(uploadToken);
 
 
     }

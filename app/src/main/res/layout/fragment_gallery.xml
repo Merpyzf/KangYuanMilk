@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.merpyzf.kangyuanmilk.ui.login.view.GalleryFragment">
+    tools:context="com.merpyzf.kangyuanmilk.common.GalleryFragment">
 
 
     <com.merpyzf.kangyuanmilk.common.widget.GalleryView
@@ -20,7 +20,7 @@
         android:elevation="@dimen/len_4"
         android:src="@drawable/ic_cut"
         android:layout_margin="20dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:tint="@color/white"
         android:layout_centerInParent="true"
         android:layout_alignParentRight="true" />

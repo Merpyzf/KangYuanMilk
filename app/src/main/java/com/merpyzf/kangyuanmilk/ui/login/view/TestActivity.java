@@ -10,7 +10,13 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.qiniu.UpLoadHelper;
+import com.qiniu.android.http.ResponseInfo;
 import com.yalantis.ucrop.UCrop;
+
+import org.json.JSONObject;
+
+import java.io.File;
 
 import butterknife.BindView;
 
@@ -82,6 +88,21 @@ public class TestActivity extends BaseActivity implements View.OnClickListener{
                     final Uri resultUri = UCrop.getOutput(data);
 
                     LogHelper.i("要进行上传的图片: "+resultUri.getPath());
+
+                    String filename = new File(resultUri.getPath()).getName();
+
+                    UpLoadHelper upLoadHelper = new UpLoadHelper();
+
+
+                    upLoadHelper.upLoadAveter(resultUri.getPath(), new UpLoadHelper.CompletionListener() {
+                        @Override
+                        public void onComplete(String key, ResponseInfo info, JSONObject response) {
+
+                            LogHelper.i("上传进度==>"+info.toString());
+                            LogHelper.i(response.toString());
+                        }
+                    });
+
 
                     galleryFragment.onDismiss();
 

@@ -42,6 +42,7 @@ public  class  GlideImageLoader  {
 
         DrawableTypeRequest dtr = Glide.with(imageView.getContext())
                 .load(drawable);
+
         loadOptions(dtr,options);
         dtr.into(imageView);
 
@@ -68,6 +69,7 @@ public  class  GlideImageLoader  {
      * @param options
      */
     private static void loadOptions(DrawableTypeRequest dtr,ImageLoaderOptions options) {
+        if(options == null) return;
 
 
         if(options.getPlaceHolder()!= -1) {

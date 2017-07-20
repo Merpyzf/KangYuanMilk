@@ -40,9 +40,6 @@ dependencies {
     //design包
     //支持上拉加载更多下拉刷新的RecyclerView
     //Glide图片架加载框架
-    
-
-
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:8.7.0'
@@ -63,6 +60,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.github.yalantis:ucrop:2.2.1-native'
+    compile 'com.qiniu:qiniu-android-sdk:7.3.+'
+    compile 'com.qiniu:qiniu-java-sdk:7.1.+'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
 }

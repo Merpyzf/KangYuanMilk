@@ -42,9 +42,6 @@ dependencies {
     //Glide图片架加载框架
     //google的权限管理
 
-    
-
-
 
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

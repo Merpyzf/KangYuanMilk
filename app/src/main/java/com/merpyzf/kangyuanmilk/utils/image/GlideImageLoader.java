@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.utils.image;
 
+import android.support.design.widget.AppBarLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
@@ -98,6 +99,8 @@ public  class  GlideImageLoader  {
             dtr.animate(options.getAnimator());
         }
     }
+
+
 
     /*
     * 使用:

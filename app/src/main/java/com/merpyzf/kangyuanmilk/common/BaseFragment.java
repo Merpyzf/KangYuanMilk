@@ -61,16 +61,34 @@ public abstract class BaseFragment extends Fragment {
         return mRootView;
     }
 
+
+
     /**
-     * 事件的初始化
+     * 获取传递过来的参数
+     * @param arguments
      */
-    protected abstract void initEvent();
+    protected void initArgs(Bundle arguments) {
+
+    }
+
+
+    /**
+     * 获取Fragment的布局id
+     * @return
+     */
+    protected abstract int getContentLayoutId();
 
     /**
      * 控件的初始化
      * @param rootview
      */
     protected abstract void initWidget(View rootview);
+    /**
+     * 事件的初始化
+     */
+    protected abstract void initEvent();
+
+
     /**
      * 当View创建成功时调用
      * @param view
@@ -90,20 +108,7 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract void initData();
 
-    /**
-     * 获取Fragment的布局id
-     * @return
-     */
-    protected abstract int getContentLayoutId();
 
-
-    /**
-     * 获取传递过来的参数
-     * @param arguments
-     */
-    protected void initArgs(Bundle arguments) {
-
-    }
 
 
     /**

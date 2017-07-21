@@ -4,4 +4,7 @@
 
     <string name="image_select">图片选择</string>
     <string name="apply_permissions">权限申请</string>
+    <string name="menu_bottom_navigation_home">主页</string>
+    <string name="menu_bottom_navigation_category">分类</string>
+    <string name="menu_bottom_navigation_indent">订单</string>
 </resources>

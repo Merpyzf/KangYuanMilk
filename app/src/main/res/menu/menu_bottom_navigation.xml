@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/menu_bottom_navigation_home"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_category"
+        android:icon="@drawable/ic_category"
+        android:title="@string/menu_bottom_navigation_category"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_indent"
+        android:icon="@drawable/ic_indent"
+        android:title="@string/menu_bottom_navigation_indent"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="image_select">图片选择</string>
+    <string name="apply_permissions">权限申请</string>
+</resources>

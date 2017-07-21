@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.common;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +30,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * 权限申请
+ *
  * @author wangke
  */
 public class ApplyPermissionFragment extends BottomSheetDialogFragment implements EasyPermissions.PermissionCallbacks {
@@ -50,23 +52,22 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
     ImageView iv_perms_net;
 
     private List<String[]> mPermsList = new ArrayList<>();
+    private List<ImageView> mImageViewList = new ArrayList<>();
 
-    private String[] perms_camera;
-    private String[] perms_storage;
-    private String[] perms_sms;
-    private String[] perms_net;
-
+    private String[] tips = new String[]{"确定要授权拍照权限吗？", "确定要授权读取sdk权限？", "确定要授权读取短信权限？", "确定要授权获取网络状态权限？"};
 
 
     /**
      * 调用检查是否已授予了所有的权限,如果没有则显示进行权限授予
      */
-    public void havaAll(FragmentManager fragmentManager){
+    public void haveAll(FragmentManager fragmentManager, Context context) {
 
-        new ApplyPermissionFragment().show(fragmentManager,"tag");
+        if (!checkHaveAllPermis(context)) {
 
+            new ApplyPermissionFragment().show(fragmentManager, "tag");
+
+        }
     }
-
 
     public ApplyPermissionFragment() {
         super();
@@ -78,90 +79,88 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
         mActivity = getActivity();
         View view = LayoutInflater.from(mActivity)
                 .inflate(R.layout.fragment_apply_permission, container, false);
-
         unbinder = ButterKnife.bind(this, view);
-
-        //拍照权限
-        perms_camera = new String[]{Manifest.permission.CAMERA};
-
-        mPermsList.add(perms_camera);
-        //读取sdk权限
-        perms_storage = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
-        mPermsList.add(perms_storage);
-        //读取短信的权限
-        perms_sms = new String[]{Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS};
-        mPermsList.add(perms_sms);
-        //获取网络状态的权限
-        perms_net = new String[]{Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.CHANGE_NETWORK_STATE};
-        mPermsList.add(perms_net);
-
-
-
-
-
-        checkAndRequest(true);
-
-
-
-
-
-
+        initData();
+        //刚进入页面时先检查权限但不申请权限
+        checkAndRequest(false);
 
         return view;
     }
 
     /**
+     * 初始化权限相关的数据
+     */
+    private void initData() {
+
+        mImageViewList.clear();
+        mPermsList.clear();
+
+        mImageViewList.add(iv_perms_camera);
+        mImageViewList.add(iv_perms_storage);
+        mImageViewList.add(iv_perms_sms);
+        mImageViewList.add(iv_perms_net);
+        //拍照权限
+        mPermsList.add(new String[]{Manifest.permission.CAMERA});
+        //读取sdk权限
+        mPermsList.add(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE});
+        //读取短信的权限
+        mPermsList.add( new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS});
+
+
+    }
+
+    /**
      * 检查和申请权限
+     *
      * @param isRequest true: 检查的同时如果没有权限就去申请
      *                  false： 只检查不申请
      */
     private void checkAndRequest(boolean isRequest) {
 
-        for (int i = 0; i< mPermsList.size();i++) {
+        for (int i = 0; i < mPermsList.size(); i++) {
 
             //检查拍照相关的权限
             if (EasyPermissions.hasPermissions(mActivity, mPermsList.get(i))) {
 
                 LogHelper.i("已有权限");
-                iv_perms_camera.setVisibility(View.VISIBLE);
-
+                mImageViewList.get(i).setVisibility(View.VISIBLE);
 
             } else {
 
-                iv_perms_camera.setVisibility(View.INVISIBLE);
+                mImageViewList.get(i).setVisibility(View.INVISIBLE);
 
                 if (isRequest) {
                     //申请权限
-                    EasyPermissions.requestPermissions(this, "拍照需要的权限"
-                            , i, perms_camera);
-
+                    EasyPermissions.requestPermissions(this, tips[i]
+                            , i, mPermsList.get(i));
                 }
             }
-
         }
-
-
     }
 
+    /**
+     * 自定义自己的dialog,避免顶部的statusbar被全屏的dialog覆盖而变成黑色
+     *
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
 
         return new TransStatusBottomSheetDialog(getActivity());
     }
 
-    @Override
-    public void onDestroy() {
 
-        unbinder.unbind();
-        super.onDestroy();
-    }
-
+    /**
+     * 权限申请按钮的点击事件
+     *
+     * @param view
+     */
     @OnClick(R.id.btn_award)
-    public void awardPremission(Button view){
+    public void awardPremission(Button view) {
 
         //点击进行权限的授予
-
+        checkAndRequest(true);
 
 
     }
@@ -180,13 +179,101 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         //通过申请
-        LogHelper.i("权限通过");
+        LogHelper.i(requestCode + "权限通过");
+        refreshStatus(requestCode, true);
+
+
+        if (checkHaveAllPermis(mActivity)) {
+            dismiss();
+            // TODO: 2017-07-21 通知外界权限已经全部获取到了，可以跳转到主界面
+
+        }
 
     }
+
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         //申请被拒绝
-        LogHelper.i("权限被拒绝");
+        LogHelper.i(requestCode + "权限被拒绝");
+    }
+
+
+    //检查所有的权限是否都已经授予
+    private Boolean checkHaveAllPermis(Context context) {
+
+        initData();
+
+        for (int i = 0; i < mPermsList.size(); i++) {
+            if (!EasyPermissions.hasPermissions(context, mPermsList.get(i))) {
+
+                return false;
+            }
+
+        }
+
+
+        return true;
+    }
+
+    /**
+     * 刷新界面权限的状态
+     * @param requestCode 权限申请时的请求码
+     * @param isGranted   权限是否授予
+     */
+    private void refreshStatus(int requestCode, boolean isGranted) {
+
+
+        switch (requestCode) {
+
+            case 0:
+
+                if (isGranted) {
+
+                    if (mImageViewList.get(0).getVisibility() == View.INVISIBLE) {
+
+                        mImageViewList.get(0).setVisibility(View.VISIBLE);
+                    }
+
+                }
+
+
+                break;
+            case 1:
+
+                if (isGranted) {
+
+                    if (mImageViewList.get(1).getVisibility() == View.INVISIBLE) {
+
+                        mImageViewList.get(1).setVisibility(View.VISIBLE);
+                    }
+                }
+                break;
+            case 2:
+
+                if (isGranted) {
+
+                    if (mImageViewList.get(2).getVisibility() == View.INVISIBLE) {
+
+                        mImageViewList.get(2).setVisibility(View.VISIBLE);
+                    }
+                }
+                break;
+
+
+            default:
+                break;
+        }
+
+    }
+
+    /**
+     * 当前Fragment销毁时进行资源的释放
+     */
+    @Override
+    public void onDestroy() {
+
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

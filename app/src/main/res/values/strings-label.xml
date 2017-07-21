@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="perm_camera">照相机</string>
+    <string name="perm_camera_info">拍照上传头像</string>
+    <string name="perm_storage">文件存储</string>
+    <string name="perms_sms">读取短信</string>
+    <string name="perms_sms_info">用于识别短信中的验证码</string>
+    <string name="perms_net">网络状态</string>
+    <string name="perm_net_info">获取当前设备的网络状态</string>
+</resources>

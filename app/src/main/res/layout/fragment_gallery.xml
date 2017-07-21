@@ -5,11 +5,35 @@
     android:orientation="vertical"
     tools:context="com.merpyzf.kangyuanmilk.common.GalleryFragment">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        >
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/g_default_base_accentDark"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/image_select"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_16" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <com.merpyzf.kangyuanmilk.common.widget.GalleryView
+        android:id="@+id/galleryView"
+        android:layout_below="@id/appbar"
         android:clipToPadding="false"
         android:paddingTop="2dp"
-        android:id="@+id/galleryView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.merpyzf.kangyuanmilk.common.widget.GalleryView>
 

@@ -22,7 +22,7 @@ import java.io.File;
 import butterknife.BindView;
 
 /**
- * Created by Administrator on 2017-07-17.
+ * Created by wangke on 2017-07-17.
  *
  */
 
@@ -54,7 +54,9 @@ public class TestActivity extends BaseActivity implements View.OnClickListener{
 
 
         ApplyPermissionFragment applyPermissionFragment = new ApplyPermissionFragment();
-        applyPermissionFragment.havaAll(getSupportFragmentManager());
+
+        //检查当前app是否已经拥有自己所需的权限
+        applyPermissionFragment.haveAll(getSupportFragmentManager(),this);
 
     }
 

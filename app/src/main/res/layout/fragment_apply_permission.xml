@@ -14,12 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/g_default_base_accentDark"
-            android:elevation="8dp">
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="权限申请"
+                android:text="@string/apply_permissions"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_16" />
         </Toolbar>
@@ -61,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:text="照相机"
+                            android:text="@string/perm_camera"
                             android:textSize="@dimen/font_16" />
 
                         <ImageView
@@ -80,7 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="拍照上传头像"
+                        android:text="@string/perm_camera_info"
                         android:textSize="@dimen/font_14" />
 
 
@@ -111,7 +111,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:text="文件存储"
+                            android:text="@string/perm_storage"
                             android:textSize="@dimen/font_16" />
 
                         <ImageView
@@ -130,7 +130,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="读取手机内部存储设备"
+                        android:text="@string/perms_storage_info"
                         android:textSize="@dimen/font_14" />
 
 
@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:text="读取短信"
+                            android:text="@string/perms_sms"
                             android:textSize="@dimen/font_16" />
 
                         <ImageView
@@ -182,7 +182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="用于识别短信中的验证码"
+                        android:text="@string/perms_sms_info"
                         android:textSize="@dimen/font_14" />
 
 
@@ -213,7 +213,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:text="网络状态"
+                            android:text="@string/perms_net"
                             android:textSize="@dimen/font_16" />
 
                         <ImageView
@@ -232,7 +232,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:text="获取当前设备的网络状态"
+                        android:text="@string/perm_net_info"
                         android:textSize="@dimen/font_14" />
 
 
@@ -250,15 +250,10 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/btn_shape"
                 android:stateListAnimator="@drawable/btn_state_list_animator"
-                android:text="授权"
+                android:text="@string/btn_apply"
 
                 />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/trans"
-                />
 
 
         </LinearLayout>

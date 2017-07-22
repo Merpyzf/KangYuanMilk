@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.common;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -85,11 +86,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 进行页面的跳转
      */
-    public void show() {
+    public void show(Context context,Bundle bundle) {
 
-        startActivity(new Intent(this, this.getClass()));
 
-    };
+
+    }
 
     @Override
     protected void onDestroy() {

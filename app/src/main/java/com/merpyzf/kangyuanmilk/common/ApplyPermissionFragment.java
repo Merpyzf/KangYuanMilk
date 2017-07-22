@@ -84,6 +84,9 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
         //刚进入页面时先检查权限但不申请权限
         checkAndRequest(false);
 
+
+
+
         return view;
     }
 

@@ -1,10 +1,14 @@
 package com.merpyzf.kangyuanmilk.utils.image;
 
 import android.support.design.widget.AppBarLayout;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.ViewTarget;
 
 import java.io.File;
 
@@ -63,6 +67,11 @@ public  class  GlideImageLoader  {
         dtr.into(imageView);
 
     }
+
+
+
+
+
 
     /**
      * 装载Glide的设置项

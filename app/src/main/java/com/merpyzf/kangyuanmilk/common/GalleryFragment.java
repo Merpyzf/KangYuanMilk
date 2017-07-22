@@ -36,6 +36,7 @@ import butterknife.Unbinder;
 
 /**
  * 图片选择器
+ *
  * @author wangke
  */
 public class GalleryFragment extends BottomSheetDialogFragment implements GalleryView.ImageSelectedChangedListener {
@@ -96,7 +97,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
 
 
         //刷新GalleryView将拍摄的图片加载进去
-         galleryView.updatePhoto();
+        galleryView.updatePhoto();
 
     }
 
@@ -108,45 +109,44 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
             showFab(fab_croup);
             LogHelper.i("wk", "显示");
             //当点击Fab浮动按钮的时候进行图片的剪切
-            fab_croup.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            fab_croup.setOnClickListener((view) -> {
 
 
-                        File cacheDir = new File(mContext.getExternalCacheDir(), "temp");
-                        if (!cacheDir.exists()) {
-                            cacheDir.mkdirs();
+                        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+
+
+                            File cacheDir = new File(mContext.getExternalCacheDir(), "temp");
+                            if (!cacheDir.exists()) {
+                                cacheDir.mkdirs();
+                            }
+                            //用作头像缓存
+                            File tempFile = new File(cacheDir, "temp.png");
+                            //用于裁切保存的文件路径对应的uri
+                            Uri destUri = Uri.fromFile(tempFile);
+                            //选择图的源文件
+                            Uri sourceUri = Uri.fromFile(new File(imageList.get(0).getPath()));
+
+                            UCrop.Options options = new UCrop.Options();
+                            //设置裁切后生成的图片格式
+                            options.setCompressionFormat(Bitmap.CompressFormat.PNG);
+                            //设置裁切后的尺寸
+                            options.withMaxResultSize(500, 500);
+                            //设置裁切图的质量
+                            options.setCompressionQuality(90);
+
+                            //跳转到uCrop的裁切页面
+                            UCrop.of(sourceUri, destUri)
+                                    .withAspectRatio(1, 1)
+                                    .withOptions(options)
+                                    .start(getActivity());
+
+                        } else {
+
+                            App.showToast("没有找到存储设备,请检查");
+
                         }
-                        //用作头像缓存
-                        File tempFile = new File(cacheDir, "temp.png");
-                        //用于裁切保存的文件路径对应的uri
-                        Uri destUri = Uri.fromFile(tempFile);
-                        //选择图的源文件
-                        Uri sourceUri = Uri.fromFile(new File(imageList.get(0).getPath()));
-
-                        UCrop.Options options = new UCrop.Options();
-                        //设置裁切后生成的图片格式
-                        options.setCompressionFormat(Bitmap.CompressFormat.PNG);
-                        //设置裁切后的尺寸
-                        options.withMaxResultSize(500, 500);
-                        //设置裁切图的质量
-                        options.setCompressionQuality(90);
-
-                        //跳转到uCrop的裁切页面
-                        UCrop.of(sourceUri, destUri)
-                                .withAspectRatio(1, 1)
-                                .withOptions(options)
-                                .start(getActivity());
-
-                    } else {
-
-                        App.showToast("没有找到存储设备,请检查");
-
                     }
-                }
-            });
+            );
         } else {
             //隐藏
             hideFab(fab_croup);
@@ -229,7 +229,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     /**
      * 将自己隐藏
      */
-    public void onDismiss(){
+    public void onDismiss() {
 
         dismiss();
     }

@@ -1,36 +1,77 @@
 package com.merpyzf.kangyuanmilk.ui;
 
+import android.content.Intent;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
+import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
+import com.merpyzf.kangyuanmilk.ui.login.bean.User;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
+import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
+import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import okhttp3.ResponseBody;
+
+import static android.R.attr.breadCrumbShortTitle;
+import static android.R.attr.id;
+import static android.R.id.switch_widget;
+import static android.R.id.toggle;
+import static com.merpyzf.kangyuanmilk.R.id.cancel_action;
+import static com.merpyzf.kangyuanmilk.R.id.iv_avater;
+import static com.merpyzf.kangyuanmilk.R.id.nav_view;
+import static com.merpyzf.kangyuanmilk.R.id.rl_nav_header;
 
 /**
  * 主界面
+ *
  * @author wangke
  */
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,BottomNavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
+
     @BindView(R.id.bottom_nav_view)
     BottomNavigationView bottom_nav_view;
-
+    //头像
+    CircleImageView civ_avater;
+    //用户名
+    TextView tv_username;
+    RelativeLayout rl_nav_header;
 
     @Override
     public int getLayoutId() {
@@ -40,7 +81,20 @@ public class HomeActivity extends BaseActivity
     @Override
     public void initWidget() {
 
+        ApplyPermissionFragment applyPermissionFragment = new ApplyPermissionFragment();
+
+        applyPermissionFragment.haveAll(getSupportFragmentManager(),this);
+
         setSupportActionBar(toolbar);
+
+        //从 navigationView中获取控件的引用时候,需要通过getHeaderView拿到HeaderView布局的引用，这样才能继续下面的工作
+        View view = navigationView.getHeaderView(0);
+        rl_nav_header = (RelativeLayout) view.findViewById(R.id.rl_nav_header);
+        civ_avater = (CircleImageView) view.findViewById(R.id.iv_avater);
+        tv_username = (TextView) view.findViewById(R.id.tv_username);
+
+        setNavHeaderBg(rl_nav_header);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -49,13 +103,35 @@ public class HomeActivity extends BaseActivity
 
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
+
+
+
     }
+
+
+
 
     @Override
     public void initEvent() {
         navigationView.setNavigationItemSelectedListener(this);
-
         bottom_nav_view.setOnNavigationItemSelectedListener(this);
+
+
+        //
+
+        tv_username.setOnClickListener(view -> {
+
+       /*     new LoginActivity().show(HomeActivity.this,null);
+
+            LogHelper.i("被点击了");*/
+
+       HomeActivity.this.startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+
+
+        });
+
+
+
     }
 
     @Override
@@ -89,35 +165,53 @@ public class HomeActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-
         //导航抽屉菜单的点击事件
-        int id = item.getItemId();
+        switch (item.getItemId()){
 
-        if (id == R.id.nav_camera) {
+            case R.id.nav_indent:
 
+                break;
 
-        } else if (id == R.id.nav_gallery) {
+            case R.id.nav_address:
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        //底部导航菜单的事件监听
-        else if(id == R.id.action_home){
+                break;
 
 
-        }else if(id == R.id.action_category){
+            case R.id.nav_service:
+
+                break;
+
+            case R.id.nav_logout:
+
+                break;
+            case R.id.nav_setting:
+                break;
+            //
+            case R.id.nav_share:
+
+                break;
+
+            case R.id.nav_advice:
+
+                break;
+            case R.id.nav_about:
+                break;
 
 
-        }else if(id == R.id.action_indent){
+            //底部导航菜单的事件监听
+            case R.id.action_home:
 
+                break;
 
+            case R.id.action_goods:
+
+                break;
+            case R.id.action_shopping_cart:
+                break;
+
+            default:
+
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -135,6 +229,25 @@ public class HomeActivity extends BaseActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    /**
+     * 设置导航抽屉头部的背景图片
+     * @param rl_nav_header
+     */
+    private void setNavHeaderBg(RelativeLayout rl_nav_header) {
+
+        Glide.with(this)
+                .load(R.drawable.ic_nav_bar)
+                .centerCrop()
+                .into(new ViewTarget<View, GlideDrawable>(rl_nav_header) {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        rl_nav_header.setBackground(resource.getCurrent());
+                    }
+                });
+
     }
 
 }

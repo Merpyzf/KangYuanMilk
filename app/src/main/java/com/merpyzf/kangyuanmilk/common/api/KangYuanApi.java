@@ -14,8 +14,9 @@ import retrofit2.http.POST;
 
 public interface KangYuanApi {
 
-    String BASE_URL = "http://192.168.0.57:8080/";
-    @POST("getjson")
-    public Observable<ResponseBody> getJson(@Body User user);
+    String BASE_URL = "http://192.168.0.57:8089/";
+
+    @POST("user/register")
+    Observable<ResponseBody> getJson(@Body com.merpyzf.kangyuanmilk.ui.login.bean.User user);
 
 }

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_login_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.merpyzf.kangyuanmilk.ui.login.LoginActivity">
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        app:cardCornerRadius="8dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="10dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryDark" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+
+                    android:id="@+id/iv_header"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignTop="@id/view"
+                    android:layout_marginLeft="25dp"
+                    android:src="@drawable/ic_avater_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@id/iv_header"
+                    android:layout_marginLeft="80dp"
+                    android:gravity="center"
+                    android:text="@string/tv_login"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+
+                    />
+
+
+            </RelativeLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dp"
+                android:textColorHint="#c5c5c5">
+
+                <EditText
+                    android:id="@+id/edt_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edt_hint_username"
+                    android:inputType="textPersonName"
+                    android:textColor="#c5c5c5"
+                    android:textSize="13sp"
+
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="5dp"
+                android:textColorHint="#c5c5c5">
+
+                <EditText
+                    android:id="@+id/edt_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edt_hint_pwd"
+                    android:inputType="textPassword"
+                    android:textColor="#c5c5c5"
+                    android:textSize="13sp"
+
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/cb_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cb_save"
+                android:textSize="13sp"
+                android:textColor="#c5c5c5"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                />
+
+
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_shape"
+                android:stateListAnimator="@drawable/btn_state_list_animator"
+                android:text="@string/login"
+                android:textColor="#c5c5c5"
+                android:textSize="13sp" />
+
+
+            <TextView
+                android:id="@+id/tv_find_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/tv_find_pwd"
+                android:textColor="#c5c5c5"
+                android:textSize="13sp"
+
+                />
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/cardView"
+        android:layout_alignTop="@id/cardView"
+        android:layout_marginRight="-15dp"
+        android:layout_marginTop="20dp"
+        app:borderWidth="0dp"
+        android:clickable="true"
+        android:src="@drawable/ic_add"
+        android:tint="#ffff"
+        app:fabSize="normal"
+        android:transitionName="fab"
+        app:rippleColor="#FFC1DC39" />
+
+
+
+    </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

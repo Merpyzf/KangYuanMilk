@@ -10,5 +10,11 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="nav_menu_address">地址管理</string>
+    <string name="nav_menu_setting">设置</string>
+    <string name="nav_menu_about">关于</string>
+    <string name="cb_save">记住密码</string>
+    <string name="edt_hint_pwd">密码</string>
+
 
 </resources>

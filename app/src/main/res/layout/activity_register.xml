@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    tools:context="com.merpyzf.kangyuanmilk.ui.login.RegisterActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/rl"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="360dp">
+
+
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardview_input"
+                android:layout_width="400dp"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:clickable="true"
+                android:elevation="10dp"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="8dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="25dp"
+                            android:gravity="center"
+                            android:text="用户注册"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp"
+
+                            />
+
+                    </RelativeLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="5dp"
+
+                        android:textColorHint="#c5c5c5">
+
+                        <EditText
+                            android:id="@+id/edt_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="用户名"
+                            android:inputType="textPersonName"
+                            android:textColor="#c5c5c5"
+                            android:textSize="13sp" />
+
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="5dp"
+                        android:textColorHint="#c5c5c5">
+
+                        <EditText
+                            android:id="@+id/edt_pwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="密码"
+                            android:inputType="textPersonName"
+                            android:textColor="#c5c5c5"
+                            android:textSize="13sp" />
+
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="5dp"
+
+                        android:textColorHint="#c5c5c5">
+
+                        <EditText
+                            android:id="@+id/edt_repwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="重复密码"
+                            android:inputType="textPersonName"
+                            android:textColor="#c5c5c5"
+                            android:textSize="13sp" />
+
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:clickable="true"
+                android:src="@drawable/ic_completed"
+                android:tint="#ffff"
+                android:transitionName="fab"
+                app:borderWidth="0dp"
+                app:fabSize="normal"
+                android:layout_alignBottom="@id/cardview_input"
+                android:layout_marginBottom="-50dp"
+                app:rippleColor="#FFC1DC39" />
+
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

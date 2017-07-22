@@ -7,4 +7,11 @@
     <string name="menu_bottom_navigation_home">主页</string>
     <string name="menu_bottom_navigation_category">分类</string>
     <string name="menu_bottom_navigation_indent">订单</string>
+    <string name="menu_bottom_navigation_shopping_cart">购物车</string>
+    <string name="menu_bottom_navigation_goods">商品</string>
+    <string name="nav_menu_indent">我的订单</string>
+    <string name="nav_menu_service">客户服务</string>
+    <string name="nav_menu_share">分享</string>
+    <string name="nav_menu_advice">建议</string>
+    <string name="nav_menu_logout">注销登录</string>
 </resources>

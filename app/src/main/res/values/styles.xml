@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="colorControlNormal">@color/white_alpha_240</item>
+        <item name="colorControlActivated">@color/textPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -16,6 +19,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 
 
@@ -30,5 +34,15 @@
 
 
     <style name="TransStatusBarTheme" parent="AppTheme.TransStatusBar.Base"/>
+
+
+
+    <!--透明主题-->
+    <style name="Translucent" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 
 </resources>

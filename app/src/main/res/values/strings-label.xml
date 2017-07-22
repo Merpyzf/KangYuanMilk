@@ -7,4 +7,9 @@
     <string name="perms_sms_info">用于识别短信中的验证码</string>
     <string name="perms_net">网络状态</string>
     <string name="perm_net_info">获取当前设备的网络状态</string>
+    <string name="tv_find_pwd">找回密码</string>
+    <string name="tv_login">登录</string>
+    <string name="activity_login_label">用户登录</string>
+    <string name="activity_sms_verify_label">短信验证</string>
+    <string name="activity_register_label">用户注册</string>
 </resources>

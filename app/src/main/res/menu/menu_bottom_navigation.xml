@@ -9,13 +9,13 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_category"
-        android:icon="@drawable/ic_category"
-        android:title="@string/menu_bottom_navigation_category"
+        android:id="@+id/action_goods"
+        android:icon="@drawable/ic_store"
+        android:title="@string/menu_bottom_navigation_goods"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_indent"
-        android:icon="@drawable/ic_indent"
-        android:title="@string/menu_bottom_navigation_indent"
+        android:id="@+id/action_shopping_cart"
+        android:icon="@drawable/ic_shopping_cart"
+        android:title="@string/menu_bottom_navigation_shopping_cart"
         app:showAsAction="always" />
 </menu>

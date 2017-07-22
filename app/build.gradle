@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
@@ -25,6 +25,29 @@ android {
         }
     }
 
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+}
+
+// Required because retrolambda is on maven central
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -41,7 +64,6 @@ dependencies {
     //支持上拉加载更多下拉刷新的RecyclerView
     //Glide图片架加载框架
     //google的权限管理
-
 
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -68,4 +90,5 @@ dependencies {
     compile 'pub.devrel:easypermissions:0.4.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }

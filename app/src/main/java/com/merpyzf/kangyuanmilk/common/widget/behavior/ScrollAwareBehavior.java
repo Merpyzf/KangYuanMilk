@@ -18,9 +18,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import com.merpyzf.kangyuanmilk.R;
 
-
-
-
 /**
  * Created by Lv on 2016/10/8.
  */

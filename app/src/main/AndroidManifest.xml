@@ -15,6 +15,18 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!--读取手机联系人的权限-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!--获取位置信息的权限-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+
+
+
+
     <application
         android:name=".common.App"
         android:allowBackup="true"
@@ -78,6 +90,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ui.welcom.SplashActivity"></activity>
+
+
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <meta-data android:name="Mob-AppKey" android:value="1fa0818bd9c84"/>
+        <meta-data android:name="Mob-AppSecret" android:value="6d83934ee009eaeb2f887234b5899934"/>
+
+
 
 
     </application>

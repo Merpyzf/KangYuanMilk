@@ -18,6 +18,11 @@ import android.widget.Button;
 
 import com.merpyzf.kangyuanmilk.R;
 
+/**
+ * 短信验证
+ * 如果验证成功,就将手机号发送给下一个activity
+ * @author wangke
+ */
 public class SmsVerifyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private CardView cardview;
@@ -35,6 +40,47 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
 
         showEnterAnimation();
     }
+
+
+    @Override
+    public void onBackPressed() {
+        animateRevealClose();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+            //返回上一个页面
+            case R.id.fab_back:
+                SmsVerifyActivity.super.onBackPressed();
+                break;
+
+            case R.id.btn_next:
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab, fab.getTransitionName());
+
+                    startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class), options.toBundle());
+
+
+                } else {
+
+                    startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class));
+
+                }
+
+                break;
+            default:
+                break;
+        }
+
+
+
+    }
+
+
 
     /**
      * 共享元素动画
@@ -132,43 +178,4 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    @Override
-    public void onBackPressed() {
-        animateRevealClose();
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()){
-            //返回上一个页面
-            case R.id.fab_back:
-                SmsVerifyActivity.super.onBackPressed();
-                break;
-
-            case R.id.btn_next:
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab, fab.getTransitionName());
-
-                    startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class), options.toBundle());
-
-
-                } else {
-
-                    startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class));
-
-                }
-
-
-
-                break;
-            default:
-                break;
-        }
-
-
-
-    }
 }

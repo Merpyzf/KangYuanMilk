@@ -47,8 +47,15 @@ buildscript {
 
 // Required because retrolambda is on maven central
 repositories {
+
     mavenCentral()
+
+    flatDir{
+        dirs 'libs' //就是你放aar的目录地址
+    }
 }
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -91,4 +98,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile name:'SMSSDK-3.0.0',ext:'aar'
+    compile name:'SMSSDKGUI-3.0.0',ext:'aar'
+    compile files('libs/MobCommons-2017.0607.1736.jar')
+    compile files('libs/MobTools-2017.0607.1736.jar')
 }

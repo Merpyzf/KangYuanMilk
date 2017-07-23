@@ -2,22 +2,31 @@ package com.merpyzf.kangyuanmilk.common;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.mob.MobSDK;
 
 /**
- * Created by Administrator on 2017-07-20.
+ * Created by wangke on 2017-07-20.
  */
 
 public class App extends Application {
 
     private static Context context;
 
+    protected String a() {
+        return null;
+    }
+
+    protected String b() {
+        return null;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        MobSDK.init(this, this.a(), this.b());
         context = getApplicationContext();
         LogHelper.i("App中的额onCreate方法执行了");
     }

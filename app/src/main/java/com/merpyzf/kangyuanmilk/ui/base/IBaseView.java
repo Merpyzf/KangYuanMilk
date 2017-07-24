@@ -9,7 +9,9 @@ package com.merpyzf.kangyuanmilk.ui.base;
 public interface IBaseView {
 
     void showLoadingDialog();
-    void cancleLoadingDialog();
+
+    void cancelLoadingDialog();
+
     void showErrorMsg(String errorMsg);
 
 }

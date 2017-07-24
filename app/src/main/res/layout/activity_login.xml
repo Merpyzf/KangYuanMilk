@@ -26,10 +26,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:clickable="true"
         android:elevation="10dp"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"

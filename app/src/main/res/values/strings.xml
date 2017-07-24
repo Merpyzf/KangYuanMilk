@@ -13,8 +13,9 @@
     <string name="nav_menu_address">地址管理</string>
     <string name="nav_menu_setting">设置</string>
     <string name="nav_menu_about">关于</string>
-    <string name="cb_save">记住密码</string>
+    <string name="cb_save">保存登陆信息</string>
     <string name="edt_hint_pwd">密码</string>
+    <string name="please_wait_login">Please wait...</string>
 
 
 </resources>

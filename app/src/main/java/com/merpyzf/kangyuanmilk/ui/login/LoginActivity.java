@@ -2,12 +2,11 @@ package com.merpyzf.kangyuanmilk.ui.login;
 
 import android.animation.Animator;
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -18,21 +17,19 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.ui.HomeActivity;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
+import com.merpyzf.kangyuanmilk.ui.login.presenter.LoginPresenterImpl;
 
 import butterknife.BindView;
 
-import static com.merpyzf.kangyuanmilk.R.id.fab_next;
-import static com.merpyzf.kangyuanmilk.R.id.rl;
-import static com.merpyzf.kangyuanmilk.R.id.rl_login_bg;
-import static com.merpyzf.kangyuanmilk.R.id.view;
 import static com.merpyzf.kangyuanmilk.R.layout.activity_login;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, ILoginContract.ILoginView {
@@ -61,33 +58,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @BindView(R.id.rl_login_bg)
     RelativeLayout rl_login_bg;
 
+    //标记遮罩动画是否已经执行
+    private Boolean isExecute = true;
+    private ILoginContract.ILoginPresenter mLoginPresenter = null;
+    //用于提示当前状态的dialog
+    private MaterialDialog mLoginDialog;
 
-    private Boolean isExcute = true;
-
-    @Override
-    public void show(Context context, Bundle bundle) {
-        super.show(context, bundle);
-
-
-        Intent intent = new Intent();
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        intent.setClass(context, LoginActivity.class);
-
-
-        startActivity(intent);
-
-
-    }
-
+    /**
+     * 当界面准备好的时候才开始执行遮罩动画
+     * @param hasFocus
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         //刚进入界面的时候开启圆形遮罩动画
-        if (isExcute) {
+        if (isExecute) {
             revealCircularAnim();
-            isExcute = false;
+            isExecute = false;
         }
     }
 
@@ -95,33 +82,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public int getLayoutId() {
         return activity_login;
     }
-
     @Override
     public void initWidget() {
-
+        //设置登录界面的背景
         setBackground();
 
-
     }
-
-
-
     @Override
     public void initEvent() {
-
         fab_next.setOnClickListener(this);
         btn_login.setOnClickListener(this);
-
-
     }
-
     @Override
     protected void initData() {
-
-
+        mLoginPresenter = new LoginPresenterImpl();
+        //让presenter持有当前view的引用
+        mLoginPresenter.attachView(this);
     }
-
-
     @Override
     public void onClick(View view) {
 
@@ -150,6 +127,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             case R.id.btn_login:
 
 
+                String user_name = edt_username.getText().toString().trim();
+                String pwd = edt_pwd.getText().toString().trim();
+
+                if (!user_name.equals("") && !pwd.equals("")) {
+
+                    login(user_name, pwd);
+
+
+                } else {
+
+                    App.showToast("请检查用户名或密码输入不能为空");
+
+                }
+
+
                 break;
 
 
@@ -162,7 +154,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
 
     }
-
 
     /**
      * 圆形遮罩动画
@@ -182,15 +173,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void showLoadingDialog() {
 
+        App.showToast("弹出dialog => 开始请求网络");
+        mLoginDialog = new MaterialDialog.Builder(this)
+                .title(R.string.progress_dialog_login)
+                .content(R.string.please_wait_login)
+                .progress(true, 0)
+                .canceledOnTouchOutside(false)
+                .show();
+
 
     }
 
     /**
-     * 关闭等待的dialog
+     * 关闭dialog
      */
     @Override
-    public void cancleLoadingDialog() {
-
+    public void cancelLoadingDialog() {
+        App.showToast("关闭dialog => 请求网络完毕");
+        mLoginDialog.dismiss();
     }
 
     /**
@@ -200,6 +200,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      */
     @Override
     public void showErrorMsg(String errorMsg) {
+
+        //遇到错误的时候，给用户1秒钟的反应时间，优化用户体验
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+                cancelLoadingDialog();
+                App.showToast(errorMsg);
+            }
+        };
+
+        Message message = Message.obtain();
+        message.what = 0;
+        handler.sendMessageDelayed(message, 1000);
 
     }
 
@@ -213,6 +229,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void login(String username, String pwd) {
 
+        mLoginPresenter.login(this, username, pwd);
+
+
     }
 
     /**
@@ -222,18 +241,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      */
     @Override
     public void loginError(String errorText) {
-
+        cancelLoadingDialog();
+        App.showToast(errorText);
 
     }
 
     /**
      * 登录成功后返回主界面
-     *
      * @param success
      */
     @Override
-    public void loginSuccess(String success) {
+    public void loginSuccess(String success,String username,String pwd) {
+        cancelLoadingDialog();
+        App.showToast(success);
 
+    }
+
+    @Override
+    public void saveLoginInfo(String username, String pwd) {
+
+    }
+
+    @Override
+    public void readLoginInfo() {
 
     }
 
@@ -254,6 +284,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                     }
                 });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //将view的引用置为null，避免发生内存泄露
+        mLoginPresenter.detachView();
 
     }
 }

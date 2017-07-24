@@ -6,7 +6,7 @@ package com.merpyzf.kangyuanmilk.ui.base;
 
 public class BasePresenter<T extends IBaseView> implements IBasePresenter<T>{
 
-    private T mMvpView;
+    protected T mMvpView;
 
     @Override
     public void attachView(T mvpView) {

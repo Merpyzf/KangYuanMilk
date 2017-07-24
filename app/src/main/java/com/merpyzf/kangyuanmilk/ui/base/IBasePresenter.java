@@ -7,6 +7,7 @@ package com.merpyzf.kangyuanmilk.ui.base;
 
 public interface IBasePresenter<V extends IBaseView> {
 
+
     /**
      * View层注入引用给p层
      * @param mvpView

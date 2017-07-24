@@ -1,11 +1,12 @@
 package com.merpyzf.kangyuanmilk.common;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import butterknife.Unbinder;
  * Created by wangke on 17-7-16.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends RxAppCompatActivity {
 
     private Unbinder unbinder;
 
@@ -94,6 +95,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+
+        App.getRefWatcher().watch(this);
         //activity销毁的时候解除bind
         if (unbinder != null) {
             unbinder.unbind();

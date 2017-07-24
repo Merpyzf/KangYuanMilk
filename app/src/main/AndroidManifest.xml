@@ -23,10 +23,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 
-
-
-
-
     <application
         android:name=".common.App"
         android:allowBackup="true"
@@ -57,8 +53,7 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
 
 
         </activity>
@@ -67,8 +62,7 @@
             android:name=".ui.login.SmsVerifyActivity"
             android:label="@string/activity_sms_verify_label"
             android:theme="@style/Translucent"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
 
 
         </activity>
@@ -77,8 +71,7 @@
             android:name=".ui.login.RegisterActivity"
             android:label="@string/activity_register_label"
             android:theme="@style/Translucent"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
 
 
         </activity>
@@ -94,14 +87,16 @@
 
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <meta-data android:name="Mob-AppKey" android:value="1fa0818bd9c84"/>
-        <meta-data android:name="Mob-AppSecret" android:value="6d83934ee009eaeb2f887234b5899934"/>
-
-
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="1fa0818bd9c84" />
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="6d83934ee009eaeb2f887234b5899934" />
 
 
     </application>

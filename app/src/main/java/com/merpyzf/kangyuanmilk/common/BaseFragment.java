@@ -3,10 +3,11 @@ package com.merpyzf.kangyuanmilk.common;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -15,7 +16,7 @@ import butterknife.Unbinder;
  * Created by wangke on 17-7-16.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends RxFragment {
 
     private View mRootView = null;
     private Unbinder unbinder;

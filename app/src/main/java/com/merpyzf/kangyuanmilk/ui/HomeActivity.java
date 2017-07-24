@@ -7,7 +7,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,30 +22,9 @@ import com.merpyzf.kangyuanmilk.common.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
-import com.merpyzf.kangyuanmilk.ui.login.bean.User;
-import com.merpyzf.kangyuanmilk.utils.LogHelper;
-import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
-import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
-import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import okhttp3.ResponseBody;
-
-import static android.R.attr.breadCrumbShortTitle;
-import static android.R.attr.id;
-import static android.R.id.switch_widget;
-import static android.R.id.toggle;
-import static com.merpyzf.kangyuanmilk.R.id.cancel_action;
-import static com.merpyzf.kangyuanmilk.R.id.iv_avater;
-import static com.merpyzf.kangyuanmilk.R.id.nav_view;
-import static com.merpyzf.kangyuanmilk.R.id.rl_nav_header;
 
 /**
  * 主界面
@@ -83,15 +61,15 @@ public class HomeActivity extends BaseActivity
 
         ApplyPermissionFragment applyPermissionFragment = new ApplyPermissionFragment();
 
-        applyPermissionFragment.haveAll(getSupportFragmentManager(),this);
+        applyPermissionFragment.haveAll(getSupportFragmentManager(), this);
 
         setSupportActionBar(toolbar);
 
         //从 navigationView中获取控件的引用时候,需要通过getHeaderView拿到HeaderView布局的引用，这样才能继续下面的工作
         View view = navigationView.getHeaderView(0);
-        rl_nav_header = (RelativeLayout) view.findViewById(R.id.rl_nav_header);
-        civ_avater = (CircleImageView) view.findViewById(R.id.iv_avater);
-        tv_username = (TextView) view.findViewById(R.id.tv_username);
+        rl_nav_header = view.findViewById(R.id.rl_nav_header);
+        civ_avater = view.findViewById(R.id.iv_avater);
+        tv_username = view.findViewById(R.id.tv_username);
 
         setNavHeaderBg(rl_nav_header);
 
@@ -104,12 +82,9 @@ public class HomeActivity extends BaseActivity
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
 
-
-
     }
 
-
-
+//    private final Handler mHandler = new Handler();
 
     @Override
     public void initEvent() {
@@ -121,16 +96,23 @@ public class HomeActivity extends BaseActivity
 
         tv_username.setOnClickListener(view -> {
 
-       /*     new LoginActivity().show(HomeActivity.this,null);
 
-            LogHelper.i("被点击了");*/
-
-       HomeActivity.this.startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+            HomeActivity.this.startActivity(new Intent(HomeActivity.this, LoginActivity.class));
 
 
         });
 
 
+
+
+   /*     //模拟内存泄露
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, 3 * 60 * 1000);
+        finish();*/
 
     }
 
@@ -166,7 +148,7 @@ public class HomeActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         //导航抽屉菜单的点击事件
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.nav_indent:
 
@@ -234,6 +216,7 @@ public class HomeActivity extends BaseActivity
 
     /**
      * 设置导航抽屉头部的背景图片
+     *
      * @param rl_nav_header
      */
     private void setNavHeaderBg(RelativeLayout rl_nav_header) {

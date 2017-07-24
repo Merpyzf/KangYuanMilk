@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
 import com.merpyzf.kangyuanmilk.common.bean.User;
+import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -19,4 +20,6 @@ public interface KangYuanApi {
     @POST("user/register")
     Observable<ResponseBody> getJson(@Body com.merpyzf.kangyuanmilk.ui.login.bean.User user);
 
+    @POST("user/login")
+    Observable<LoginBean> login(@Body com.merpyzf.kangyuanmilk.ui.login.bean.User user);
 }

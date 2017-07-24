@@ -13,35 +13,32 @@ public interface ILoginContract {
     /**
      * LoginActivity的View层接口
      */
-    interface ILoginView extends IBaseView{
+    interface ILoginView extends IBaseView {
 
         /**
          * 登录
+         *
          * @param username
          * @param pwd
          */
-        void login(String username,String pwd);
+        void login(String username, String pwd);
 
         /**
          * 登录失败的错误提示
+         *
          * @param errorText
          */
         void loginError(String errorText);
 
         /**
          * 登录成功
-         * @param success 登录成功后的文本提示
+         *
+         * @param success  登录成功后的文本提示
          * @param username 返回用户名密码用于记录用户登录信息
          * @param pwd
          */
-        void loginSuccess(String success,String username,String pwd);
+        void loginSuccess(String success, String username, String pwd);
 
-        /**
-         * 保存登录信息
-         * @param username
-         * @param pwd
-         */
-        void saveLoginInfo(String username, String pwd);
 
         /**
          * 读取用户的登录信息
@@ -51,12 +48,20 @@ public interface ILoginContract {
 
     }
 
-    /**void
+    /**
+     * void
      * LoginActivity的Presenter层接口
      */
-    interface ILoginPresenter extends IBasePresenter<ILoginView>{
+    interface ILoginPresenter extends IBasePresenter<ILoginView> {
 
-       void login(LoginActivity context, String username, String pwd);
+        void login(LoginActivity context, String username, String pwd);
+
+        /**
+         * 保存登录信息
+         * @param username
+         * @param pwd
+         */
+        void saveLoginInfo(String username, String pwd);
 
     }
 

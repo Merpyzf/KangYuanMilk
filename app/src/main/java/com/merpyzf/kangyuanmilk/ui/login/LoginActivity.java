@@ -27,6 +27,7 @@ import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.LoginPresenterImpl;
+import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 
 import butterknife.BindView;
 
@@ -86,12 +87,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void initWidget() {
         //设置登录界面的背景
         setBackground();
-
+        readLoginInfo();
     }
     @Override
     public void initEvent() {
         fab_next.setOnClickListener(this);
         btn_login.setOnClickListener(this);
+
+        cb_save.setOnCheckedChangeListener((compoundButton, b) -> {
+
+            //如果勾选成为false则清除用户信息
+            if(!b){
+                App.showToast("用户信息被清除了");
+                SharedPreHelper.clearLoginInfo();
+
+            }
+
+        });
+
+
     }
     @Override
     protected void initData() {
@@ -235,14 +249,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     /**
-     * 登录失败
+     * 登录失败,用户名或者密码错误
      *
      * @param errorText 登录失败时的文本提示
      */
     @Override
     public void loginError(String errorText) {
+
         cancelLoadingDialog();
         App.showToast(errorText);
+        //如果用户登录失败也进行登录信息的清除
+        SharedPreHelper.clearLoginInfo();
 
     }
 
@@ -252,18 +269,45 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      */
     @Override
     public void loginSuccess(String success,String username,String pwd) {
+
         cancelLoadingDialog();
         App.showToast(success);
 
+        //如果保存密码被勾选并且用户登录成功就记录用户的登录信息
+        if(cb_save.isChecked()){
+
+            mLoginPresenter.saveLoginInfo(username,pwd);
+
+        }
+
+
     }
 
-    @Override
-    public void saveLoginInfo(String username, String pwd) {
-
-    }
-
+    /**
+     * 读取用户的登录信息
+     */
     @Override
     public void readLoginInfo() {
+
+        SharedPreHelper.LoginInfo loginInfo = SharedPreHelper.getLoginInfo();
+
+        //读取到了用户保存的登录信息
+        if(loginInfo!=null){
+
+            //设置选中状态
+            cb_save.setChecked(true);
+
+            edt_username.setText(loginInfo.getUserName());
+            edt_pwd.setText(loginInfo.getPassword());
+
+
+        }else {
+
+            cb_save.setChecked(false);
+
+        }
+
+
 
     }
 

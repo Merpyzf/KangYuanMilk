@@ -3,11 +3,11 @@ package com.merpyzf.kangyuanmilk.ui.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -15,55 +15,110 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.App;
+import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.common.receiver.SMSReceiver;
+import com.merpyzf.kangyuanmilk.ui.login.contract.ISMSVerifyContract;
+import com.merpyzf.kangyuanmilk.ui.login.presenter.SMSVerifyPresenterImpl;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.RegexHelper;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import butterknife.BindView;
+import cn.smssdk.EventHandler;
 
 /**
- * 短信验证
- * 如果验证成功,就将手机号发送给下一个activity
+ * 用户短信验证
  * @author wangke
  */
-public class SmsVerifyActivity extends AppCompatActivity implements View.OnClickListener {
+public class SmsVerifyActivity extends BaseActivity implements View.OnClickListener, ISMSVerifyContract.ISMSVerifyView {
 
-    private CardView cardview;
-    private FloatingActionButton fab;
-    private Button btn_next;
+    @BindView(R.id.cardview_reg)
+    CardView cardview;
+    //返回上一个界面
+    @BindView(R.id.fab_back)
+    FloatingActionButton fab_back;
+    //验证
+    @BindView(R.id.btn_verify)
+    Button btn_verify;
+    //获取验证码
+    @BindView(R.id.btn_get_code)
+    Button btn_get_code;
+    //手机号输入框
+    @BindView(R.id.edt_phone_num)
+    EditText edt_phone_num;
+
+
+    @BindView(R.id.edt_code)
+    EditText edt_code;
+    private EventHandler mEventHandler;
+    private Context mContext;
+
+    private ISMSVerifyContract.ISMSVerifyPresenter mSmsVerifyPresenter = null;
+    private int mTime;
+    private Timer timer;
+    private SMSReceiver mSmsReceiver;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sms_verify);
-        cardview = (CardView) findViewById(R.id.cardview_reg);
-        fab = (FloatingActionButton) findViewById(R.id.fab_back);
-        btn_next = (Button) findViewById(R.id.btn_next);
-        fab.setOnClickListener(this);
-        btn_next.setOnClickListener(this);
+    public int getLayoutId() {
+        return R.layout.activity_sms_verify;
+    }
+
+    @Override
+    public void initWidget() {
+
+        mContext = this;
+
+    }
+
+    @Override
+    public void initEvent() {
 
         showEnterAnimation();
-    }
 
+
+        //注册一个广播接受者，进行解析短信中的验证码
+        IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+        mSmsReceiver = new SMSReceiver(edt_code);
+        registerReceiver(mSmsReceiver, filter);
+
+
+        fab_back.setOnClickListener(this);
+        btn_verify.setOnClickListener(this);
+        btn_get_code.setOnClickListener(this);
+
+
+    }
 
     @Override
-    public void onBackPressed() {
-        animateRevealClose();
+    protected void initData() {
+
+        mSmsVerifyPresenter = new SMSVerifyPresenterImpl();
+        mSmsVerifyPresenter.attachView(this);
     }
+
 
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             //返回上一个页面
             case R.id.fab_back:
                 SmsVerifyActivity.super.onBackPressed();
                 break;
 
+            //注册页面
             case R.id.btn_next:
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab, fab.getTransitionName());
-
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab_back, fab_back.getTransitionName());
                     startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class), options.toBundle());
-
 
                 } else {
 
@@ -72,20 +127,106 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
                 }
 
                 break;
+
+            //获取验证码
+            case R.id.btn_get_code:
+
+                String phoneNum = edt_phone_num.getText().toString().trim();
+                //手机格式正确性的校验
+                if (RegexHelper.regexPhoneNum(phoneNum)) {
+                    mSmsVerifyPresenter.getVerificationCode("86", phoneNum);
+                } else {
+                    App.showToast("请检查,手机号格式错误!");
+                }
+                break;
+
+            //进行验证
+            case R.id.btn_verify:
+
+                String code = edt_code.getText().toString().trim();
+
+                if (code.length() == 4) {
+
+                    //提交验证码进行验证
+                    mSmsVerifyPresenter.submitVerify(code);
+
+                } else {
+
+                    App.showToast("验证码的长度为4位，请检查");
+
+                }
+                break;
+
             default:
+
                 break;
         }
 
 
+    }
+
+    /**
+     * 验证成功后的回调(子线程)
+     *
+     * @param phoneNum
+     */
+    @Override
+    public void verifySuccess(String phoneNum) {
+        LogHelper.i("验证码验证成功");
+        //跳转到注册页面
+        App.showToast(this,"跳转到注册页面");
+
 
     }
 
+    /**
+     * 验证码验证失败后的回调(子线程)
+     */
+    @Override
+    public void verifyFailed() {
+        LogHelper.i("验证码验证失败");
+        App.showToast(this, "验证失败");
+
+    }
+
+    /**
+     * 获取验证码成功后的回调(子线程)
+     */
+    @Override
+    public void getVerifyCodeSuccess() {
+
+        LogHelper.i("获取验证码成功");
+
+        mTime = 60;
+        //开始倒计时
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                runOnUiThread(() -> {
+
+                    mTime--;
+                    btn_get_code.setText(mTime + "s 后重新获取");
+                    btn_get_code.setEnabled(false);
+                    if (mTime == 0) {
+
+                        btn_get_code.setEnabled(true);
+                        btn_get_code.setText("获取验证码");
+                        timer.cancel();
+                    }
+
+                });
+            }
+        }, 0, 1000);
+
+    }
 
 
     /**
      * 共享元素动画
      */
-    public void showEnterAnimation(){
+    public void showEnterAnimation() {
 
         Transition transition = TransitionInflater.from(this).inflateTransition(R.transition.fabtransition);
         getWindow().setSharedElementEnterTransition(transition);
@@ -103,7 +244,6 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
 
                 transition.removeListener(this);
                 animateRevealShow();
-
 
 
             }
@@ -125,15 +265,14 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
         });
 
 
-
-
-
     }
 
-    //页面开启时动画
-    public void animateRevealShow(){
+    /**
+     * 进入时的圆形遮罩动画
+     */
+    public void animateRevealShow() {
 
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardview, cardview.getWidth()/2,0, fab.getWidth() / 2, cardview.getHeight());
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardview, cardview.getWidth() / 2, 0, fab_back.getWidth() / 2, cardview.getHeight());
         mAnimator.setDuration(500);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
@@ -151,11 +290,13 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
         mAnimator.start();
     }
 
-    //页面关闭时执行的动画
-    public void animateRevealClose(){
+    /**
+     * 退出后的遮罩动画
+     */
+    public void animateRevealClose() {
 
 
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardview,cardview.getWidth()/2,0, cardview.getHeight(), fab.getWidth() / 2);
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardview, cardview.getWidth() / 2, 0, cardview.getHeight(), fab_back.getWidth() / 2);
         mAnimator.setDuration(500);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
@@ -163,7 +304,7 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
             public void onAnimationEnd(Animator animation) {
                 cardview.setVisibility(View.INVISIBLE);
                 super.onAnimationEnd(animation);
-                fab.setImageResource(R.drawable.ic_add);
+                fab_back.setImageResource(R.drawable.ic_add);
                 SmsVerifyActivity.super.onBackPressed();
             }
 
@@ -178,4 +319,35 @@ public class SmsVerifyActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+
+    @Override
+    public void showLoadingDialog() {
+
+    }
+
+    @Override
+    public void cancelLoadingDialog() {
+
+    }
+
+    @Override
+    public void showErrorMsg(String errorMsg) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        animateRevealClose();
+    }
+
+    /**
+     * 释放资源
+     */
+    @Override
+    protected void onDestroy() {
+        mSmsVerifyPresenter.detachView();
+        unregisterReceiver(mSmsReceiver);
+        timer.cancel();
+        super.onDestroy();
+    }
 }

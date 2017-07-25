@@ -67,7 +67,7 @@ public class SharedPreHelper {
                 .getString("username", "null");
 
         String password = context.getSharedPreferences(Common.SP_LOGININFO, Context.MODE_PRIVATE)
-                .getString("password", "null");
+                .getString("pwd", "null");
 
         if (username.equals("null") || password.equals("null")) {
             return null;

@@ -11,17 +11,17 @@
     <!-- 短信相关权限 -->
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED"/>
+
     <!-- 网络状态相关的权限 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--读取手机联系人的权限-->
+    <!-- 读取手机联系人的权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <!--获取位置信息的权限-->
+    <!-- 获取位置信息的权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
 
     <application
         android:name=".common.App"
@@ -32,59 +32,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--主界面-->
+        <!-- 主界面 -->
         <activity
             android:name=".ui.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/TransStatusBarTheme"
-
-            >
-
-
+            android:theme="@style/TransStatusBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-
-
-        </activity>
-
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
         <activity
             android:name=".ui.login.SmsVerifyActivity"
             android:label="@string/activity_sms_verify_label"
             android:theme="@style/Translucent"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-
-
-        </activity>
-
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
         <activity
             android:name=".ui.login.RegisterActivity"
             android:label="@string/activity_register_label"
             android:theme="@style/Translucent"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-
-
-        </activity>
-
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
 
         <!-- 图片剪切框架 -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.welcom.SplashActivity"></activity>
-
-
+        <activity android:name=".ui.welcom.SplashActivity" />
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"

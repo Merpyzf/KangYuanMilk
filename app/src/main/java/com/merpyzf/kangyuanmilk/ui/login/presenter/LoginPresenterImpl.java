@@ -6,6 +6,7 @@ import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.model.ILoginModel;
 import com.merpyzf.kangyuanmilk.ui.login.model.LoginModelImpl;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -30,9 +31,9 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
         mMvpView.showLoadingDialog();
 
         mLoginModel.login(username, pwd)
+                .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 //使用rxlifecycle来根据Activity的生命周期来取消观察者与被观察者之间的订阅，防止出现内存泄露的问题
                 .map(loginBean -> loginBean.getResponse().isResult())
-                .map(loginBean -> true)
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {

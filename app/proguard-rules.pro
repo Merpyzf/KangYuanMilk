@@ -29,3 +29,8 @@
 -keep class com.qiniu.**{*;}
 -keep class com.qiniu.**{public <init>();}
 -ignorewarnings
+-dontwarn com.mob.**
+# MOB 短信SDK混淆
+-keep class com.mob.**{*;}
+-dontwarn cn.smssdk.**
+-keep class cn.smssdk.**{*;}

@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.common;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
@@ -32,7 +33,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        mRefWatcher =  LeakCanary.install(this);
+        mRefWatcher = LeakCanary.install(this);
 
         MobSDK.init(this, this.a(), this.b());
 
@@ -48,9 +49,21 @@ public class App extends Application {
         return getInstance().mRefWatcher;
     }
 
-    public static void showToast(String msg){
+    public static void showToast(String msg) {
 
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
+    }
+
+    public static void showToast(Activity context, String msg) {
+
+        context.runOnUiThread(() -> {
+
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
+        });
+
 
     }
 

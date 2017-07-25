@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -56,7 +55,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      * @param bundle 封装要进行传递的值
      * @return true/false
      */
-    private boolean initArgs(Bundle bundle) {
+    protected boolean initArgs(Bundle bundle) {
 
 
         return true;
@@ -77,12 +76,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     /**
      * 创建控件的相关事件
      */
-    public abstract void initEvent();
+    public void initEvent(){
+
+    }
 
     /**
      * 初始化数据
      */
-    protected abstract void initData();
+    protected  void initData(){
+
+    }
 
     /**
      * 进行页面的跳转

@@ -1,7 +1,8 @@
 package com.merpyzf.kangyuanmilk.ui.login.bean;
 
 /**
- * Created by Administrator on 2017-07-24.
+ * Created by wk on 2017-07-24.
+ * 登录的时候返回的数据
  */
 
 public class LoginBean {

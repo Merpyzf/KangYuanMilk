@@ -16,6 +16,7 @@
     <string name="cb_save">保存登陆信息</string>
     <string name="edt_hint_pwd">密码</string>
     <string name="please_wait_login">Please wait...</string>
+    <string name="progress_dialog_register">拼命请求网络中</string>
 
 
 </resources>

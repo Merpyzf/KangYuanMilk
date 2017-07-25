@@ -2,9 +2,12 @@ package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
+import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.model.ILoginModel;
 import com.merpyzf.kangyuanmilk.ui.login.model.LoginModelImpl;
+import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
+import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
@@ -30,11 +33,13 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
         mMvpView.showLoadingDialog();
 
+        //登录的时候进行md5加密
+//        HashHelper.getMD5String(pwd);
+
         mLoginModel.login(username, pwd)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 //使用rxlifecycle来根据Activity的生命周期来取消观察者与被观察者之间的订阅，防止出现内存泄露的问题
-                .map(loginBean -> loginBean.getResponse().isResult())
-                .subscribe(new Observer<Boolean>() {
+                .subscribe(new Observer<LoginBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
@@ -42,22 +47,42 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
                     }
 
                     @Override
-                    public void onNext(Boolean value) {
+                    public void onNext(LoginBean loginBean) {
 
-                        if (value) {
+                        ErrorHandle errorHandle = new ErrorHandle(this,loginBean.getStatus()) {
+                            @Override
+                            protected void deal() {
 
-                            mMvpView.loginSuccess("登录成功",username,pwd);
+                                boolean result = loginBean.getResponse().isResult();
 
-                        } else {
-                            mMvpView.loginError("登录失败");
-                        }
+                                if(result){
+
+                                    mMvpView.loginSuccess("登录成功",username,pwd);
+                                    //登录成功之后，将用户信息存储在数据库中
+                                    saveUserInfo(loginBean.getResponse().getUser());
+
+
+
+                                }else {
+
+                                    mMvpView.loginError("用户名或密码错误");
+
+
+                                }
+
+
+                            }
+                        };
+
+
+
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
-                        mMvpView.showErrorMsg("服务器错误");
+                        ErrorHandleHelper.handle(e,mMvpView);
 
                     }
 
@@ -81,9 +106,12 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
     }
 
     @Override
+    public void saveUserInfo(LoginBean.ResponseBean.UserBean user) {
+
+    }
+
+    @Override
     public void detachView() {
         super.detachView();
-
-
     }
 }

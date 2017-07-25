@@ -64,6 +64,7 @@
 
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/text_input_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
@@ -107,6 +108,7 @@
 
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/text_input_pwd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"

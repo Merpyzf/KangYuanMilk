@@ -46,7 +46,9 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+             android:launchMode="singleTask"
+            ></activity>
         <activity
             android:name=".ui.login.SmsVerifyActivity"
             android:label="@string/activity_sms_verify_label"

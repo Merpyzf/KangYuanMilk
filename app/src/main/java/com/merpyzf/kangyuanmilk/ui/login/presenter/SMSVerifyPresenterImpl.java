@@ -7,15 +7,12 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 /**
- * Created by Administrator on 2017-07-25.
+ * Created by wangke on 2017-07-25.
  */
 
 public class SMSVerifyPresenterImpl extends BasePresenter<ISMSVerifyContract.ISMSVerifyView> implements ISMSVerifyContract.ISMSVerifyPresenter {
 
     private String phoneNum = null;
-
-
-
 
     // 创建EventHandler对象
     EventHandler mEventHandler = new EventHandler() {

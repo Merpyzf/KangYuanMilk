@@ -34,6 +34,7 @@ import cn.smssdk.EventHandler;
 
 /**
  * 用户短信验证
+ *
  * @author wangke
  */
 public class SmsVerifyActivity extends BaseActivity implements View.OnClickListener, ISMSVerifyContract.ISMSVerifyView {
@@ -112,22 +113,6 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
                 SmsVerifyActivity.super.onBackPressed();
                 break;
 
-            //注册页面
-            case R.id.btn_next:
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab_back, fab_back.getTransitionName());
-                    startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class), options.toBundle());
-
-                } else {
-
-                    startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class));
-
-                }
-
-                break;
-
             //获取验证码
             case R.id.btn_get_code:
 
@@ -174,7 +159,20 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     public void verifySuccess(String phoneNum) {
         LogHelper.i("验证码验证成功");
         //跳转到注册页面
-        App.showToast(this,"跳转到注册页面");
+        App.showToast(this, "跳转到注册页面");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab_back, fab_back.getTransitionName());
+            Intent intent = new Intent(SmsVerifyActivity.this, RegisterActivity.class);
+            intent.putExtra("phoneNum", phoneNum);
+            startActivity(intent, options.toBundle());
+
+        } else {
+
+            startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class));
+
+        }
 
 
     }
@@ -348,7 +346,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
         mSmsVerifyPresenter.detachView();
         unregisterReceiver(mSmsReceiver);
 
-        if(timer!=null) {
+        if (timer != null) {
             timer.cancel();
         }
 

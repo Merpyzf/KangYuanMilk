@@ -243,6 +243,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void login(String username, String pwd) {
 
+
         mLoginPresenter.login(this, username, pwd);
 
 

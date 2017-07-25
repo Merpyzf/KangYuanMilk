@@ -1,12 +1,10 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
-import com.merpyzf.kangyuanmilk.common.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
+import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -17,9 +15,27 @@ public interface KangYuanApi {
 
     String BASE_URL = "http://192.168.0.57:8089/";
 
+    /**
+     * 注册前检查用户名是否重复
+     * @param user
+     * @return
+     */
+    @POST("user/checkName")
+    Observable<RegisterBean> checkRepeat(@Body com.merpyzf.kangyuanmilk.ui.login.bean.User user);
+    /**
+     * 注册
+     * @param user
+     * @return
+     */
     @POST("user/register")
-    Observable<ResponseBody> getJson(@Body com.merpyzf.kangyuanmilk.ui.login.bean.User user);
-
+    Observable<RegisterBean> register(@Body com.merpyzf.kangyuanmilk.ui.login.bean.User user);
+    /**
+     * 登录
+     * @param user
+     * @return
+     */
     @POST("user/login")
     Observable<LoginBean> login(@Body com.merpyzf.kangyuanmilk.ui.login.bean.User user);
+
+
 }

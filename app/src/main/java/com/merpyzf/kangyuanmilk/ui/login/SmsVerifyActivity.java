@@ -347,7 +347,11 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     protected void onDestroy() {
         mSmsVerifyPresenter.detachView();
         unregisterReceiver(mSmsReceiver);
-        timer.cancel();
+
+        if(timer!=null) {
+            timer.cancel();
+        }
+
         super.onDestroy();
     }
 }

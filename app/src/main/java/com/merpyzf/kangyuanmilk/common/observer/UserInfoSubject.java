@@ -19,7 +19,7 @@ public class UserInfoSubject extends Subject {
         return instance;
     }
 
-    public void change() {
+    public void notifyChange() {
         //状态发生改变，通知各个观察者
         this.notifyObservers();
     }

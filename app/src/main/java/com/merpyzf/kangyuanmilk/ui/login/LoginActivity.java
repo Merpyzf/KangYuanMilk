@@ -25,7 +25,6 @@ import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.HomeActivity;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.LoginPresenterImpl;
@@ -114,8 +113,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mLoginPresenter = new LoginPresenterImpl();
         //让presenter持有当前view的引用
         mLoginPresenter.attachView(this);
-
-
 
 
     }
@@ -249,13 +246,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void login(String username, String pwd) {
 
-
-
         mLoginPresenter.login(this, username, pwd);
-
-        UserInfoSubject instance = UserInfoSubject.getInstance();
-        instance.change();
-
 
     }
 
@@ -328,7 +319,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      * 给当前的界面设置背景
      */
     private void setBackground() {
-
 
         Glide.with(this)
                 .load(R.drawable.ic_login_bg)

@@ -1,7 +1,8 @@
 package com.merpyzf.kangyuanmilk.common.observer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by wangke on 2017-07-26.
@@ -13,28 +14,34 @@ public class Subject {
     /**
      * 用来保存被通知者
      */
-    private List<Observer> list = new ArrayList<Observer>();
+    private Map<String,Observer> mMap = new HashMap<String,Observer>();
 
-    public void attach(Observer observer){
+    public void attach(String clazzName,Observer observer){
 
-        list.add(observer);
-        System.out.println("注册一个观察者");
+        mMap.put(clazzName,observer);
+        System.out.println(clazzName+ "==> 注册一个观察者");
     }
     /**
      * 删除观察者对象
-     * @param observer    观察者对象
+     * @param clazzName    观察者对象
      */
-    public void detach(Observer observer){
+    public void detach(String clazzName){
 
-        list.remove(observer);
+        mMap.remove(clazzName);
+
     }
     /**
      * 通知所有注册的观察者对象
      */
     public void notifyObservers(){
 
-        for(Observer observer : list){
-            observer.update();
+        //便利啊通知所有的观察者刷新
+        Iterator<Map.Entry<String, Observer>> iterator = mMap.entrySet().iterator();
+        while (iterator.hasNext()){
+
+            Map.Entry<String, Observer> entry = iterator.next();
+            entry.getValue().update();
+
         }
     }
 

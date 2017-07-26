@@ -60,6 +60,7 @@ public class HomeActivity extends BaseActivity
     //用户名
     TextView tv_username;
     RelativeLayout rl_nav_header;
+    private UserInfoSubject m;
 
     @Override
     public int getLayoutId() {
@@ -89,10 +90,7 @@ public class HomeActivity extends BaseActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        /**
-         * 初始化当前状态，是否登录
-         */
-        initCurrentStatus();
+        updateUserCurrentStatus();
 
 
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
@@ -101,18 +99,21 @@ public class HomeActivity extends BaseActivity
     }
 
     /**
-     * 初始化当前的状态,是否已经登录
+     * 更新用户当前的状态
+     *  刷新头像,和用户名
      */
-    private void initCurrentStatus() {
+    private void updateUserCurrentStatus() {
 
         UserDao userDao = new UserDao(this);
         LoginBean.ResponseBean.UserBean user = userDao.getUserInfo();
 
         if (user == null) {
             //未登录状态
-
             tv_username.setText("点击头像进行登录");
-
+            ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
+            ImageLoaderOptions options = bulider.isCenterCrop(true)
+                    .build();
+            GlideImageLoader.showImage(civ_avater, R.drawable.ic_avater_default, options);
 
         } else {
 
@@ -132,22 +133,16 @@ public class HomeActivity extends BaseActivity
             if (user == null) {
                 //未登录状态
                 startActivity(new Intent(this, LoginActivity.class));
-
             } else {
 
                 //已登录
                 App.showToast(this, "跳转到个人详情页面");
-
-
             }
-
 
         });
 
 
     }
-
-//    private final Handler mHandler = new Handler();
 
     @Override
     public void initEvent() {
@@ -159,11 +154,8 @@ public class HomeActivity extends BaseActivity
     @Override
     protected void initData() {
 
-
-        UserInfoSubject instance = UserInfoSubject.getInstance();
-//        注册一个观察者
-        instance.attach(this);
-
+        //注册一个观察者
+        UserInfoSubject.getInstance().attach(HomeActivity.class.getSimpleName(), this);
 
     }
 
@@ -221,14 +213,9 @@ public class HomeActivity extends BaseActivity
                             UserDao userDao = new UserDao(App.getContext());
                             userDao.clearUser();
 
-                            initCurrentStatus();
-
-
-                            //发出通知
+                            //通知所有绑定的观察者刷新
                             UserInfoSubject.getInstance()
-                                    .change();
-
-
+                                    .notifyChange();
                         })
                         .onNegative((dialog, which) -> {
 
@@ -275,17 +262,6 @@ public class HomeActivity extends BaseActivity
     }
 
 
-    @Override
-    public void onBackPressed() {
-        //根据DrawerLayout的当前状态选择是开启还是关闭
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
 
     /**
      * 设置导航抽屉头部的背景图片
@@ -307,18 +283,36 @@ public class HomeActivity extends BaseActivity
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        initCurrentStatus();
-    }
 
     @Override
     public void update() {
-
-
         LogHelper.i("更新头像了");
+        //更新用户的当前状态,包含头像和用户名
+        updateUserCurrentStatus();
+
+
+    }
+
+    /**
+     * 点击back键后的事件
+     */
+    @Override
+    public void onBackPressed() {
+        //根据DrawerLayout的当前状态选择是开启还是关闭
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        //移除观察者
+        UserInfoSubject.getInstance().detach(HomeActivity.class.getSimpleName());
+        super.onDestroy();
 
     }
 }

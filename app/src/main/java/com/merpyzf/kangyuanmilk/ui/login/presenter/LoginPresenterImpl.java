@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
 import com.merpyzf.kangyuanmilk.common.App;
+import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
@@ -64,7 +65,9 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
                                     //登录成功之后，将用户信息存储在数据库中
                                     saveUserInfo(loginBean.getResponse().getUser());
 
-
+                                    //通知刷新
+                                    UserInfoSubject instance = UserInfoSubject.getInstance();
+                                    instance.notifyChange();
 
                                 }else {
 

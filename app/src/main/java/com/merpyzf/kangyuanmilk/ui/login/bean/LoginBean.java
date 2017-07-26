@@ -1,5 +1,8 @@
 package com.merpyzf.kangyuanmilk.ui.login.bean;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * Created by wk on 2017-07-24.
  * 登录的时候返回的数据
@@ -57,6 +60,7 @@ public class LoginBean {
             this.result = result;
         }
 
+        @DatabaseTable(tableName = "tab_user")
         public static class UserBean {
             /**
              * user_name : tom
@@ -70,14 +74,14 @@ public class LoginBean {
              * user_registerdate : null
              * remark : null
              */
-
-            private String user_name;
+            @DatabaseField(generatedId = true) //设置user_id为朱
             private int user_id;
+            private String user_name;
             private String user_pwd;
             private Object user_tel;
             private Object user_idcard;
             private Object address_content;
-            private Object user_head;
+            private String user_head;
             private Object user_sex;
             private Object user_registerdate;
             private Object remark;
@@ -130,11 +134,11 @@ public class LoginBean {
                 this.address_content = address_content;
             }
 
-            public Object getUser_head() {
+            public String getUser_head() {
                 return user_head;
             }
 
-            public void setUser_head(Object user_head) {
+            public void setUser_head(String user_head) {
                 this.user_head = user_head;
             }
 
@@ -160,6 +164,12 @@ public class LoginBean {
 
             public void setRemark(Object remark) {
                 this.remark = remark;
+            }
+
+
+            @Override
+            public String toString() {
+                return super.toString();
             }
         }
     }

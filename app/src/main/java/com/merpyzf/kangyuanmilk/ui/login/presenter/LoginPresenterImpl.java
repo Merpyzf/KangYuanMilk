@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
@@ -8,7 +9,9 @@ import com.merpyzf.kangyuanmilk.ui.login.model.ILoginModel;
 import com.merpyzf.kangyuanmilk.ui.login.model.LoginModelImpl;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
+import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import io.reactivex.Observer;
@@ -108,10 +111,22 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
     @Override
     public void saveUserInfo(LoginBean.ResponseBean.UserBean user) {
 
+
+        LogHelper.i("需要保存的用户信息==>:"+user.getUser_name());
+
+        UserDao userDao = new UserDao(App.getContext());
+        //保存用户信息
+        userDao.createUser(user);
     }
+
+
+
 
     @Override
     public void detachView() {
         super.detachView();
     }
+
+
+
 }

@@ -2,6 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ISMSVerifyContract;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -12,7 +13,15 @@ import cn.smssdk.SMSSDK;
 
 public class SMSVerifyPresenterImpl extends BasePresenter<ISMSVerifyContract.ISMSVerifyView> implements ISMSVerifyContract.ISMSVerifyPresenter {
 
-    private String phoneNum = null;
+    private static String phoneNum = null;
+
+
+    public SMSVerifyPresenterImpl() {
+
+        // 注册监听器
+        SMSSDK.registerEventHandler(mEventHandler);
+    }
+
 
     // 创建EventHandler对象
     EventHandler mEventHandler = new EventHandler() {
@@ -23,12 +32,29 @@ public class SMSVerifyPresenterImpl extends BasePresenter<ISMSVerifyContract.ISM
                 //回调完成
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                     //提交验证码成功
-                    mMvpView.verifySuccess(phoneNum);
+
+                    if (mMvpView == null) {
+
+                        LogHelper.i("提交验证码的时候===>mMvpView = null");
+
+                    } else {
+
+                        mMvpView.verifySuccess(phoneNum);
+
+                    }
 
 
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                     //获取验证码成功
-                    mMvpView.getVerifyCodeSuccess();
+                    if (mMvpView == null) {
+
+                        LogHelper.i("获取验证码的时候===>mMvpView = null");
+
+                    } else {
+                        mMvpView.getVerifyCodeSuccess();
+
+                    }
+
 
                 } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                     //返回支持发送验证码的国家列表
@@ -39,20 +65,20 @@ public class SMSVerifyPresenterImpl extends BasePresenter<ISMSVerifyContract.ISM
             } else {
                 ((Throwable) data).printStackTrace();
                 //验证失败
-                mMvpView.verifyFailed();
+
+
+                if (mMvpView == null) {
+                    LogHelper.i("===>mMvpView = null");
+                } else {
+                    LogHelper.i("执行到这里表示不为null");
+                    mMvpView.verifyFailed();
+                }
+
             }
         }
 
 
     };
-
-
-
-    public SMSVerifyPresenterImpl() {
-
-        // 注册监听器
-        SMSSDK.registerEventHandler(mEventHandler);
-    }
 
 
     @Override
@@ -65,9 +91,9 @@ public class SMSVerifyPresenterImpl extends BasePresenter<ISMSVerifyContract.ISM
 
     @Override
     public void submitVerify(String code) {
-        if(phoneNum == null) return;
+        if (phoneNum == null) return;
 
-        SMSSDK.submitVerificationCode("86",phoneNum,code);
+        SMSSDK.submitVerificationCode("86", phoneNum, code);
     }
 
 }

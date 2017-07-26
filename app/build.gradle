@@ -64,15 +64,22 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //J神的注解框架
-    //loading动画
-    //ui工具类
-    //Rx框架
-    //Retrofit 配合 RxJava一起使用所需依赖
-    //design包
-    //支持上拉加载更多下拉刷新的RecyclerView
-    //Glide图片架加载框架
-    //google的权限管理
 
+    //loading动画
+
+    //ui工具类
+
+    //Rx框架
+
+    //Retrofit 配合 RxJava一起使用所需依赖
+
+    //design包
+
+    //支持上拉加载更多下拉刷新的RecyclerView
+
+    //Glide图片架加载框架
+
+    //google的权限管理
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
@@ -110,4 +117,6 @@ dependencies {
     compile name: 'SMSSDKGUI-3.0.0', ext: 'aar'
     compile files('libs/MobCommons-2017.0607.1736.jar')
     compile files('libs/MobTools-2017.0607.1736.jar')
+    compile files('libs/ormlite-android-5.0.jar')
+    compile files('libs/ormlite-core-5.0.jar')
 }

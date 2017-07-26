@@ -36,6 +36,7 @@
         <activity
             android:name=".ui.HomeActivity"
             android:label="@string/title_activity_home"
+            android:launchMode="singleTask"
             android:theme="@style/TransStatusBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

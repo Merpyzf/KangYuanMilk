@@ -17,6 +17,8 @@
     <string name="edt_hint_pwd">密码</string>
     <string name="please_wait_login">Please wait...</string>
     <string name="progress_dialog_register">拼命请求网络中</string>
+    <string name="dialog_logout">注销登录</string>
+    <string name="dialog_logout_content">注销登陆后将会清除你的个人信息，确认要注销登录？</string>
 
 
 </resources>

@@ -15,4 +15,5 @@
     <string name="nav_menu_advice">建议</string>
     <string name="nav_menu_logout">注销登录</string>
     <string name="progress_dialog_login">正在登录</string>
+
 </resources>

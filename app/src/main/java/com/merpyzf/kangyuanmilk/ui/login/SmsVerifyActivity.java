@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.CardView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -30,7 +31,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
-import cn.smssdk.EventHandler;
 
 /**
  * 用户短信验证
@@ -53,11 +53,17 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     //手机号输入框
     @BindView(R.id.edt_phone_num)
     EditText edt_phone_num;
-
-
     @BindView(R.id.edt_code)
     EditText edt_code;
-    private EventHandler mEventHandler;
+
+    @BindView(R.id.text_input_phone)
+    TextInputLayout text_input_phone;
+
+    @BindView(R.id.text_input_code)
+    TextInputLayout text_input_code;
+
+
+
     private Context mContext;
 
     private ISMSVerifyContract.ISMSVerifyPresenter mSmsVerifyPresenter = null;
@@ -81,18 +87,14 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     public void initEvent() {
 
         showEnterAnimation();
-
-
         //注册一个广播接受者，进行解析短信中的验证码
         IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
         mSmsReceiver = new SMSReceiver(edt_code);
         registerReceiver(mSmsReceiver, filter);
 
-
         fab_back.setOnClickListener(this);
         btn_verify.setOnClickListener(this);
         btn_get_code.setOnClickListener(this);
-
 
     }
 
@@ -100,6 +102,8 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     protected void initData() {
 
         mSmsVerifyPresenter = new SMSVerifyPresenterImpl();
+
+        LogHelper.i("view添加进去了");
         mSmsVerifyPresenter.attachView(this);
     }
 
@@ -119,9 +123,14 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
                 String phoneNum = edt_phone_num.getText().toString().trim();
                 //手机格式正确性的校验
                 if (RegexHelper.regexPhoneNum(phoneNum)) {
+
+                    text_input_phone.setErrorEnabled(false);
                     mSmsVerifyPresenter.getVerificationCode("86", phoneNum);
+
                 } else {
-                    App.showToast("请检查,手机号格式错误!");
+
+                    text_input_phone.setError("手机号格式错误");
+
                 }
                 break;
 
@@ -135,9 +144,11 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
                     //提交验证码进行验证
                     mSmsVerifyPresenter.submitVerify(code);
 
+                    text_input_code.setErrorEnabled(false);
+
                 } else {
 
-                    App.showToast("验证码的长度为4位，请检查");
+                    text_input_code.setError("验证码为4位数");
 
                 }
                 break;
@@ -161,18 +172,25 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
         //跳转到注册页面
         App.showToast(this, "跳转到注册页面");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        runOnUiThread(()->{
 
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab_back, fab_back.getTransitionName());
-            Intent intent = new Intent(SmsVerifyActivity.this, RegisterActivity.class);
-            intent.putExtra("phoneNum", phoneNum);
-            startActivity(intent, options.toBundle());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-        } else {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab_back, fab_back.getTransitionName());
+                Intent intent = new Intent(SmsVerifyActivity.this, RegisterActivity.class);
+                intent.putExtra("phoneNum", phoneNum);
+                startActivity(intent, options.toBundle());
 
-            startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class));
+            } else {
 
-        }
+                startActivity(new Intent(SmsVerifyActivity.this, RegisterActivity.class));
+
+            }
+
+
+        });
+
+
 
 
     }
@@ -183,7 +201,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void verifyFailed() {
         LogHelper.i("验证码验证失败");
-        App.showToast(this, "验证失败");
+        App.showToast(this, "验证失败 === ");
 
     }
 
@@ -315,6 +333,8 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
 
         mAnimator.start();
 
+
+
     }
 
 
@@ -343,6 +363,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
      */
     @Override
     protected void onDestroy() {
+        LogHelper.i("view被移除");
         mSmsVerifyPresenter.detachView();
         unregisterReceiver(mSmsReceiver);
 

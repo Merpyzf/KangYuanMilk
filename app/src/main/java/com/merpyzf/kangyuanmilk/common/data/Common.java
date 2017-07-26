@@ -15,5 +15,8 @@ public class Common {
     public static final int HTTP_ERROR = 500;
     public static final int HTTP_FAILED = 400;
 
+    //存储用户信息的数据库名
+    public static final String USER_DB_NAME = "user.db";
+
 
 }

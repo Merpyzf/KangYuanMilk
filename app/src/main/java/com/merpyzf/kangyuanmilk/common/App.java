@@ -34,9 +34,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         mRefWatcher = LeakCanary.install(this);
-
         MobSDK.init(this, this.a(), this.b());
-
         context = getApplicationContext();
         LogHelper.i("App中的额onCreate方法执行了");
     }
@@ -49,6 +47,10 @@ public class App extends Application {
         return getInstance().mRefWatcher;
     }
 
+    /**
+     * 在被调用的线程打印Toast
+     * @param msg
+     */
     public static void showToast(String msg) {
 
 
@@ -56,6 +58,11 @@ public class App extends Application {
 
     }
 
+    /**
+     * 强制在主线程中打印Toast
+     * @param context
+     * @param msg
+     */
     public static void showToast(Activity context, String msg) {
 
         context.runOnUiThread(() -> {
@@ -65,6 +72,15 @@ public class App extends Application {
         });
 
 
+    }
+
+    /**
+     * 返回上下文对象
+     * @return context
+     */
+    public static Context getContext(){
+
+        return context;
     }
 
 }

@@ -60,7 +60,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     private List<Image> mPaths = null;
     private Loader<Cursor> mLoader;
     private ImageSelectedChangedListener mImageSelectedChangedListener = null;
-    private int mScrollerTotalHeight = 0;
     private LoaderManager mLoadManager = null;
     private String mAvatarFilePath;
 
@@ -217,13 +216,16 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
 
-                File ParentFile = new File(mContext.getCacheDir(), "/Avatar");
+                File ParentFile = new File(Environment.getExternalStorageDirectory(), "/Header");
 
                 //如果文件夹不存在，就进行创建
                 if (!ParentFile.exists()) {
 
                     boolean mkdirs = ParentFile.mkdir();
                     Log.i("wk", "创建结果:" + mkdirs);
+                    if(!mkdirs){
+                        return;
+                    }
 
                 }
                 // TODO: 2017-07-19
@@ -233,8 +235,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 AvatarFile.setWritable(true);
 
                 mAvatarFilePath = AvatarFile.getPath();
-
-
                 // TODO: 2017-07-19 调用相机拍照 需要针对Android N以上的设备做适配
                 Intent intent = new Intent();
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -310,8 +310,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         Image image = new Image("", mAvatarFilePath, "");
 
         Log.i("wk", "刷新的文件的路径:" + mAvatarFilePath);
-
-
         mGalleryAdapter.insertItem(1, image);
 
     }

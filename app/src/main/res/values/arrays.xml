@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="click_avater_items">
+
+        <item>更换头像</item>
+        <item>退出登录</item>
+        <item>取消</item>
+
+    </string-array>
+</resources>

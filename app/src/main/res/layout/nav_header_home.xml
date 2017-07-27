@@ -17,14 +17,13 @@
 
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.merpyzf.kangyuanmilk.common.widget.AvaterView
         android:id="@+id/iv_avater"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/ic_touch_menu"
         android:src="@drawable/ic_avater_default"
         app:civ_border_color="@color/white"
-        app:civ_border_width="2dp"
         android:transitionName="avater"
         android:clickable="true"
         />

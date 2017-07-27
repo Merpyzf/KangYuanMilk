@@ -58,7 +58,7 @@
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.merpyzf.kangyuanmilk.common.widget.AvaterView
                 android:id="@+id/civ_avater"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

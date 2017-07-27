@@ -28,6 +28,12 @@ public interface IUserHomeContract {
 
 
         /**
+         * 弹出一个图片选择器
+         */
+        void showGallery();
+
+
+        /**
          * 当前上传图片的一个进度
          * @param progress 图片上传的进度
          */
@@ -38,6 +44,9 @@ public interface IUserHomeContract {
          * @param user 存储在数据库中的用户信息
          */
         void showUserInfo(LoginBean.ResponseBean.UserBean user);
+
+
+
 
 
     }

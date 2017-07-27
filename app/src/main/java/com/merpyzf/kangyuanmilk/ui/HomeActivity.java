@@ -26,6 +26,7 @@ import com.merpyzf.kangyuanmilk.common.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
+import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
@@ -36,7 +37,6 @@ import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
 import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
 
 import butterknife.BindView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 主界面
@@ -59,7 +59,7 @@ public class HomeActivity extends BaseActivity
     @BindView(R.id.bottom_nav_view)
     BottomNavigationView bottom_nav_view;
     //头像
-    CircleImageView civ_avater;
+    AvaterView civ_avater;
     //用户名
     TextView tv_username;
     RelativeLayout rl_nav_header;
@@ -102,6 +102,7 @@ public class HomeActivity extends BaseActivity
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
 
+        civ_avater.start();
     }
 
     /**

@@ -13,15 +13,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnticipateOvershootInterpolator;
-import android.widget.Toast;
 
 import com.merpyzf.kangyuanmilk.R;
-import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;
@@ -50,6 +47,8 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     private Unbinder unbinder;
     private Context mContext;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,16 +71,6 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
         return new TransStatusBottomSheetDialog(getContext());
     }
 
-    @Override
-    public void onDestroyView() {
-
-        //销毁LoadManager
-        galleryView.destory();
-        //取消绑定
-        unbinder.unbind();
-        super.onDestroyView();
-
-    }
 
     /**
      * 拍照结束时的一个回调,真实的调用发生在开启这个Fragment的Activity,需要在Activity中手动
@@ -94,8 +83,6 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         //刷新GalleryView将拍摄的图片加载进去
         galleryView.updatePhoto();
 
@@ -133,6 +120,13 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
                             options.withMaxResultSize(500, 500);
                             //设置裁切图的质量
                             options.setCompressionQuality(90);
+                            //设置按钮等组件的颜色为主题色
+                            options.setActiveWidgetColor(getResources().getColor(R.color.colorPrimary));
+                            //设置裁切时的边框的颜色
+                            options.setCropFrameColor(getResources().getColor(R.color.colorPrimary));
+                            //设置toolbar的颜色
+                            options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
+
 
                             //跳转到uCrop的裁切页面
                             UCrop.of(sourceUri, destUri)
@@ -234,4 +228,15 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
         dismiss();
     }
 
+
+    @Override
+    public void onDestroyView() {
+
+        //销毁LoadManager
+        galleryView.destory();
+        //取消绑定
+        unbinder.unbind();
+        super.onDestroyView();
+
+    }
 }

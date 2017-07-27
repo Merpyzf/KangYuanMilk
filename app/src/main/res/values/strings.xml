@@ -19,6 +19,8 @@
     <string name="progress_dialog_register">拼命请求网络中</string>
     <string name="dialog_logout">注销登录</string>
     <string name="dialog_logout_content">注销登陆后将会清除你的个人信息，确认要注销登录？</string>
+    <string name="action_editor">编辑资料</string>
+    <string name="action_logout">退出登录</string>
 
 
 </resources>

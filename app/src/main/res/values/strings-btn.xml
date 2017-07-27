@@ -5,4 +5,5 @@
     <string name="edt_hint_username">用户名</string>
     <string name="dialog_logout_positive">是</string>
     <string name="dialog_logout_negative">否</string>
+    <string name="action_avater">更换头像</string>
 </resources>

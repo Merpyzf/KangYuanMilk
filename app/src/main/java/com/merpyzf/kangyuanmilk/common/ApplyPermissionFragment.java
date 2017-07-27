@@ -66,6 +66,7 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
             new ApplyPermissionFragment().show(fragmentManager, "tag");
 
+
         }
     }
 

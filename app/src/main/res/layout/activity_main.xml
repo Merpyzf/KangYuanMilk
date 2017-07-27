@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.merpyzf.kangyuanmilk.ui.login.view.MainActivity">
+    tools:context="com.merpyzf.kangyuanmilk.ui.HomeActivity">
 
     <EditText
         android:id="@+id/edt_user"
@@ -13,31 +12,30 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:layout_marginTop="10dp"
         android:id="@+id/edt_pwd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="login"
-            android:layout_height="wrap_content" />
+            android:text="login" />
 
 
         <Button
             android:id="@+id/btn_clear"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="clear"
-            android:layout_height="wrap_content" />
+            android:text="clear" />
 
     </LinearLayout>
 
@@ -45,13 +43,10 @@
         android:id="@+id/tipView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
 
     </com.merpyzf.kangyuanmilk.common.widget.TipView>
-
-
 
 
 </LinearLayout>

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_nav_header"
     android:background="@drawable/ic_nav_bar"
     android:gravity="bottom"
@@ -15,12 +16,16 @@
 
 
 
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_avater"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/ic_touch_menu"
         android:src="@drawable/ic_avater_default"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        android:transitionName="avater"
         android:clickable="true"
         />
 
@@ -28,14 +33,17 @@
 
     <TextView
         android:id="@+id/tv_username"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:layout_below="@id/iv_avater"
-        android:layout_alignLeft="@id/iv_avater"
+        android:textColor="@color/white"
         android:text="春水碧于天"
         android:clickable="true"
-         />
+        android:textSize="@dimen/font_18"
+        android:layout_alignBottom="@+id/iv_avater"
+        android:layout_toRightOf="@+id/iv_avater"
+        android:layout_marginLeft="24dp"
+        android:transitionName="user_name"
+        android:layout_marginBottom="23dp" />
 
 
 </RelativeLayout>

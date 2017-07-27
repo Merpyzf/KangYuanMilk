@@ -1,6 +1,8 @@
 package com.merpyzf.kangyuanmilk.ui;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +29,7 @@ import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
+import com.merpyzf.kangyuanmilk.ui.user.UserHomeActivity;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
@@ -146,6 +149,18 @@ public class HomeActivity extends BaseActivity
             } else {
                 //已登录
                 App.showToast(this, "跳转到个人详情页面");
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    //共享元素动画
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomeActivity.this, civ_avater, civ_avater.getTransitionName());
+                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class), options.toBundle());
+
+                } else {
+
+                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class));
+                }
+
             }
         });
     }

@@ -11,7 +11,7 @@
     <!-- 短信相关权限 -->
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED"/>
+    <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED" />
 
     <!-- 网络状态相关的权限 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -39,8 +39,6 @@
             android:launchMode="singleTask"
             android:theme="@style/TransStatusBarTheme">
 
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,22 +49,18 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-             android:launchMode="singleTask"
-            ></activity>
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".ui.login.SmsVerifyActivity"
             android:label="@string/activity_sms_verify_label"
             android:theme="@style/Translucent"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".ui.login.RegisterActivity"
             android:label="@string/activity_register_label"
             android:theme="@style/Translucent"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-
-
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
 
         <!-- 图片剪切框架 -->
         <activity
@@ -87,7 +81,12 @@
             android:name="Mob-AppSecret"
             android:value="6d83934ee009eaeb2f887234b5899934" />
 
+        <activity
+            android:name=".ui.user.UserHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
 
+
+        </activity>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import retrofit2.http.POST;
 public interface KangYuanApi {
 
     String BASE_URL = "http://115.159.127.212:8080/KangYuanMilk/";
+//    String BASE_URL = "http://192.168.0.57:8089/";
 
     /**
      * 注册前检查用户名是否重复

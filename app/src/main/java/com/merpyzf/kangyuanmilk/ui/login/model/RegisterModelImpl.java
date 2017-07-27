@@ -15,7 +15,7 @@ public class RegisterModelImpl implements IRegisterModel{
     @Override
     public Observable<RegisterBean> Register(User user) {
         return RetrofitFactory.getServiceInstance()
-                .checkRepeat(user);
+                .register(user);
 
     }
 

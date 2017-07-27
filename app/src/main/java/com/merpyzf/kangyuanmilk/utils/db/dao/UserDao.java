@@ -51,7 +51,7 @@ public class UserDao {
 
             } else {
 
-                LogHelper.i("user==>"+user.getUser_name());
+                LogHelper.i("user==>" + user.getUser_name());
 
                 int i = dao.create(user);
                 LogHelper.i("创建");
@@ -171,23 +171,16 @@ public class UserDao {
 
             userList = dao.queryForAll();
 
-
             if (userList.size() == 1) {
-
                 user = userList.get(0);
 
-                LogHelper.i("用户名==>"+user.getUser_name());
-
-
-            } else {
-                App.showToast("查出来的用户信息不止一条");
+                LogHelper.i("用户名==>" + user.getUser_name());
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
-        return  user;
+        return user;
 
     }
 

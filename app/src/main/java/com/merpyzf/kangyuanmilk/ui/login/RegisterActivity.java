@@ -328,7 +328,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     /**
      * 用户名输入框的焦点监听事件
-     *
      * @param view
      * @param b
      */

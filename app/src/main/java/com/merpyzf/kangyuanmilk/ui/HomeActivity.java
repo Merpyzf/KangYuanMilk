@@ -70,11 +70,11 @@ public class HomeActivity extends BaseActivity
     @Override
     public void initWidget() {
 
+        //进入时首先进行权限判断
         ApplyPermissionFragment applyPermissionFragment = new ApplyPermissionFragment();
-
         applyPermissionFragment.haveAll(getSupportFragmentManager(), this);
-
         setSupportActionBar(toolbar);
+
 
         //从 navigationView中获取控件的引用时候,需要通过getHeaderView拿到HeaderView布局的引用，这样才能继续下面的工作
         View view = navigationView.getHeaderView(0);
@@ -82,17 +82,20 @@ public class HomeActivity extends BaseActivity
         civ_avater = view.findViewById(R.id.iv_avater);
         tv_username = view.findViewById(R.id.tv_username);
 
+        //设置抽屉菜单头部背景
         setNavHeaderBg(rl_nav_header);
 
-
+        //将抽屉菜单和ToolBar关联在一起
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        //更新当前用户的状态
         updateUserCurrentStatus();
 
-
+        //填充HomeFragment
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
 
@@ -100,71 +103,69 @@ public class HomeActivity extends BaseActivity
 
     /**
      * 更新用户当前的状态
-     *  刷新头像,和用户名
+     * 刷新头像,和用户名
      */
     private void updateUserCurrentStatus() {
 
-        UserDao userDao = new UserDao(this);
+        //从数据库中获取用户当前的信息(使用application的上下文对象而不是当前Activity对象避免内存泄露(单列模式需要注意的地方))
+        UserDao userDao = new UserDao(App.getContext());
         LoginBean.ResponseBean.UserBean user = userDao.getUserInfo();
 
+        //如果user == null 则表示用户未登录(登录成功后会存储userBean这个对象到数据库中)
         if (user == null) {
             //未登录状态
             tv_username.setText("点击头像进行登录");
+
             ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
             ImageLoaderOptions options = bulider.isCenterCrop(true)
                     .build();
             GlideImageLoader.showImage(civ_avater, R.drawable.ic_avater_default, options);
 
         } else {
-
             //已登录
             //显示用户名
             tv_username.setText(user.getUser_name());
-
             ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
             ImageLoaderOptions options = bulider.isCenterCrop(true)
                     .build();
-            GlideImageLoader.showImage(civ_avater, user.getUser_head(), options);
+            //已经登录但是没有设置头像，下面分两种情况
+            if (user.getUser_head() == null) {
+                //没有设置头像,就加载本地默认头像
+                GlideImageLoader.showImage(civ_avater, R.drawable.ic_default, options);
+            } else {
+                //加载自己设置的头像
+                GlideImageLoader.showImage(civ_avater, user.getUser_head(), options);
+            }
         }
 
-
-        civ_avater.setOnClickListener(view1 -> {
-
+        //不同的登录状态对应头像不同的点击事件
+        civ_avater.setOnClickListener(view -> {
             if (user == null) {
                 //未登录状态
                 startActivity(new Intent(this, LoginActivity.class));
             } else {
-
                 //已登录
                 App.showToast(this, "跳转到个人详情页面");
             }
-
         });
-
-
     }
 
     @Override
     public void initEvent() {
         navigationView.setNavigationItemSelectedListener(this);
         bottom_nav_view.setOnNavigationItemSelectedListener(this);
-
     }
 
     @Override
     protected void initData() {
-
         //注册一个观察者
         UserInfoSubject.getInstance().attach(HomeActivity.class.getSimpleName(), this);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.home, menu);
-
         return true;
     }
 
@@ -262,7 +263,6 @@ public class HomeActivity extends BaseActivity
     }
 
 
-
     /**
      * 设置导航抽屉头部的背景图片
      *
@@ -281,7 +281,6 @@ public class HomeActivity extends BaseActivity
                 });
 
     }
-
 
 
     @Override

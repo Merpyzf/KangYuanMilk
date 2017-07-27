@@ -68,6 +68,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     /**
      * 当界面准备好的时候才开始执行遮罩动画
+     *
      * @param hasFocus
      */
     @Override
@@ -84,12 +85,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public int getLayoutId() {
         return activity_login;
     }
+
     @Override
     public void initWidget() {
         //设置登录界面的背景
         setBackground();
         readLoginInfo();
     }
+
     @Override
     public void initEvent() {
         fab_next.setOnClickListener(this);
@@ -98,7 +101,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         cb_save.setOnCheckedChangeListener((compoundButton, b) -> {
 
             //如果勾选成为false则清除用户信息
-            if(!b){
+            if (!b) {
                 App.showToast("用户信息被清除了");
                 SharedPreHelper.clearLoginInfo();
 
@@ -108,6 +111,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
     }
+
     @Override
     protected void initData() {
         mLoginPresenter = new LoginPresenterImpl();
@@ -116,6 +120,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
     }
+
     @Override
     public void onClick(View view) {
 
@@ -267,18 +272,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     /**
      * 登录成功后返回主界面
+     *
      * @param success
      */
     @Override
-    public void loginSuccess(String success,String username,String pwd) {
+    public void loginSuccess(String success, String username, String pwd) {
 
         cancelLoadingDialog();
         App.showToast(success);
 
         //如果保存密码被勾选并且用户登录成功就记录用户的登录信息
-        if(cb_save.isChecked()){
+        if (cb_save.isChecked()) {
 
-            mLoginPresenter.saveLoginInfo(username,pwd);
+            mLoginPresenter.saveLoginInfo(username, pwd);
 
         }
 
@@ -296,7 +302,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         SharedPreHelper.LoginInfo loginInfo = SharedPreHelper.getLoginInfo();
 
         //读取到了用户保存的登录信息
-        if(loginInfo!=null){
+        if (loginInfo != null) {
 
             //设置选中状态
             cb_save.setChecked(true);
@@ -305,12 +311,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             edt_pwd.setText(loginInfo.getPassword());
 
 
-        }else {
+        } else {
 
             cb_save.setChecked(false);
 
         }
-
 
 
     }

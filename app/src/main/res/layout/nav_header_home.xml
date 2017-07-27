@@ -17,9 +17,11 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_avater"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="@drawable/ic_touch_menu"
         android:src="@drawable/ic_avater_default"
+        android:clickable="true"
         />
 
 

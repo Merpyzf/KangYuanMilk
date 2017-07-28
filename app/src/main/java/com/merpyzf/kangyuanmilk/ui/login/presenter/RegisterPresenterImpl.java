@@ -5,7 +5,7 @@ import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.login.RegisterActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
-import com.merpyzf.kangyuanmilk.ui.login.bean.User;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.contract.IRegisterContract;
 import com.merpyzf.kangyuanmilk.ui.login.model.IRegisterModel;
 import com.merpyzf.kangyuanmilk.ui.login.model.RegisterModelImpl;

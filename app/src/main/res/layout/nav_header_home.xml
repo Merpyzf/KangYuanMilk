@@ -23,8 +23,8 @@
         android:layout_height="65dp"
         android:background="@drawable/ic_touch_menu"
         android:src="@drawable/ic_avater_default"
-        app:civ_border_color="@color/white"
         android:transitionName="avater"
+        android:padding="5dp"
         android:clickable="true"
         />
 

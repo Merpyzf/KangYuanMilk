@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.login.presenter;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
@@ -10,6 +11,7 @@ import com.merpyzf.kangyuanmilk.ui.login.model.ILoginModel;
 import com.merpyzf.kangyuanmilk.ui.login.model.LoginModelImpl;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
+import com.merpyzf.kangyuanmilk.utils.HashHelper;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
@@ -38,9 +40,7 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
         mMvpView.showLoadingDialog();
 
         //登录的时候进行md5加密
-//        HashHelper.getMD5String(pwd);
-
-        mLoginModel.login(username, pwd)
+        mLoginModel.login(username,  HashHelper.getMD5String(pwd))
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 //使用rxlifecycle来根据Activity的生命周期来取消观察者与被观察者之间的订阅，防止出现内存泄露的问题
                 .subscribe(new Observer<LoginBean>() {
@@ -53,15 +53,15 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
                     @Override
                     public void onNext(LoginBean loginBean) {
 
-                        ErrorHandle errorHandle = new ErrorHandle(this,loginBean.getStatus()) {
+                        new ErrorHandle(this, loginBean.getStatus()) {
                             @Override
                             protected void deal() {
 
                                 boolean result = loginBean.getResponse().isResult();
 
-                                if(result){
+                                if (result) {
 
-                                    mMvpView.loginSuccess("登录成功",username,pwd);
+                                    mMvpView.loginSuccess("登录成功", username, pwd);
                                     //登录成功之后，将用户信息存储在数据库中
                                     saveUserInfo(loginBean.getResponse().getUser());
 
@@ -69,7 +69,7 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
                                     UserInfoSubject instance = UserInfoSubject.getInstance();
                                     instance.notifyChange();
 
-                                }else {
+                                } else {
 
                                     mMvpView.loginError("用户名或密码错误");
 
@@ -81,14 +81,12 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
                         };
 
 
-
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
-                        ErrorHandleHelper.handle(e,mMvpView);
+                        ErrorHandleHelper.handle(e, mMvpView);
 
                     }
 
@@ -107,29 +105,26 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
     public void saveLoginInfo(String username, String pwd) {
 
         //保存用户的登录信息
-        SharedPreHelper.saveLoginInfo(username,pwd);
+        SharedPreHelper.saveLoginInfo(username, pwd);
 
     }
 
     @Override
-    public void saveUserInfo(LoginBean.ResponseBean.UserBean user) {
+    public void saveUserInfo(User user) {
 
 
-        LogHelper.i("需要保存的用户信息==>:"+user.getUser_name());
+        LogHelper.i("需要保存的用户信息==>:" + user.getUser_name());
 
-        UserDao userDao = new UserDao(App.getContext());
+        UserDao userDao = UserDao.getInstance(App.getContext());
         //保存用户信息
         userDao.createUser(user);
     }
-
-
 
 
     @Override
     public void detachView() {
         super.detachView();
     }
-
 
 
 }

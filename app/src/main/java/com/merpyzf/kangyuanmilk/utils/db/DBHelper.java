@@ -8,7 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.merpyzf.kangyuanmilk.common.data.Common;
-import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -60,7 +60,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
         try {
 
-            TableUtils.createTable(connectionSource, LoginBean.ResponseBean.UserBean.class);
+            TableUtils.createTable(connectionSource, User.class);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
-            TableUtils.dropTable(connectionSource, LoginBean.ResponseBean.UserBean.class, true);
+            TableUtils.dropTable(connectionSource,User.class, true);
             onCreate(sqLiteDatabase, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

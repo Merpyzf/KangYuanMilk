@@ -27,14 +27,12 @@ import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
-import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.user.UserHomeActivity;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
-import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
-import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
 
 import butterknife.BindView;
 
@@ -102,7 +100,7 @@ public class HomeActivity extends BaseActivity
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
 
-        civ_avater.start();
+
     }
 
     /**
@@ -112,34 +110,37 @@ public class HomeActivity extends BaseActivity
     private void updateUserCurrentStatus() {
 
         //从数据库中获取用户当前的信息(使用application的上下文对象而不是当前Activity对象避免内存泄露(单列模式需要注意的地方))
-        UserDao userDao = new UserDao(App.getContext());
-        LoginBean.ResponseBean.UserBean user = userDao.getUserInfo();
+        UserDao userDao =  UserDao.getInstance(App.getContext());
+        User user = userDao.getUserInfo();
+
+
+        LogHelper.i("user.getUser_head()==>"+user.getUser_head());
+
+        //加载用户头像
+        // TODO: 2017-07-28  使用了全局的上下文对象，容易发生内存泄露
+        Glide.with(App.getContext()) //将Glide的生命周期和当前的所在Activity绑定
+
+                .load(user.getUser_head())
+                .placeholder(R.drawable.ic_avater_default)
+                .centerCrop()
+                .into(new ViewTarget<View, GlideDrawable>(civ_avater) {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+
+                        civ_avater.setImageDrawable(resource.getCurrent());
+
+                    }
+                });
 
         //如果user == null 则表示用户未登录(登录成功后会存储userBean这个对象到数据库中)
         if (user == null) {
             //未登录状态
             tv_username.setText("点击头像进行登录");
 
-            ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
-            ImageLoaderOptions options = bulider.isCenterCrop(true)
-                    .build();
-            GlideImageLoader.showImage(civ_avater, R.drawable.ic_avater_default, options);
-
         } else {
             //已登录
             //显示用户名
             tv_username.setText(user.getUser_name());
-            ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
-            ImageLoaderOptions options = bulider.isCenterCrop(true)
-                    .build();
-            //已经登录但是没有设置头像，下面分两种情况
-            if (user.getUser_head() == null) {
-                //没有设置头像,就加载本地默认头像
-                GlideImageLoader.showImage(civ_avater, R.drawable.ic_default, options);
-            } else {
-                //加载自己设置的头像
-                GlideImageLoader.showImage(civ_avater, user.getUser_head(), options);
-            }
         }
 
         //不同的登录状态对应头像不同的点击事件
@@ -148,8 +149,6 @@ public class HomeActivity extends BaseActivity
                 //未登录状态
                 startActivity(new Intent(this, LoginActivity.class));
             } else {
-                //已登录
-                App.showToast(this, "跳转到个人详情页面");
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -206,6 +205,7 @@ public class HomeActivity extends BaseActivity
 
             case R.id.nav_indent:
 
+
                 break;
 
             case R.id.nav_address:
@@ -227,7 +227,7 @@ public class HomeActivity extends BaseActivity
                         .negativeText(R.string.dialog_logout_negative)
                         .onPositive((dialog, which) -> {
                             //清除用户的个人信息，但不包括保存的用户名和密码
-                            UserDao userDao = new UserDao(App.getContext());
+                            UserDao userDao = UserDao.getInstance(App.getContext());
                             userDao.clearUser();
 
                             //通知所有绑定的观察者刷新
@@ -278,7 +278,6 @@ public class HomeActivity extends BaseActivity
         return true;
     }
 
-
     /**
      * 设置导航抽屉头部的背景图片
      *
@@ -299,13 +298,14 @@ public class HomeActivity extends BaseActivity
     }
 
 
+    /**
+     * 观察者的update方法,当用户信息发生变化的时候调用
+     */
     @Override
     public void update() {
-        LogHelper.i("更新头像了");
+        LogHelper.i("HomeActivity==> 更新头像了");
         //更新用户的当前状态,包含头像和用户名
         updateUserCurrentStatus();
-
-
     }
 
     /**

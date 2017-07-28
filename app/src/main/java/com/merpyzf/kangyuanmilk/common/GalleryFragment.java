@@ -127,7 +127,6 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
                             //设置toolbar的颜色
                             options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
 
-
                             //跳转到uCrop的裁切页面
                             UCrop.of(sourceUri, destUri)
                                     .withAspectRatio(1, 1)

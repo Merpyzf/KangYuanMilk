@@ -5,7 +5,7 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.merpyzf.kangyuanmilk.common.App;
-import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
 
@@ -21,25 +21,37 @@ import java.util.Map;
 
 public class UserDao {
 
-    private Context context;
     //内部维护一个静态的用户id
-    private final Dao<LoginBean.ResponseBean.UserBean, Integer> dao;
+    private static Dao<User, Integer> dao = null;
+    private static UserDao userDao = null;
 
-    public UserDao(Context context) {
-
-        this.context = context;
-
-        DBHelper dbHelper = DBHelper.getSingleInstance(context);
-        dao = dbHelper.getDao(LoginBean.ResponseBean.UserBean.class);
+    private UserDao() {
 
     }
+
+    public static UserDao getInstance(Context context) {
+
+        if (userDao == null) {
+            synchronized (Object.class) {
+
+                if (userDao == null) {
+
+                    DBHelper dbHelper = DBHelper.getSingleInstance(context);
+                    dao = dbHelper.getDao(User.class);
+                    userDao = new UserDao();
+                }
+            }
+        }
+        return userDao;
+    }
+
 
     /**
      * 保存一行数据
      *
      * @param user
      */
-    public void createUser(LoginBean.ResponseBean.UserBean user) {
+    public void createUser(User user) {
 
         try {
 
@@ -70,7 +82,7 @@ public class UserDao {
      *
      * @param user
      */
-    public void updateUser(LoginBean.ResponseBean.UserBean user) {
+    public void updateUser(User user) {
 
         try {
 
@@ -95,7 +107,7 @@ public class UserDao {
             return;
         }
 
-        UpdateBuilder<LoginBean.ResponseBean.UserBean, Integer> updateBuilder = dao.updateBuilder();
+        UpdateBuilder<User, Integer> updateBuilder = dao.updateBuilder();
         Iterator<Map.Entry<String, Object>> entries = map.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<String, Object> entry = entries.next();
@@ -124,11 +136,11 @@ public class UserDao {
     public void clearUser() {
 
         try {
-            List<LoginBean.ResponseBean.UserBean> userList = dao.queryForAll();
+            List<User> userList = dao.queryForAll();
 
             if (userList.size() == 1) {
 
-                LoginBean.ResponseBean.UserBean userBean = userList.get(0);
+                User userBean = userList.get(0);
 
                 int delete = dao.delete(userBean);
 
@@ -162,12 +174,12 @@ public class UserDao {
     }
 
 
-    public LoginBean.ResponseBean.UserBean getUserInfo() {
+    public User getUserInfo() {
 
-        LoginBean.ResponseBean.UserBean user = null;
+        User user = null;
 
         try {
-            List<LoginBean.ResponseBean.UserBean> userList = null;
+            List<User> userList = null;
 
             userList = dao.queryForAll();
 

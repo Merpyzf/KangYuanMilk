@@ -2,8 +2,8 @@ package com.merpyzf.kangyuanmilk.ui.login.contract;
 
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
-import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 
 /**
  * Created by wangke on 2017-07-22.
@@ -69,7 +69,7 @@ public interface ILoginContract {
          * 登录成功后保存用户信息
          * @param user
          */
-        void saveUserInfo(LoginBean.ResponseBean.UserBean user);
+        void saveUserInfo(User user);
 
 
     }

@@ -273,6 +273,9 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
     @Override
     public void update() {
         User userInfo = UserDao.getInstance(App.getContext()).getUserInfo();
+
+        LogHelper.i("上传的更新的用户头像==>"+userInfo.getUser_head());
+
         //显示头像
         showAvaterImg(userInfo.getUser_head());
         //更新用户
@@ -406,5 +409,6 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
         UserInfoSubject.getInstance().detach(UserHomeActivity.class.getSimpleName());
         super.onDestroy();
     }
+
 
 }

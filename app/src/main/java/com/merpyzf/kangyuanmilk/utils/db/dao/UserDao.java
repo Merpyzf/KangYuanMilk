@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.UpdateBuilder;
-import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
@@ -55,22 +54,15 @@ public class UserDao {
 
         try {
 
+            dao.createOrUpdate(user);
             long count = dao.queryBuilder().countOf();
 
-            if (count == 1) {
-                int i = dao.update(user);
-                LogHelper.i("更新");
+            int _id = getUserInfo().get_id();
 
-            } else {
-
-                LogHelper.i("user==>" + user.getUser_name());
-
-                int i = dao.create(user);
-                LogHelper.i("创建");
-            }
-
+            LogHelper.i("user_id==>  "+_id);
 
             LogHelper.i("用户信息的数量: " + count);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,8 +77,11 @@ public class UserDao {
     public void updateUser(User user) {
 
         try {
-
-            dao.update(user);
+            int id = getUserInfo().get_id();
+            user.set_id(id);
+            int update = dao.update(user);
+            int _id = getUserInfo().get_id();
+            LogHelper.i("更新结果==>"+update);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,7 +96,6 @@ public class UserDao {
      *            value - 更新的内容
      */
     public void updateUser(HashMap<String, Object> map) {
-
 
         if (map == null) {
             return;
@@ -138,20 +132,18 @@ public class UserDao {
         try {
             List<User> userList = dao.queryForAll();
 
-            if (userList.size() == 1) {
+            for(int i=0;i<userList.size();i++){
 
-                User userBean = userList.get(0);
+
+                User userBean = userList.get(i);
 
                 int delete = dao.delete(userBean);
 
                 LogHelper.i("删除成功 =>" + delete);
 
-
-            } else {
-
-                App.showToast("查出来的用户信息不止一条");
-
             }
+
+
 
 
         } catch (SQLException e) {

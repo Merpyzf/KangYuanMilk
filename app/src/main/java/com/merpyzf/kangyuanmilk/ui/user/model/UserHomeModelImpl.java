@@ -2,9 +2,12 @@ package com.merpyzf.kangyuanmilk.ui.user.model;
 
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.base.User;
-import com.merpyzf.kangyuanmilk.ui.user.bean.UploadAvaterBean;
+import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
+
+import java.sql.SQLException;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,6 +42,27 @@ public class UserHomeModelImpl implements IUserHomeModel {
         UserDao dao = UserDao.getInstance(App.getContext());
         dao.updateUser(user);
 
+        try {
+            int userCount = dao.getUserCount();
+
+            LogHelper.i("=====================>userCount "+userCount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        LogHelper.i("保存数据库前 _id ==>"+dao.getUserInfo().getUser_id());
+        LogHelper.i("保存数据库前==>"+dao.getUserInfo().getUser_head());
+
+        LogHelper.i("*******上传头像后的更新******");
+
+
+
+        LogHelper.i("header==>"+dao.getUserInfo().getUser_head());
+
+        LogHelper.i("*******上传头像后的更新******");
+
+
+
     }
 
     /**
@@ -47,7 +71,7 @@ public class UserHomeModelImpl implements IUserHomeModel {
      * @return
      */
     @Override
-    public Observable<UploadAvaterBean> uploadAvater(User user) {
+    public Observable<MessageBean> uploadAvater(User user) {
 
         return RetrofitFactory.getServiceInstance()
                 .upLoadAvater(user)

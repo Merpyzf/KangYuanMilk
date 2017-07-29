@@ -9,6 +9,7 @@ import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.model.ILoginModel;
 import com.merpyzf.kangyuanmilk.ui.login.model.LoginModelImpl;
+import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
 import com.merpyzf.kangyuanmilk.utils.HashHelper;
@@ -18,6 +19,7 @@ import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -26,11 +28,11 @@ import io.reactivex.disposables.Disposable;
 
 public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView> implements ILoginContract.ILoginPresenter {
 
-    private ILoginModel mLoginModel = null;
+    private ILoginModel mModel = null;
 
     public LoginPresenterImpl() {
 
-        mLoginModel = new LoginModelImpl();
+        mModel = new LoginModelImpl();
 
     }
 
@@ -40,7 +42,7 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
         mMvpView.showLoadingDialog();
 
         //登录的时候进行md5加密
-        mLoginModel.login(username,  HashHelper.getMD5String(pwd))
+        mModel.login(username, HashHelper.getMD5String(pwd))
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 //使用rxlifecycle来根据Activity的生命周期来取消观察者与被观察者之间的订阅，防止出现内存泄露的问题
                 .subscribe(new Observer<LoginBean>() {
@@ -95,6 +97,42 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
                         mMvpView.cancelLoadingDialog();
 
+
+                    }
+                });
+
+    }
+
+    @Override
+    public void getAvater(LoginActivity context, User user) {
+
+        mModel.userAvater(user)
+                .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Observer<MessageBean>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+                    @Override
+                    public void onNext(@NonNull MessageBean messageBean) {
+
+                        new ErrorHandle(this, messageBean.getStatus()) {
+                            @Override
+                            protected void deal() {
+
+                                mMvpView.showAvater(messageBean.getResponse().getMessage());
+                                LogHelper.i("用户头像==>"+messageBean.getResponse().getMessage());
+                            }
+                        };
+                    }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                        ErrorHandleHelper.handle(e, mMvpView);
+
+                    }
+                    @Override
+                    public void onComplete() {
 
                     }
                 });

@@ -12,29 +12,35 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.ui.HomeActivity;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.LoginPresenterImpl;
+import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 
 import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.merpyzf.kangyuanmilk.R.layout.activity_login;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, ILoginContract.ILoginView {
+
+    @BindView(R.id.iv_header)
+    CircleImageView iv_header;
 
     @BindView(R.id.cardView)
     CardView cardView;
@@ -50,9 +56,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     //密码
     @BindView(R.id.edt_pwd)
     EditText edt_pwd;
-    //保存登录信息
-    @BindView(R.id.cb_save)
-    CheckBox cb_save;
     //找回密码
     @BindView(R.id.tv_find_pwd)
     TextView tv_find_pwd;
@@ -90,7 +93,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void initWidget() {
         //设置登录界面的背景
         setBackground();
-        readLoginInfo();
     }
 
     @Override
@@ -98,18 +100,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         fab_next.setOnClickListener(this);
         btn_login.setOnClickListener(this);
 
-        cb_save.setOnCheckedChangeListener((compoundButton, b) -> {
+        edt_username.setOnFocusChangeListener((view, b) -> {
+            String userName = ((EditText) view).getText().toString().trim();
 
-            //如果勾选成为false则清除用户信息
-            if (!b) {
-                App.showToast("用户信息被清除了");
-                SharedPreHelper.clearLoginInfo();
-
+            //用户名长度大于0 并且失去焦点
+            if (userName.length() > 0 && !b) {
+                User user = new User();
+                user.setUser_name(userName);
+                mLoginPresenter.getAvater(LoginActivity.this, user);
+                LogHelper.i("去请求头像了");
             }
 
         });
-
-
     }
 
     @Override
@@ -117,8 +119,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mLoginPresenter = new LoginPresenterImpl();
         //让presenter持有当前view的引用
         mLoginPresenter.attachView(this);
-
-
     }
 
     @Override
@@ -281,12 +281,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         cancelLoadingDialog();
         App.showToast(success);
 
-        //如果保存密码被勾选并且用户登录成功就记录用户的登录信息
-        if (cb_save.isChecked()) {
-
-            mLoginPresenter.saveLoginInfo(username, pwd);
-
-        }
+        mLoginPresenter.saveLoginInfo(username, pwd);
 
         startActivity(new Intent(this, HomeActivity.class));
 
@@ -294,29 +289,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     /**
-     * 读取用户的登录信息
+     * 当用户名输入完成之后请求服务器获取用户头像
+     *
+     * @param avater 头像url
      */
     @Override
-    public void readLoginInfo() {
+    public void showAvater(String avater) {
 
-        SharedPreHelper.LoginInfo loginInfo = SharedPreHelper.getLoginInfo();
+        Glide.with(this)
+                .load(avater)
+                .centerCrop()
+                .dontAnimate()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.ic_avater_default)
+                .into(new ViewTarget<View, GlideDrawable>(iv_header) {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
 
-        //读取到了用户保存的登录信息
-        if (loginInfo != null) {
+                        iv_header.setImageDrawable(resource.getCurrent());
 
-            //设置选中状态
-            cb_save.setChecked(true);
-
-            edt_username.setText(loginInfo.getUserName());
-            edt_pwd.setText(loginInfo.getPassword());
-
-
-        } else {
-
-            cb_save.setChecked(false);
-
-        }
-
+                    }
+                });
 
     }
 

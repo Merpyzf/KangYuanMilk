@@ -34,7 +34,7 @@
 
         <!-- 主界面 -->
         <activity
-            android:name=".ui.HomeActivity"
+            android:name=".ui.user.HomeActivity"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/TransStatusBarTheme">

@@ -4,7 +4,7 @@ package com.merpyzf.kangyuanmilk.ui.user.bean;
  * Created by wangke on 2017-07-28.
  */
 
-public class UploadAvaterBean {
+public class MessageBean {
 
     /**
      * response : {"result":true}

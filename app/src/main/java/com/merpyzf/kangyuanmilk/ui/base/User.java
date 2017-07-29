@@ -9,6 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "tab_user")
 public class User {
+
     @DatabaseField(generatedId = true)
     private int _id;
     @DatabaseField(columnName = "user_id")

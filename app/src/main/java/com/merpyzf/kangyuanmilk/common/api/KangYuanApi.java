@@ -3,7 +3,7 @@ package com.merpyzf.kangyuanmilk.common.api;
 import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
-import com.merpyzf.kangyuanmilk.ui.user.bean.UploadAvaterBean;
+import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -45,6 +45,9 @@ public interface KangYuanApi {
      * @return
      */
     @POST("user/update")
-    Observable<UploadAvaterBean> upLoadAvater(@Body User user);
+    Observable<MessageBean> upLoadAvater(@Body User user);
+
+    @POST("user/getHead")
+    Observable<MessageBean> getUserAvater(@Body User user);
 
 }

@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
 import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
 
@@ -101,6 +102,18 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     }
 
 
+    /**
+     * 设置最大可选择图片的数量
+     *
+     * @param num 可选择的图片的数量
+     */
+    public void setMaxSelected(int num) {
+
+        MAX_SELECTED = num;
+
+    }
+
+
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
@@ -123,9 +136,9 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor cursor) {
 
-        Log.i("wk", "onLoadFinished==>");
+        //填充一个空的item作为拍照
+        mImages.add(new Image("","",""));
 
-        int count = 0;
         while (cursor.moveToNext()) {
 
             String id = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
@@ -134,6 +147,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
             File file = new File(path);
 
+            //对图片的大小进行筛选
             if (file.length() > 2000) {
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -145,13 +159,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 mImages.add(image);
             }
         }
-
-        Log.i("wk", "图片数量:" + mImages.size());
-
-        Log.i("wk", "刷新适配器");
         mGalleryAdapter.notifyDataSetChanged();
-
-
     }
 
     @Override
@@ -170,9 +178,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     @Override
     public void onItemClick(com.merpyzf.kangyuanmilk.common.widget.ViewHolder viewHolder, Image image, int position) {
 
-        Log.i("wk", "当前选中的图片:" + image.getPath());
-
-
         if (position > 0) {
 
             //如果是选中状态就取消勾选
@@ -184,20 +189,14 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
 
             } else {
-
                 if (mPaths.size() >= MAX_SELECTED) {
-
-                    Toast.makeText(mContext, "最大只能选择" + MAX_SELECTED + "张图片", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 //进行选中图片
                 image.setSelected(true);
                 //将选中的图片添加到集合中去
                 mPaths.add(image);
                 //将选中的图片回调给外界调用的地方
-
-
             }
 
             //刷新当前选中的条目
@@ -223,7 +222,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
                     boolean mkdirs = ParentFile.mkdir();
                     Log.i("wk", "创建结果:" + mkdirs);
-                    if(!mkdirs){
+                    if (!mkdirs) {
                         return;
                     }
 
@@ -241,8 +240,8 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     ContentValues contentValues = new ContentValues(1);
-                    contentValues.put(MediaStore.Images.Media.DATA,  AvatarFile.getPath());
-                }else {
+                    contentValues.put(MediaStore.Images.Media.DATA, AvatarFile.getPath());
+                } else {
 
                     //设置保存拍摄图片的所在目录
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(AvatarFile));
@@ -250,8 +249,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 ((Activity) mContext).startActivityForResult(intent, GALLERYVIEW_TAKEPHOTO);
 
             } else {
-
-                Toast.makeText(mContext, "没有找到可用的存储位置", Toast.LENGTH_SHORT).show();
+                App.showToast("没有找到可用的存储位置");
 
             }
 
@@ -261,9 +259,10 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
     @Override
     public boolean onItemLongClick(com.merpyzf.kangyuanmilk.common.widget.ViewHolder viewHolder, Image image, int position) {
 
-        clearAllSelected();
-        Toast.makeText(mContext, "清除所有", Toast.LENGTH_SHORT).show();
-
+        if(position>0) {
+            clearAllSelected();
+            App.showToast("清除所有已选择的图片");
+        }
         return true;
     }
 
@@ -284,9 +283,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
             }
 
         }
-
         mPaths.clear();
-
         if (mImageSelectedChangedListener != null) {
             mImageSelectedChangedListener.onSelectedChange(mPaths, mPaths.size());
         }
@@ -294,90 +291,11 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
 
     /**
-     * 使用结束的时候调用此方法销销毁LoadManager对象,和容器的生命周期进行绑定
-     */
-    public void destory() {
-
-        mLoadManager.destroyLoader(LOAD_IMAGE);
-    }
-
-    /**
      * 更新拍摄的照片,使显示在GalleryView上面去
      */
     public void updatePhoto() {
-
-
         Image image = new Image("", mAvatarFilePath, "");
-
-        Log.i("wk", "刷新的文件的路径:" + mAvatarFilePath);
         mGalleryAdapter.insertItem(1, image);
-
-    }
-
-    /**
-     * 设置最大可选择图片的数量
-     *
-     * @param num 可选择的图片的数量
-     */
-    public void setMaxSelected(int num) {
-
-        MAX_SELECTED = num;
-
-    }
-
-    /**
-     * 封装Image类的信息
-     */
-    public static class Image {
-
-        private String id;
-        //路径
-        private String path;
-        //添加时间
-        private String add_date;
-        //当前image是否被选中
-        private boolean isSelected = false;
-
-        public Image() {
-        }
-
-        public String getAdd_date() {
-            return add_date;
-        }
-
-        public void setAdd_date(String add_date) {
-            this.add_date = add_date;
-        }
-
-        Image(String id, String path, String add_date) {
-            this.id = id;
-            this.path = path;
-            this.add_date = add_date;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
-        }
-
-        public boolean isSelected() {
-            return isSelected;
-        }
-
-        public void setSelected(boolean selected) {
-            isSelected = selected;
-        }
     }
 
     /**
@@ -500,5 +418,67 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         this.mImageSelectedChangedListener = ImageSelectedChangedListener;
     }
 
+    /**
+     * 封装Image类的信息
+     */
+    public static class Image {
+
+        private String id;
+        //路径
+        private String path;
+        //添加时间
+        private String add_date;
+        //当前image是否被选中
+        private boolean isSelected = false;
+
+        public Image() {
+        }
+
+        public String getAdd_date() {
+            return add_date;
+        }
+
+        public void setAdd_date(String add_date) {
+            this.add_date = add_date;
+        }
+
+        Image(String id, String path, String add_date) {
+            this.id = id;
+            this.path = path;
+            this.add_date = add_date;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
+    }
+
+    /**
+     * 使用结束的时候调用此方法销销毁LoadManager对象,和容器的生命周期进行绑定
+     */
+    public void destory() {
+
+        mLoadManager.destroyLoader(LOAD_IMAGE);
+    }
 
 }

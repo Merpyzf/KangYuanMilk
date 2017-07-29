@@ -3,7 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.user.presenter;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.user.UserHomeActivity;
-import com.merpyzf.kangyuanmilk.ui.user.bean.UploadAvaterBean;
+import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IUserHomeContract;
 import com.merpyzf.kangyuanmilk.ui.user.model.IUserHomeModel;
 import com.merpyzf.kangyuanmilk.ui.user.model.UserHomeModelImpl;
@@ -88,14 +88,14 @@ public class UserHomePresenterImpl extends BasePresenter<IUserHomeContract.IUser
 
         mModel.uploadAvater(user)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<UploadAvaterBean>() {
+                .subscribe(new Observer<MessageBean>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull UploadAvaterBean uploadAvaterBean) {
+                    public void onNext(@NonNull MessageBean uploadAvaterBean) {
 
                         //根据返回的状态码进行异常的处理
                         new ErrorHandle(this, uploadAvaterBean.getStatus()) {
@@ -109,6 +109,7 @@ public class UserHomePresenterImpl extends BasePresenter<IUserHomeContract.IUser
                                 LogHelper.i("outChain==>" + outChain + fileName);
                                 //更新数据库中的用户信息
                                 user.setUser_head(outChain + fileName);
+
 
                                 mModel.updateUserInfo(user);
 

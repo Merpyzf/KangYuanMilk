@@ -37,7 +37,7 @@
         android:textColor="@color/white"
         android:text="春水碧于天"
         android:clickable="true"
-        android:textSize="@dimen/font_18"
+        android:textSize="@dimen/font_16"
         android:layout_alignBottom="@+id/iv_avater"
         android:layout_toRightOf="@+id/iv_avater"
         android:layout_marginLeft="24dp"

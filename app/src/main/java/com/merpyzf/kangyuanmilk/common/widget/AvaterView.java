@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.common.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 
 import com.merpyzf.kangyuanmilk.R;
@@ -102,6 +103,9 @@ public class AvaterView extends CircleImageView {
             canvas.drawArc(getPaddingTop(), getPaddingTop(), mWidth - getPaddingTop(), mHeight - getPaddingTop(), 0f, 360f * mProgress, false, mPaint);
 
         }
+
+        Path path =new Path();
+
 
     }
 

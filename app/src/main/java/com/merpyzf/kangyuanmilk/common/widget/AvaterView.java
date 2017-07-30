@@ -1,9 +1,11 @@
 package com.merpyzf.kangyuanmilk.common.widget;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.AttributeSet;
 
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
@@ -13,6 +15,7 @@ import net.qiujuer.genius.ui.Ui;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
+ * jj
  * Created by Administrator on 2017-07-27.
  */
 
@@ -20,6 +23,7 @@ public class AvaterView extends CircleImageView {
 
     private int mWidth;
     private int mHeight;
+    private int lineWidth = (int) Ui.dipToPx(getResources(),2);
     private Paint mPaint = null;
     private float animatedValue;
 
@@ -61,7 +65,7 @@ public class AvaterView extends CircleImageView {
 
     public void start(){
 
-    /*    ValueAnimator valueAnimator = new ValueAnimator();
+        ValueAnimator valueAnimator = new ValueAnimator();
         valueAnimator.setFloatValues(1);
         valueAnimator.setDuration(2000);
         valueAnimator.start();
@@ -73,9 +77,9 @@ public class AvaterView extends CircleImageView {
 
             invalidate();
 
-        });
-*/
 
+
+        });
 
     }
 
@@ -84,7 +88,11 @@ public class AvaterView extends CircleImageView {
         super.onDraw(canvas);
 
 
-        canvas.drawArc(0, 0, mWidth, mHeight, 0f, 360f*animatedValue, true, mPaint);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            canvas.drawArc(0, 0, mWidth+lineWidth, mHeight+lineWidth, 0f, 360f*animatedValue, true, mPaint);
+
+        }
 
 
     }

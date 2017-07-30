@@ -89,7 +89,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:8.7.0'
     compile 'com.ldoublem.loadingview:loadingviewlib:1.0'
     compile 'net.qiujuer.genius:ui:2.0.0'

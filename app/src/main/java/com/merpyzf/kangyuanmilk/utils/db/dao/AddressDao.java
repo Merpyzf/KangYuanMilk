@@ -10,7 +10,6 @@ import com.j256.ormlite.table.TableUtils;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.bean.Address;
 import com.merpyzf.kangyuanmilk.utils.IOHelper;
-import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +31,8 @@ public class AddressDao {
 
             InputStream is = App.getContext().getAssets().open("address.db");
 
-            File dbFile = new File(App.getContext().getDataDir() + "/databases", "address.db");
+//            App.getContext().getDataDir() api24以上才有的方法
+            File dbFile = new File("/data/data/"+ App.getContext().getPackageName()+"/databases","address.ad");
 
             if (!dbFile.exists()) {
 
@@ -101,11 +101,11 @@ public class AddressDao {
             e.printStackTrace();
         }
 
-        provinceList.forEach(address -> {
+    /*    provinceList.forEach(address -> {
 
             LogHelper.i("省份==>"+address.getName());
 
-        });
+        });*/
 
 
 

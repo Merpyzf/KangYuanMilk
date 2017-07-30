@@ -20,11 +20,6 @@ public class IOHelper {
      */
     public static void stream2File(InputStream is, File file) {
 
-        if (!file.exists()) {
-
-            new Throwable(file.getAbsolutePath() + "文件不存在!");
-            return;
-        }
         FileOutputStream os = null;
         byte[] buffer = new byte[1024];
         try {

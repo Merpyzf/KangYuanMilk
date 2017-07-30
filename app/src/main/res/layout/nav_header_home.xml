@@ -23,8 +23,8 @@
         android:layout_height="65dp"
         android:background="@drawable/ic_touch_menu"
         android:src="@drawable/ic_avater_default"
-        app:civ_border_color="@color/white"
         android:transitionName="avater"
+        android:padding="5dp"
         android:clickable="true"
         />
 
@@ -37,7 +37,7 @@
         android:textColor="@color/white"
         android:text="春水碧于天"
         android:clickable="true"
-        android:textSize="@dimen/font_18"
+        android:textSize="@dimen/font_16"
         android:layout_alignBottom="@+id/iv_avater"
         android:layout_toRightOf="@+id/iv_avater"
         android:layout_marginLeft="24dp"

@@ -2,8 +2,8 @@ package com.merpyzf.kangyuanmilk.ui.login.contract;
 
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
-import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 
 /**
  * Created by wangke on 2017-07-22.
@@ -40,12 +40,12 @@ public interface ILoginContract {
          */
         void loginSuccess(String success, String username, String pwd);
 
-
         /**
-         * 读取用户的登录信息
+         * 显示用户头像
+         *
+         * @param avater 头像url
          */
-        void readLoginInfo();
-
+        void showAvater(String avater);
 
 
     }
@@ -56,10 +56,25 @@ public interface ILoginContract {
      */
     interface ILoginPresenter extends IBasePresenter<ILoginView> {
 
+        /**
+         * 用户登录
+         *
+         * @param context
+         * @param username
+         * @param pwd
+         */
         void login(LoginActivity context, String username, String pwd);
 
         /**
+         * 输入用户名进行头像的获取
+         *
+         * @param user
+         */
+        void getAvater(LoginActivity context, User user);
+
+        /**
          * 保存登录信息
+         *
          * @param username
          * @param pwd
          */
@@ -67,9 +82,10 @@ public interface ILoginContract {
 
         /**
          * 登录成功后保存用户信息
+         *
          * @param user
          */
-        void saveUserInfo(LoginBean.ResponseBean.UserBean user);
+        void saveUserInfo(User user);
 
 
     }

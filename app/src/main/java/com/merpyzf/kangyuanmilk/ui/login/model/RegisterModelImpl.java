@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.login.model;
 
 import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
-import com.merpyzf.kangyuanmilk.ui.login.bean.User;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
 
 import io.reactivex.Observable;
@@ -21,7 +21,6 @@ public class RegisterModelImpl implements IRegisterModel{
 
     @Override
     public Observable<RegisterBean> checkUserRepeat( User user) {
-
 
         return  RetrofitFactory.getServiceInstance()
                 .checkRepeat(user);

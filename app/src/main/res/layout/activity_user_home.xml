@@ -9,13 +9,22 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/test"
             android:textSize="18sp" />
 
-
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.AppBarLayout
@@ -32,16 +41,16 @@
             app:collapsedTitleTextAppearance="@style/TextAppearance.Title"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleGravity="bottom|center_horizontal"
-            app:expandedTitleMarginBottom="5dp"
+            app:expandedTitleMarginBottom="15dp"
             app:expandedTitleTextAppearance="@style/TextAppearance.SecondTitle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:transitionName="user_name"
-            app:title="春水碧于天 的个人资料">
+            app:title="春水碧于天">
 
             <ImageView
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_appbar_bg"
@@ -60,13 +69,12 @@
 
             <com.merpyzf.kangyuanmilk.common.widget.AvaterView
                 android:id="@+id/civ_avater"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="35dp"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/white"
                 android:src="@drawable/ic_avater_default"
+                android:padding="5dp"
                 android:transitionName="avater"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.3" />

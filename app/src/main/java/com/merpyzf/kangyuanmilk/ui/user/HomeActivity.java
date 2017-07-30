@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.ui;
+package com.merpyzf.kangyuanmilk.ui.user;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -27,14 +27,15 @@ import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
-import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
-import com.merpyzf.kangyuanmilk.ui.user.UserHomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
+import com.merpyzf.kangyuanmilk.ui.user.presenter.HomePresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
+import com.merpyzf.kangyuanmilk.utils.db.dao.AddressDao;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
-import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
-import com.merpyzf.kangyuanmilk.utils.image.ImageLoaderOptions;
 
 import butterknife.BindView;
 
@@ -44,26 +45,21 @@ import butterknife.BindView;
  * @author wangke
  */
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener
+        implements IHomeContract.IHomeView, NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener
         , Observer {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.nav_view)
     NavigationView navigationView;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
-
     @BindView(R.id.bottom_nav_view)
     BottomNavigationView bottom_nav_view;
-    //头像
     AvaterView civ_avater;
-    //用户名
     TextView tv_username;
     RelativeLayout rl_nav_header;
-    private UserInfoSubject m;
+    private HomePresenterImpl mPresenter;
 
     @Override
     public int getLayoutId() {
@@ -78,16 +74,13 @@ public class HomeActivity extends BaseActivity
         applyPermissionFragment.haveAll(getSupportFragmentManager(), this);
         setSupportActionBar(toolbar);
 
-
         //从 navigationView中获取控件的引用时候,需要通过getHeaderView拿到HeaderView布局的引用，这样才能继续下面的工作
         View view = navigationView.getHeaderView(0);
         rl_nav_header = view.findViewById(R.id.rl_nav_header);
         civ_avater = view.findViewById(R.id.iv_avater);
         tv_username = view.findViewById(R.id.tv_username);
-
         //设置抽屉菜单头部背景
         setNavHeaderBg(rl_nav_header);
-
         //将抽屉菜单和ToolBar关联在一起
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -95,75 +88,10 @@ public class HomeActivity extends BaseActivity
         toggle.syncState();
 
 
-        //更新当前用户的状态
-        updateUserCurrentStatus();
-
         //填充HomeFragment
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
 
-        civ_avater.start();
-    }
-
-    /**
-     * 更新用户当前的状态
-     * 刷新头像,和用户名
-     */
-    private void updateUserCurrentStatus() {
-
-        //从数据库中获取用户当前的信息(使用application的上下文对象而不是当前Activity对象避免内存泄露(单列模式需要注意的地方))
-        UserDao userDao = new UserDao(App.getContext());
-        LoginBean.ResponseBean.UserBean user = userDao.getUserInfo();
-
-        //如果user == null 则表示用户未登录(登录成功后会存储userBean这个对象到数据库中)
-        if (user == null) {
-            //未登录状态
-            tv_username.setText("点击头像进行登录");
-
-            ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
-            ImageLoaderOptions options = bulider.isCenterCrop(true)
-                    .build();
-            GlideImageLoader.showImage(civ_avater, R.drawable.ic_avater_default, options);
-
-        } else {
-            //已登录
-            //显示用户名
-            tv_username.setText(user.getUser_name());
-            ImageLoaderOptions.Bulider bulider = new ImageLoaderOptions.Bulider();
-            ImageLoaderOptions options = bulider.isCenterCrop(true)
-                    .build();
-            //已经登录但是没有设置头像，下面分两种情况
-            if (user.getUser_head() == null) {
-                //没有设置头像,就加载本地默认头像
-                GlideImageLoader.showImage(civ_avater, R.drawable.ic_default, options);
-            } else {
-                //加载自己设置的头像
-                GlideImageLoader.showImage(civ_avater, user.getUser_head(), options);
-            }
-        }
-
-        //不同的登录状态对应头像不同的点击事件
-        civ_avater.setOnClickListener(view -> {
-            if (user == null) {
-                //未登录状态
-                startActivity(new Intent(this, LoginActivity.class));
-            } else {
-                //已登录
-                App.showToast(this, "跳转到个人详情页面");
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                    //共享元素动画
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomeActivity.this, civ_avater, civ_avater.getTransitionName());
-                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class), options.toBundle());
-
-                } else {
-
-                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class));
-                }
-
-            }
-        });
     }
 
     @Override
@@ -174,8 +102,16 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void initData() {
+
+        AddressDao.getInstance().getProvinceList();
+
+
         //注册一个观察者
         UserInfoSubject.getInstance().attach(HomeActivity.class.getSimpleName(), this);
+        mPresenter = new HomePresenterImpl();
+        mPresenter.attachView(this);
+        //第一次创建的时候检查用户的当前状态
+        mPresenter.checkUserCurrentStatus(this);
     }
 
     @Override
@@ -212,7 +148,6 @@ public class HomeActivity extends BaseActivity
 
                 break;
 
-
             case R.id.nav_service:
 
                 break;
@@ -220,26 +155,30 @@ public class HomeActivity extends BaseActivity
             //注销登录
             case R.id.nav_logout:
 
-                new MaterialDialog.Builder(this)
-                        .title(R.string.dialog_logout)
-                        .content(R.string.dialog_logout_content)
-                        .positiveText(R.string.dialog_logout_positive)
-                        .negativeText(R.string.dialog_logout_negative)
-                        .onPositive((dialog, which) -> {
-                            //清除用户的个人信息，但不包括保存的用户名和密码
-                            UserDao userDao = new UserDao(App.getContext());
-                            userDao.clearUser();
+                if (UserDao.getInstance(App.getContext()).getUserInfo() != null) {
 
-                            //通知所有绑定的观察者刷新
-                            UserInfoSubject.getInstance()
-                                    .notifyChange();
-                        })
-                        .onNegative((dialog, which) -> {
+                    new MaterialDialog.Builder(this)
+                            .title(R.string.dialog_logout)
+                            .content(R.string.dialog_logout_content)
+                            .positiveText(R.string.dialog_logout_positive)
+                            .negativeText(R.string.dialog_logout_negative)
+                            .onPositive((dialog, which) -> {
+                                //清除用户的个人信息，但不包括保存的用户名和密码
+                                UserDao userDao = UserDao.getInstance(App.getContext());
+                                userDao.clearUser();
 
-                            dialog.dismiss();
+                                SharedPreHelper.clearLoginInfo();
+                                //通知所有绑定的观察者刷新
+                                currentStatus(false);
 
-                        })
-                        .show();
+                            })
+                            .onNegative((dialog, which) -> {
+
+                                dialog.dismiss();
+
+                            })
+                            .show();
+                }
 
 
                 break;
@@ -278,7 +217,6 @@ public class HomeActivity extends BaseActivity
         return true;
     }
 
-
     /**
      * 设置导航抽屉头部的背景图片
      *
@@ -299,13 +237,109 @@ public class HomeActivity extends BaseActivity
     }
 
 
+
+    @Override
+    public void showErrorMsg(String errorMsg) {
+
+        App.showToast(errorMsg);
+    }
+
+
+    @Override
+    public void currentStatus(boolean isLogin) {
+
+        //不同的登录状态对应头像不同的点击事件
+        civ_avater.setOnClickListener(view -> {
+            if (!isLogin) {
+                //未登录状态
+                startActivity(new Intent(this, LoginActivity.class));
+            } else {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    //共享元素动画
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomeActivity.this, civ_avater, civ_avater.getTransitionName());
+                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class), options.toBundle());
+
+                } else {
+
+                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class));
+                }
+
+            }
+        });
+        LogHelper.i("更新UI");
+        //从数据库中获取用户当前的信息(使用application的上下文对象而不是当前Activity对象避免内存泄露(单列模式需要注意的地方))
+        UserDao userDao = UserDao.getInstance(App.getContext());
+        User user = userDao.getUserInfo();
+        if (user == null) {
+            //未登录状态
+            tv_username.setText("点击头像进行登录");
+            civ_avater.setImageResource(R.drawable.ic_avater_default);
+
+        } else {
+
+            loadAvater(user.getUser_head());
+            tv_username.setText(user.getUser_name());
+
+        }
+
+    }
+
+    @Override
+    public void authFailed() {
+
+        App.showToast("认证失败,请重新登录");
+        startActivity(new Intent(this, LoginActivity.class));
+
+    }
+
+    @Override
+    public void updateUserInfo() {
+
+
+    }
+
+    /**
+     * 观察者的update方法,当用户信息发生变化的时候调用
+     */
     @Override
     public void update() {
-        LogHelper.i("更新头像了");
-        //更新用户的当前状态,包含头像和用户名
-        updateUserCurrentStatus();
+        LogHelper.i("HomeActivity==> 更新头像了");
+        //更新用户的头像和用户名
+        UserDao userDao = UserDao.getInstance(App.getContext());
+        User user = userDao.getUserInfo();
+        loadAvater(user.getUser_head());
+    }
 
+    /**
+     * 加载头像
+     *
+     * @param avaterUrl
+     */
+    private void loadAvater(String avaterUrl) {
+        // TODO: 2017-07-28  使用了全局的上下文对象，不受Activity生命周期的影响，容易发生内存泄露
+        Glide.with(App.getContext())
+                .load(avaterUrl)
+                .placeholder(R.drawable.ic_avater_default)
+                .centerCrop()
+                .dontAnimate()
+                .into(new ViewTarget<View, GlideDrawable>(civ_avater) {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
 
+                        civ_avater.setImageDrawable(resource.getCurrent());
+
+                    }
+                });
+
+    }
+
+    @Override
+    protected void onResume() {
+        //重新回到这个页面的时候进行用户状态的检查
+        mPresenter.checkUserCurrentStatus(this);
+        super.onResume();
     }
 
     /**
@@ -324,10 +358,22 @@ public class HomeActivity extends BaseActivity
 
 
     @Override
+    public void showLoadingDialog() {
+
+    }
+
+    @Override
+    public void cancelLoadingDialog() {
+
+    }
+
+    @Override
     protected void onDestroy() {
         //移除观察者
         UserInfoSubject.getInstance().detach(HomeActivity.class.getSimpleName());
         super.onDestroy();
 
     }
+
+
 }

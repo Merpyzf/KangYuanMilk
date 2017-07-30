@@ -19,7 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.ui.login.bean.User;
+import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.contract.IRegisterContract;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.RegisterPresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.HashHelper;
@@ -29,7 +29,10 @@ import butterknife.BindView;
 
 import static com.merpyzf.kangyuanmilk.R.layout.activity_register;
 
-
+/**
+ * 用户注册
+ * @author wangke
+ */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener, IRegisterContract.IRegisterView, View.OnFocusChangeListener {
 
     @BindView(R.id.cardview_input)
@@ -319,9 +322,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onDestroy() {
+
         mRegisterPresenter.detachView();
-
-
         super.onDestroy();
 
     }

@@ -112,18 +112,6 @@
                     />
             </android.support.design.widget.TextInputLayout>
 
-            <CheckBox
-                android:id="@+id/cb_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cb_save"
-                android:textSize="13sp"
-                android:textColor="#c5c5c5"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="5dp"
-                />
-
-
 
             <Button
                 android:id="@+id/btn_login"
@@ -143,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/tv_find_pwd"
                 android:textColor="#c5c5c5"
                 android:textSize="13sp"

@@ -34,28 +34,11 @@
 
         <!-- 主界面 -->
         <activity
-            android:name=".ui.HomeActivity"
+            android:name=".ui.user.HomeActivity"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/TransStatusBarTheme">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-
         </activity>
-
-
-        <activity android:name=".ui.login.TestActivity">
-
-
-
-        </activity>
-
-
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
@@ -70,7 +53,7 @@
             android:name=".ui.login.RegisterActivity"
             android:label="@string/activity_register_label"
             android:theme="@style/Translucent"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
         <!-- 图片剪切框架 -->
         <activity
@@ -93,9 +76,15 @@
 
         <activity
             android:name=".ui.user.UserHomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ui.TestAddressActivity"
+            android:theme="@style/AppTheme"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

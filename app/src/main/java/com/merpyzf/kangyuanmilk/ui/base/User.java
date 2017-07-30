@@ -1,29 +1,45 @@
-package com.merpyzf.kangyuanmilk.ui.login.bean;
+package com.merpyzf.kangyuanmilk.ui.base;
 
-import java.util.Date;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Created by wangke on 2017-07-22.
  * 用户信息
  */
-
+@DatabaseTable(tableName = "tab_user")
 public class User {
 
-    private String user_name;
+    @DatabaseField(generatedId = true)
+    private int _id;
+    @DatabaseField(columnName = "user_id")
     private int user_id;
+    @DatabaseField(columnName = "user_name")
+    private String user_name;
+    @DatabaseField(columnName = "user_pwd")
     private String user_pwd;
+    @DatabaseField(columnName = "user_tel")
     private String user_tel;
+    @DatabaseField(columnName = "user_idcard")
     private String user_idcard;
+    @DatabaseField(columnName = "address_content")
     private String address_content;
+    @DatabaseField(columnName = "user_head")
     private String user_head;
-    private Boolean user_sex;
-    private Date user_registerdate;
+    @DatabaseField(columnName = "user_sex")
+    private boolean user_sex;
+    @DatabaseField(columnName = "user_registerdate")
+    private String user_registerdate;
+    @DatabaseField(columnName = "remark")
     private String remark;
 
 
-    public User(String user_name, int user_id, String user_pwd, String user_tel, String user_idcard, String address_content, String user_head, Boolean user_sex, Date user_registerdate, String remark) {
-        this.user_name = user_name;
+    public User(int _id, int user_id, String user_name, String user_pwd, String user_tel,
+                String user_idcard, String address_content, String user_head, boolean user_sex,
+                String user_registerdate, String remark) {
+        this._id = _id;
         this.user_id = user_id;
+        this.user_name = user_name;
         this.user_pwd = user_pwd;
         this.user_tel = user_tel;
         this.user_idcard = user_idcard;
@@ -37,12 +53,12 @@ public class User {
     public User() {
     }
 
-    public String getUser_name() {
-        return user_name;
+    public int get_id() {
+        return _id;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public int getUser_id() {
@@ -51,6 +67,14 @@ public class User {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getUser_pwd() {
@@ -93,19 +117,19 @@ public class User {
         this.user_head = user_head;
     }
 
-    public Boolean getUser_sex() {
+    public boolean isUser_sex() {
         return user_sex;
     }
 
-    public void setUser_sex(Boolean user_sex) {
+    public void setUser_sex(boolean user_sex) {
         this.user_sex = user_sex;
     }
 
-    public Date getUser_registerdate() {
+    public String getUser_registerdate() {
         return user_registerdate;
     }
 
-    public void setUser_registerdate(Date user_registerdate) {
+    public void setUser_registerdate(String user_registerdate) {
         this.user_registerdate = user_registerdate;
     }
 

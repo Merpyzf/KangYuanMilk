@@ -2,7 +2,8 @@ package com.merpyzf.kangyuanmilk.ui.login.model;
 
 import com.merpyzf.kangyuanmilk.common.api.KangYuanApi;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
-import com.merpyzf.kangyuanmilk.ui.login.bean.User;
+import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
 
 import io.reactivex.Observable;
@@ -30,6 +31,13 @@ public class LoginModelImpl implements ILoginModel {
         return serviceInstance.login(user).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread());
+    }
+    @Override
+    public Observable<MessageBean> userAvater(User user) {
 
+
+        return RetrofitFactory.getServiceInstance().getUserAvater(user)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
     }
 }

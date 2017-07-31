@@ -34,7 +34,6 @@ import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.HomePresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
-import com.merpyzf.kangyuanmilk.utils.db.dao.AddressDao;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 
 import butterknife.BindView;
@@ -102,9 +101,6 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void initData() {
-
-        AddressDao.getInstance().getProvinceList();
-
 
         //注册一个观察者
         UserInfoSubject.getInstance().attach(HomeActivity.class.getSimpleName(), this);

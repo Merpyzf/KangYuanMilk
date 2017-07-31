@@ -6,6 +6,7 @@
     tools:context="com.merpyzf.kangyuanmilk.ui.TestAddressActivity">
 
     <com.merpyzf.kangyuanmilk.common.widget.AddressSelectorView
+        android:id="@+id/addressSelectorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

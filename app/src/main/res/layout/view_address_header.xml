@@ -21,26 +21,41 @@
                 android:id="@+id/tv_provnice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:text="江苏省"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:text="徐州市"
-                android:textSize="18sp" />
+                android:visibility="gone"
+                android:textSize="16sp" />
 
 
             <TextView
                 android:id="@+id/tv_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:text="沛县"
-                android:textSize="18sp" />
+                android:visibility="gone"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_town"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="魏庙镇"
+                android:visibility="gone"
+                android:textSize="16sp" />
+
+
+
+
 
         </LinearLayout>
 

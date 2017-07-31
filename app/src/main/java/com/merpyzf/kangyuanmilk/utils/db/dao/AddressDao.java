@@ -32,7 +32,7 @@ public class AddressDao {
             InputStream is = App.getContext().getAssets().open("address.db");
 
 //            App.getContext().getDataDir() api24以上才有的方法
-            File dbFile = new File("/data/data/"+ App.getContext().getPackageName()+"/databases","address.ad");
+            File dbFile = new File("/data/data/"+ App.getContext().getPackageName()+"/databases","address.db");
 
             if (!dbFile.exists()) {
 
@@ -92,22 +92,14 @@ public class AddressDao {
      * //获取所有的省份
      * @return
      */
-    public List<Address> getProvinceList(){
+    public List<Address> getAddressList(int parentId){
 
         List<Address> provinceList = null;
         try {
-            provinceList = mDao.queryForEq("parentId", 0);
+            provinceList = mDao.queryForEq("parentId", parentId);
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
-
-    /*    provinceList.forEach(address -> {
-
-            LogHelper.i("省份==>"+address.getName());
-
-        });*/
-
-
 
         return provinceList;
 

@@ -25,8 +25,6 @@ import java.util.List;
 
 import butterknife.BindView;
 
-import static android.R.attr.country;
-
 /**
  * Created by wangke on 2017-07-30.
  * 仿照 有物app 地址选择组件开发,移除了一些自己不喜欢的功能
@@ -190,7 +188,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
 
                 }
 
-                currentChoice = country;
+                currentChoice = COUNTRY;
                 break;
 
             case R.id.tv_town:
@@ -308,6 +306,15 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                 tv_country.setText(address.getName());
                 tv_town.setTag(address.getId());
 
+
+                //当重新选择城市的时候执行下面的逻辑
+                if (townAddress != null) {
+
+                    townAddress = null;
+
+                }
+
+
                 if (addressList.size() == 0) {
 
                     if (mOnAddressSelectListenter != null) {
@@ -315,8 +322,8 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                         mOnAddressSelectListenter.onSelected(provinceAddress.getName() + " " +
                                         cityAddress.getName() + " " + countryAddress.getName(),
                                 countryAddress.getId());
-
                     }
+
                     startIndicatorAnimator(tv_country);
                     return;
                 }
@@ -326,6 +333,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                 startIndicatorAnimator(tv_town);
 
                 currentChoice = TOWN;
+
                 break;
 
 

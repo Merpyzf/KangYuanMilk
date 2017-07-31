@@ -182,6 +182,8 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                 if (view.getTag() != null) {
 
                     List<Address> countryAddressList = AddressDao.getInstance().getAddressList((int) view.getTag());
+
+
                     mAddressAdapter.resetData(countryAddressList);
                     int index = getAddressIndex(countryAddressList, countryAddress);
                     moveToPosition(index, recyclerView);
@@ -437,17 +439,20 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
     private int getAddressIndex(List<Address> addressList, Address address) {
         int index = 0;
 
-        for (int i = 0; i < addressList.size(); i++) {
+        if(address!=null) {
 
-            int id = addressList.get(i).getId();
+            for (int i = 0; i < addressList.size(); i++) {
 
-            if (id == address.getId()) {
+                int id = addressList.get(i).getId();
 
-                return index;
+                if (id == address.getId()) {
+
+                    return index;
+                }
+
+                index++;
+
             }
-
-            index++;
-
         }
 
         return 0;

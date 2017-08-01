@@ -37,8 +37,7 @@
             android:name=".ui.user.HomeActivity"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
-            android:theme="@style/TransStatusBarTheme">
-        </activity>
+            android:theme="@style/TransStatusBarTheme"></activity>
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
@@ -76,10 +75,14 @@
 
         <activity
             android:name=".ui.user.UserHomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.TestAddressActivity"
-            android:theme="@style/AppTheme"
-            >
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.TestAddressActivity"
+            android:theme="@style/AppTheme">
+
+        </activity>
+        <activity android:name=".ui.SearchActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

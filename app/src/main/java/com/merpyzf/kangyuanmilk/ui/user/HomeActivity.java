@@ -29,6 +29,7 @@ import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
+import com.merpyzf.kangyuanmilk.ui.home.SearchActivity;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.HomePresenterImpl;
@@ -91,6 +92,11 @@ public class HomeActivity extends BaseActivity
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
 
+
+
+
+
+
     }
 
     @Override
@@ -123,6 +129,9 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+
+            startActivity(new Intent(this, SearchActivity.class));
+
             return true;
         }
 
@@ -151,7 +160,7 @@ public class HomeActivity extends BaseActivity
             //注销登录
             case R.id.nav_logout:
 
-                if (UserDao.getInstance(App.getContext()).getUserInfo() != null) {
+                if (UserDao.getInstance().getUserInfo() != null) {
 
                     new MaterialDialog.Builder(this)
                             .title(R.string.dialog_logout)
@@ -160,7 +169,7 @@ public class HomeActivity extends BaseActivity
                             .negativeText(R.string.dialog_logout_negative)
                             .onPositive((dialog, which) -> {
                                 //清除用户的个人信息，但不包括保存的用户名和密码
-                                UserDao userDao = UserDao.getInstance(App.getContext());
+                                UserDao userDao = UserDao.getInstance();
                                 userDao.clearUser();
 
                                 SharedPreHelper.clearLoginInfo();
@@ -266,7 +275,7 @@ public class HomeActivity extends BaseActivity
         });
         LogHelper.i("更新UI");
         //从数据库中获取用户当前的信息(使用application的上下文对象而不是当前Activity对象避免内存泄露(单列模式需要注意的地方))
-        UserDao userDao = UserDao.getInstance(App.getContext());
+        UserDao userDao = UserDao.getInstance();
         User user = userDao.getUserInfo();
         if (user == null) {
             //未登录状态
@@ -303,7 +312,7 @@ public class HomeActivity extends BaseActivity
     public void update() {
         LogHelper.i("HomeActivity==> 更新头像了");
         //更新用户的头像和用户名
-        UserDao userDao = UserDao.getInstance(App.getContext());
+        UserDao userDao = UserDao.getInstance();
         User user = userDao.getUserInfo();
         loadAvater(user.getUser_head());
     }

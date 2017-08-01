@@ -37,7 +37,15 @@
             android:name=".ui.user.HomeActivity"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
-            android:theme="@style/TransStatusBarTheme"></activity>
+            android:theme="@style/TransStatusBarTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
@@ -81,13 +89,12 @@
             android:theme="@style/AppTheme">
 
         </activity>
-        <activity android:name=".ui.SearchActivity">
+        <activity android:name=".ui.home.SearchActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"
+            >
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

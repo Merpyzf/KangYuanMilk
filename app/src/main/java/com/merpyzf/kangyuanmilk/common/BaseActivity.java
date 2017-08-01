@@ -38,6 +38,11 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             initData();
         }
 
+        Context applicationContext = getApplicationContext();
+
+        App app = (App) applicationContext;
+
+
     }
 
 

@@ -1,6 +1,5 @@
 package com.merpyzf.kangyuanmilk.ui.user.model;
 
-import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
@@ -26,7 +25,7 @@ public class UserHomeModelImpl implements IUserHomeModel {
     @Override
     public User getUserInfo() {
 
-        UserDao dao = UserDao.getInstance(App.getContext());
+        UserDao dao = UserDao.getInstance();
         User user = dao.getUserInfo();
 
         return user;
@@ -39,7 +38,7 @@ public class UserHomeModelImpl implements IUserHomeModel {
     @Override
     public void updateUserInfo(User user) {
 
-        UserDao dao = UserDao.getInstance(App.getContext());
+        UserDao dao = UserDao.getInstance();
         dao.updateUser(user);
 
         try {

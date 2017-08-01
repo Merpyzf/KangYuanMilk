@@ -5,10 +5,10 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 
 import com.merpyzf.kangyuanmilk.common.App;
-import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 import net.qiujuer.genius.ui.Ui;
 
@@ -26,7 +26,7 @@ public class SearchViewHelper {
             float radius = (float) Math.hypot(cardView.getWidth(), cardView.getHeight());
 
             Animator circularReveal = ViewAnimationUtils.createCircularReveal(cardView, cardView.getWidth(), (int) Ui.dipToPx(App.getContext().getResources(), 20), radius, 0);
-
+            circularReveal.setInterpolator(new AccelerateInterpolator());
             circularReveal.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
@@ -53,7 +53,7 @@ public class SearchViewHelper {
             });
 
 
-            circularReveal.setDuration(1000).start();
+            circularReveal.setDuration(600).start();
 
             //执行显示动画
         } else {
@@ -61,11 +61,9 @@ public class SearchViewHelper {
             float radius = (float) Math.hypot(cardView.getWidth(), cardView.getHeight());
 
             Animator circularReveal = ViewAnimationUtils.createCircularReveal(cardView, cardView.getWidth(), (int) Ui.dipToPx(App.getContext().getResources(), 20), 0, radius);
-
             cardView.setVisibility(View.VISIBLE);
-
-            circularReveal.setDuration(1000).start();
-
+            circularReveal.setInterpolator(new AccelerateInterpolator());
+            circularReveal.setDuration(600).start();
             circularReveal.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {

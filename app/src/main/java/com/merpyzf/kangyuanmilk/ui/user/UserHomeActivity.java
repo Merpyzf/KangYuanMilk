@@ -68,7 +68,7 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
         //appbar默认为展开状态
         appbar.setExpanded(true);
         //展示用户信息
-        showUserInfo(UserDao.getInstance(App.getContext()).getUserInfo());
+        showUserInfo(UserDao.getInstance().getUserInfo());
 
 
     }
@@ -272,7 +272,7 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
      */
     @Override
     public void update() {
-        User userInfo = UserDao.getInstance(App.getContext()).getUserInfo();
+        User userInfo = UserDao.getInstance().getUserInfo();
 
         LogHelper.i("上传的更新的用户头像==>"+userInfo.getUser_head());
 

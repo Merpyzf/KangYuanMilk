@@ -1,6 +1,5 @@
 package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
-import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.User;
@@ -153,7 +152,7 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
         LogHelper.i("需要保存的用户信息==>:" + user.getUser_name());
 
-        UserDao userDao = UserDao.getInstance(App.getContext());
+        UserDao userDao = UserDao.getInstance();
         //保存用户信息
         userDao.createUser(user);
     }

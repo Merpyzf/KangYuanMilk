@@ -296,7 +296,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
      *
      * @param <Data>
      */
-    interface ItemClickListener<Data> {
+    public interface ItemClickListener<Data> {
         void onItemClick(ViewHolder viewHolder, Data data, int position);
 
         boolean onItemLongClick(ViewHolder viewHolder, Data data, int position);

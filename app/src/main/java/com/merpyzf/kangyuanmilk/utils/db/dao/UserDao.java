@@ -1,9 +1,8 @@
 package com.merpyzf.kangyuanmilk.utils.db.dao;
 
-import android.content.Context;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.UpdateBuilder;
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
@@ -28,14 +27,14 @@ public class UserDao {
 
     }
 
-    public static UserDao getInstance(Context context) {
+    public static UserDao getInstance() {
 
         if (userDao == null) {
             synchronized (Object.class) {
 
                 if (userDao == null) {
 
-                    DBHelper dbHelper = DBHelper.getSingleInstance(context);
+                    DBHelper dbHelper = DBHelper.getSingleInstance(App.getContext());
                     dao = dbHelper.getDao(User.class);
                     userDao = new UserDao();
                 }

@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.mob.MobSDK;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -36,8 +35,18 @@ public class App extends Application {
         mRefWatcher = LeakCanary.install(this);
         MobSDK.init(this, this.a(), this.b());
         context = getApplicationContext();
-        LogHelper.i("App中的额onCreate方法执行了");
+
     }
+
+    /**
+     * 返回上下文对象
+     * @return context
+     */
+    public static Context getContext(){
+
+        return context;
+    }
+
 
     public static App getInstance() {
         return instance;
@@ -74,13 +83,6 @@ public class App extends Application {
 
     }
 
-    /**
-     * 返回上下文对象
-     * @return context
-     */
-    public static Context getContext(){
 
-        return context;
-    }
 
 }

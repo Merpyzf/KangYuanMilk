@@ -9,6 +9,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.home.model.SearchBean;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -61,6 +62,8 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         try {
 
             TableUtils.createTable(connectionSource, User.class);
+            //创建tab_search 存放历史搜索记录
+            TableUtils.createTable(connectionSource, SearchBean.class);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,6 +84,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource,User.class, true);
+            TableUtils.dropTable(connectionSource, SearchBean.class,true);
             onCreate(sqLiteDatabase, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

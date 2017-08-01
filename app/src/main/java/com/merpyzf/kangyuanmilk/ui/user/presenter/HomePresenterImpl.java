@@ -1,6 +1,5 @@
 package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
-import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
@@ -81,9 +80,9 @@ public class HomePresenterImpl extends BasePresenter<IHomeContract.IHomeView> im
 
                                         LogHelper.i("更新前的头像==>"+user.getUser_head());
 
-                                        UserDao.getInstance(App.getContext())
+                                        UserDao.getInstance()
                                                 .updateUser(user);
-                                        LogHelper.i("更新后的头像==>"+UserDao.getInstance(App.getContext()).getUserInfo().getUser_head());
+                                        LogHelper.i("更新后的头像==>"+UserDao.getInstance().getUserInfo().getUser_head());
                                         mMvpView.updateUserInfo();
                                     }else {
                                         //处于异常状态

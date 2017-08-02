@@ -16,11 +16,15 @@
     <string name="cb_save">保存登陆信息</string>
     <string name="edt_hint_pwd">密码</string>
     <string name="please_wait_login">Please wait...</string>
+    <string name="please_wait_save">Please wait...</string>
     <string name="progress_dialog_register">拼命请求网络中</string>
     <string name="dialog_logout">注销登录</string>
     <string name="dialog_logout_content">注销登陆后将会清除你的个人信息，确认要注销登录？</string>
     <string name="action_editor">编辑资料</string>
     <string name="action_logout">退出登录</string>
+    <string name="diaolog_gender">选择性别</string>
+    <string name="dialog_gender_btn_positive">确定</string>
+    <string name="dialog_gender_btn_negative">取消</string>
 
 
 </resources>

@@ -26,7 +26,6 @@
                 android:gravity="center"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/ic_touch_menu"
                 android:textSize="16sp" />
 
             <TextView
@@ -38,7 +37,6 @@
                 android:textSize="16sp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/ic_touch_menu"
                 android:visibility="gone" />
 
 
@@ -51,7 +49,6 @@
                 android:textSize="16sp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/ic_touch_menu"
                 android:visibility="gone" />
 
             <TextView
@@ -63,7 +60,6 @@
                 android:textSize="16sp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/ic_touch_menu"
                 android:visibility="gone" />
 
 

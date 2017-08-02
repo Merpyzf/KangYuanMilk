@@ -64,8 +64,7 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
         if (!checkHaveAllPermis(context)) {
 
-            new ApplyPermissionFragment().show(fragmentManager, "tag");
-
+            show(fragmentManager, "tag");
 
         }
     }
@@ -84,8 +83,6 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
         initData();
         //刚进入页面时先检查权限但不申请权限
         checkAndRequest(false);
-
-
 
 
         return view;
@@ -108,7 +105,7 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
         //读取sdk权限
         mPermsList.add(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE});
         //读取短信的权限
-        mPermsList.add( new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS});
+        mPermsList.add(new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS});
 
 
     }
@@ -222,6 +219,7 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
     /**
      * 刷新界面权限的状态
+     *
      * @param requestCode 权限申请时的请求码
      * @param isGranted   权限是否授予
      */

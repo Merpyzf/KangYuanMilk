@@ -91,10 +91,7 @@ public class HomeActivity extends BaseActivity
         //填充HomeFragment
         getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
-
-
-
-
+        toolbar.post(() -> toolbar.setTitle("主页"));
 
 
     }
@@ -204,12 +201,21 @@ public class HomeActivity extends BaseActivity
             //底部导航菜单的事件监听
             case R.id.action_home:
 
+                toolbar.setTitle("主页");
+
                 break;
 
             case R.id.action_goods:
 
+                toolbar.setTitle("商品");
+
+
                 break;
             case R.id.action_shopping_cart:
+
+                toolbar.setTitle("购物车");
+
+
                 break;
 
             default:
@@ -264,11 +270,11 @@ public class HomeActivity extends BaseActivity
 
                     //共享元素动画
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomeActivity.this, civ_avater, civ_avater.getTransitionName());
-                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class), options.toBundle());
+                    startActivity(new Intent(HomeActivity.this, UserInfoActivity.class), options.toBundle());
 
                 } else {
 
-                    startActivity(new Intent(HomeActivity.this, UserHomeActivity.class));
+                    startActivity(new Intent(HomeActivity.this, UserInfoActivity.class));
                 }
 
             }

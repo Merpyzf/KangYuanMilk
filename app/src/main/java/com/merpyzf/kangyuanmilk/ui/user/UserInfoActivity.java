@@ -1,15 +1,20 @@
 package com.merpyzf.kangyuanmilk.ui.user;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
@@ -24,20 +29,21 @@ import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
 import com.merpyzf.kangyuanmilk.ui.base.User;
-import com.merpyzf.kangyuanmilk.ui.user.contract.IUserHomeContract;
-import com.merpyzf.kangyuanmilk.ui.user.presenter.UserHomePresenterImpl;
+import com.merpyzf.kangyuanmilk.ui.user.contract.IUserInfoContract;
+import com.merpyzf.kangyuanmilk.ui.user.presenter.UserInfoPresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.TimeHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.yalantis.ucrop.UCrop;
 
 import butterknife.BindView;
 
 /**
- * 用户信息主页
+ * 用户资料
  *
  * @author wangke
  */
-public class UserHomeActivity extends BaseActivity implements IUserHomeContract.IUserHomeView, View.OnClickListener, Observer {
+public class UserInfoActivity extends BaseActivity implements IUserInfoContract.IUserInfoView, View.OnClickListener, Observer {
 
     @BindView(R.id.toolbar_user)
     Toolbar toolbar;
@@ -47,9 +53,26 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
     AvaterView civ_avater;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsing_toolbar;
+
+    @BindView(R.id.tv_gender)
+    TextView tv_gender;
+    @BindView(R.id.tv_tel)
+    TextView tv_tel;
+    @BindView(R.id.tv_defalut_address)
+    TextView tv_default_address;
+    @BindView(R.id.tv_identity)
+    TextView tv_identity;
+    @BindView(R.id.tv_reg_date)
+    TextView tv_reg_date;
+    @BindView(R.id.tv_edit)
+    TextView tv_edit;
+    @BindView(R.id.cardView)
+    CardView cardView;
+
+
     private MaterialDialog mMaterialDialog;
     private GalleryFragment mGalleryFragment;
-    private UserHomePresenterImpl mPresenter;
+    private UserInfoPresenterImpl mPresenter;
 
 
     @Override
@@ -80,17 +103,21 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
         //设置toolbar返回按钮的事件
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
         civ_avater.setOnClickListener(this);
+        tv_edit.setOnClickListener(this);
+
+        showEnterAnimation();
+
 
     }
 
     @Override
     protected void initData() {
         super.initData();
-        mPresenter = new UserHomePresenterImpl();
+        mPresenter = new UserInfoPresenterImpl();
         mPresenter.attachView(this);
 
         //添加观察者对象
-        UserInfoSubject.getInstance().attach(UserHomeActivity.class.getSimpleName(), this);
+        UserInfoSubject.getInstance().attach(UserInfoActivity.class.getSimpleName(), this);
 
     }
 
@@ -142,9 +169,10 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //加载菜单
-        getMenuInflater().inflate(R.menu.user_home, menu);
+        getMenuInflater().inflate(R.menu.menu_user_info, menu);
         return true;
     }
+
     /**
      * menu菜单的监听事件
      *
@@ -190,12 +218,13 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
     public void showGallery() {
 
         mGalleryFragment = new GalleryFragment();
-        mGalleryFragment.show(getSupportFragmentManager(), UserHomeActivity.class.getSimpleName());
+        mGalleryFragment.show(getSupportFragmentManager(), UserInfoActivity.class.getSimpleName());
 
     }
 
     /**
      * 当前图片上传的进度，用来设置头像上传的动画
+     *
      * @param progress 图片上传的进度
      */
     @Override
@@ -233,6 +262,7 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
 
     /**
      * 展示用户信息
+     *
      * @param user 用户信息
      */
     @Override
@@ -241,6 +271,13 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
         showAvaterImg(user.getUser_head());
         //设置用户名
         collapsing_toolbar.setTitle(user.getUser_name());
+        tv_gender.setText(user.isUser_sex() == true ? "男" : "女");
+        tv_default_address.setText(user.getAddress_content());
+        tv_identity.setText(user.getUser_idcard());
+        tv_reg_date.setText(TimeHelper.getDateTime(Long.valueOf(user.getUser_registerdate())));
+        tv_tel.setText(user.getUser_tel());
+
+        LogHelper.i(user.toString());
 
     }
 
@@ -261,6 +298,12 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
 
                 break;
 
+            case R.id.tv_edit:
+
+                ModifyUserInfoActivity.showAction(this, null);
+
+                break;
+
         }
 
 
@@ -268,18 +311,27 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
 
 
     /**
-     *  观察者中的接口，当用户信息发生修改时,立即刷新
+     * 观察者中的接口，当用户信息发生修改时,立即刷新
      */
     @Override
     public void update() {
+
+
+        App.showToast("==》更新用户信息了");
+
         User userInfo = UserDao.getInstance().getUserInfo();
 
-        LogHelper.i("上传的更新的用户头像==>"+userInfo.getUser_head());
-
+        LogHelper.i("上传的更新的用户头像==>" + userInfo.getUser_head());
         //显示头像
         showAvaterImg(userInfo.getUser_head());
-        //更新用户
+        //更新用户i
         collapsing_toolbar.setTitle(userInfo.getUser_name());
+        //更新用户信息
+        showUserInfo(UserDao.getInstance().getUserInfo());
+
+
+
+
     }
 
     /**
@@ -406,8 +458,52 @@ public class UserHomeActivity extends BaseActivity implements IUserHomeContract.
     protected void onDestroy() {
         mPresenter.detachView();
         //移除当前activity对应的观察者对象
-        UserInfoSubject.getInstance().detach(UserHomeActivity.class.getSimpleName());
+        UserInfoSubject.getInstance().detach(UserInfoActivity.class.getSimpleName());
         super.onDestroy();
+    }
+
+    /**
+     * 入场时的动画监听
+     */
+    public void showEnterAnimation() {
+
+        getWindow().getEnterTransition().addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+
+                Animator revealAnimator = ViewAnimationUtils.
+                        createCircularReveal(cardView, (int) cardView.getX(), (int) cardView.getY(),
+                                0f, (float) Math.hypot(cardView.getWidth(), cardView.getHeight()));
+
+                revealAnimator.setDuration(800);
+
+                cardView.setVisibility(View.VISIBLE);
+                revealAnimator.start();
+
+
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        });
     }
 
 

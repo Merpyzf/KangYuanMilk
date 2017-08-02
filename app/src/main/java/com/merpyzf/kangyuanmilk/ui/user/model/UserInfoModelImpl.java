@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Administrator on 2017-07-27.
  */
 
-public class UserHomeModelImpl implements IUserHomeModel {
+public class UserInfoModelImpl implements IUserInfoModel {
     /**
      * 从数据库中读取用户的信息
      *
@@ -73,7 +73,7 @@ public class UserHomeModelImpl implements IUserHomeModel {
     public Observable<MessageBean> uploadAvater(User user) {
 
         return RetrofitFactory.getServiceInstance()
-                .upLoadAvater(user)
+                .updateUserInfo(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

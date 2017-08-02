@@ -45,7 +45,7 @@ public interface KangYuanApi {
      * @return
      */
     @POST("user/update")
-    Observable<MessageBean> upLoadAvater(@Body User user);
+    Observable<MessageBean> updateUserInfo(@Body User user);
 
     @POST("user/getHead")
     Observable<MessageBean> getUserAvater(@Body User user);

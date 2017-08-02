@@ -9,7 +9,7 @@ import io.reactivex.Observable;
  * Created by Administrator on 2017-07-27.
  */
 
-public interface IUserHomeModel {
+public interface IUserInfoModel {
     /**
      * 获取用户信息
      *

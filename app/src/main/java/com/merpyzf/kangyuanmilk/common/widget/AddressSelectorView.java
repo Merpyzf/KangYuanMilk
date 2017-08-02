@@ -85,16 +85,20 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
      */
     private void init(Context context) {
         setOrientation(VERTICAL);
+
+        LayoutParams param = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT);
+
+        setLayoutParams(param);
+
+
         viewHeader = LayoutInflater.from(context)
                 .inflate(R.layout.view_address_header, this, false);
         addView(viewHeader);
         View viewContent = LayoutInflater.from(context)
                 .inflate(R.layout.view_address_content, this, false);
         addView(viewContent);
-        LinearLayout.LayoutParams layoutParams = (LayoutParams) viewContent.getLayoutParams();
-        layoutParams.weight = 1;
-        layoutParams.height = 0;
-        setLayoutParams(layoutParams);
 
         tv_province = viewHeader.findViewById(R.id.tv_provnice);
         tv_province.setOnClickListener(this);
@@ -447,7 +451,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
     private int getAddressIndex(List<Address> addressList, Address address) {
         int index = 0;
 
-        if(address!=null) {
+        if (address != null) {
 
             for (int i = 0; i < addressList.size(); i++) {
 

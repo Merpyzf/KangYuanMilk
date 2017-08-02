@@ -56,11 +56,6 @@ public class UserDao {
             dao.createOrUpdate(user);
             long count = dao.queryBuilder().countOf();
 
-            int _id = getUserInfo().get_id();
-
-            LogHelper.i("user_id==>  "+_id);
-
-            LogHelper.i("用户信息的数量: " + count);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +75,7 @@ public class UserDao {
             user.set_id(id);
             int update = dao.update(user);
             int _id = getUserInfo().get_id();
-            LogHelper.i("更新结果==>"+update);
+            LogHelper.i("更新结果==>"+update+"_id==>"+_id);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -174,8 +169,10 @@ public class UserDao {
 
             userList = dao.queryForAll();
 
-            if (userList.size() == 1) {
-                user = userList.get(0);
+            LogHelper.i("userList==>size==>"+userList.size());
+
+            if (userList.size() >= 1) {
+                user = userList.get(userList.size()-1);
 
                 LogHelper.i("用户名==>" + user.getUser_name());
             }

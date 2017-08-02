@@ -29,6 +29,13 @@ public class SearchPresenterImpl extends BasePresenter<ISearchContract.ISearchVi
     @Override
     public void searchMilkListData(String info) {
 
+        //请求网络查询乳品列表
+
+
+
+
+
+
     }
 
     /**

@@ -18,18 +18,22 @@ public class ErrorHandleHelper {
     public static void handle(Throwable e, IBaseView view) {
 
         String message = e.getMessage();
+        view.cancelLoadingDialog();
 
         if(message.equals("404")){
 
             view.showErrorMsg("服务器异常: "+404);
 
+
         }else if(message.equals("500")){
 
             view.showErrorMsg("服务器异常: "+500);
 
+
         }else if(e instanceof UnknownHostException || e instanceof ConnectException){
 
             view.showErrorMsg("网络不可用!请检查网络连接!");
+
 
         }else if(e instanceof SocketTimeoutException){
 

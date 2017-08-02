@@ -30,7 +30,7 @@ public class UserInfoSubject extends Subject {
      */
     public void notifyChange() {
 
-        this.notifyObservers();
+        super.notifyObservers();
     }
 
     /**

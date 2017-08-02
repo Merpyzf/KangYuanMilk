@@ -31,6 +31,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="cc"
+            android:value="ceddce" />
 
         <!-- 主界面 -->
         <activity
@@ -38,13 +41,15 @@
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/TransStatusBarTheme">
+            <meta-data
+                android:name="key"
+                android:value="haha" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
@@ -82,20 +87,19 @@
             android:value="6d83934ee009eaeb2f887234b5899934" />
 
         <activity
-            android:name=".ui.user.UserHomeActivity"
+            android:name=".ui.user.UserInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.TestAddressActivity"
-            android:theme="@style/AppTheme">
-
-        </activity>
-        <activity android:name=".ui.home.SearchActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            >
-
-
-        </activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.home.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.StudyActivity"></activity>
+        <activity android:name=".ui.user.ModifyUserInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>

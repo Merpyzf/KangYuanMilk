@@ -2,11 +2,11 @@ package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.User;
-import com.merpyzf.kangyuanmilk.ui.user.UserHomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.UserInfoActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
-import com.merpyzf.kangyuanmilk.ui.user.contract.IUserHomeContract;
-import com.merpyzf.kangyuanmilk.ui.user.model.IUserHomeModel;
-import com.merpyzf.kangyuanmilk.ui.user.model.UserHomeModelImpl;
+import com.merpyzf.kangyuanmilk.ui.user.contract.IUserInfoContract;
+import com.merpyzf.kangyuanmilk.ui.user.model.IUserInfoModel;
+import com.merpyzf.kangyuanmilk.ui.user.model.UserInfoModelImpl;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
@@ -24,14 +24,14 @@ import io.reactivex.disposables.Disposable;
  * Created by wangke on 2017-07-27.
  */
 
-public class UserHomePresenterImpl extends BasePresenter<IUserHomeContract.IUserHomeView> implements IUserHomeContract.IUserHomePresenter {
+public class UserInfoPresenterImpl extends BasePresenter<IUserInfoContract.IUserInfoView> implements IUserInfoContract.IUserInfoPresenter {
 
 
-    private IUserHomeModel mModel;
+    private IUserInfoModel mModel;
 
-    public UserHomePresenterImpl() {
+    public UserInfoPresenterImpl() {
 
-        mModel = new UserHomeModelImpl();
+        mModel = new UserInfoModelImpl();
 
     }
 
@@ -41,7 +41,7 @@ public class UserHomePresenterImpl extends BasePresenter<IUserHomeContract.IUser
      * @param imagePath 要上传的文件的路径
      */
     @Override
-    public void upLoadAvater(UserHomeActivity context, String imagePath) {
+    public void upLoadAvater(UserInfoActivity context, String imagePath) {
 
         UpLoadHelper upLoadHelper = new UpLoadHelper();
 
@@ -80,7 +80,7 @@ public class UserHomePresenterImpl extends BasePresenter<IUserHomeContract.IUser
      * @param fileName 文件名 /avater/finemame
      */
     @Override
-    public void saveAvater(UserHomeActivity context, String fileName) {
+    public void saveAvater(UserInfoActivity context, String fileName) {
 
         //先上传到服务器，服务器上传成功之后然后再保存到本地数据库
         User user = mModel.getUserInfo();

@@ -3,16 +3,16 @@ package com.merpyzf.kangyuanmilk.ui.user.contract;
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
 import com.merpyzf.kangyuanmilk.ui.base.User;
-import com.merpyzf.kangyuanmilk.ui.user.UserHomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.UserInfoActivity;
 
 /**
  * Created by Administrator on 2017-07-27.
  */
 
-public interface IUserHomeContract {
+public interface IUserInfoContract {
 
 
-    interface IUserHomeView extends IBaseView{
+    interface IUserInfoView extends IBaseView{
 
         /**
          * AppBar中头像的动画,根据手指的滑动进行缩小和隐藏
@@ -65,19 +65,19 @@ public interface IUserHomeContract {
     }
 
 
-    interface IUserHomePresenter extends IBasePresenter<IUserHomeView>{
+    interface IUserInfoPresenter extends IBasePresenter<IUserInfoView>{
         /**
          * 上传头像
          *
          * @param imagePath 要上传的文件的路径
          */
-        void upLoadAvater(UserHomeActivity context,String imagePath);
+        void upLoadAvater(UserInfoActivity context, String imagePath);
 
         /**
          * 保存头像
          * @param fileName
          */
-        void saveAvater(UserHomeActivity context, String fileName);
+        void saveAvater(UserInfoActivity context, String fileName);
 
         /**
          * 获取用户信息

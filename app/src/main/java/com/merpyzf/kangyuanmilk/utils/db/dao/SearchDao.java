@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.utils.db.dao;
 import com.j256.ormlite.dao.Dao;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.home.model.SearchBean;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
 
 import java.sql.SQLException;
@@ -93,17 +94,20 @@ public class SearchDao {
 
         List<SearchBean> searchBeanList = getAllhistorySearchData();
 
-        searchBeanList.forEach(searchBean -> {
+        LogHelper.i("长度==》"+searchBeanList.size());
+
+
+        for(int i=0;i<searchBeanList.size();i++){
+
 
             try {
-                mDao.delete(searchBean);
-
+                mDao.delete(searchBeanList.get(i));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
+        }
 
-        });
 
 
     }

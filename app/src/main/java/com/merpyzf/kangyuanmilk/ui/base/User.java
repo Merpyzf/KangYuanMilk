@@ -140,5 +140,23 @@ public class User {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "_id=" + _id +
+                ", user_id=" + user_id +
+                ", user_name='" + user_name + '\'' +
+                ", user_pwd='" + user_pwd + '\'' +
+                ", user_tel='" + user_tel + '\'' +
+                ", user_idcard='" + user_idcard + '\'' +
+                ", address_content='" + address_content + '\'' +
+                ", user_head='" + user_head + '\'' +
+                ", user_sex=" + user_sex +
+                ", user_registerdate='" + user_registerdate + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }
 

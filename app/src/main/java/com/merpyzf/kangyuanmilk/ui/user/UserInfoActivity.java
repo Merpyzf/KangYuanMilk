@@ -24,6 +24,7 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.GalleryFragment;
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
@@ -268,6 +269,8 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     @Override
     public void showUserInfo(User user) {
 
+        LogHelper.i("update==>userTel: " + user.getUser_tel());
+
         showAvaterImg(user.getUser_head());
         //设置用户名
         collapsing_toolbar.setTitle(user.getUser_name());
@@ -316,7 +319,6 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     @Override
     public void update() {
 
-
         App.showToast("==》更新用户信息了");
 
         User userInfo = UserDao.getInstance().getUserInfo();
@@ -329,9 +331,6 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
         //更新用户信息
         showUserInfo(UserDao.getInstance().getUserInfo());
 
-
-
-
     }
 
     /**
@@ -343,7 +342,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
 
 
         Glide.with(this)
-                .load(avater)
+                .load(Common.OUTSIDE_CHAIN + avater)
                 .asBitmap()
                 .placeholder(R.drawable.ic_avater_default)
                 .centerCrop()

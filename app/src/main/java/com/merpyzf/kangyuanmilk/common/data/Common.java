@@ -17,8 +17,7 @@ public class Common {
 
     //存储用户信息的数据库名
     public static final String USER_DB_NAME = "user.db";
-    //七牛云图床访问外链
-    public static final String OUTSIDE_CHAIN = "http://otdmrup4y.bkt.clouddn.com";
-
+    //七牛云图床访问外链,默认
+    public static final String OUTSIDE_CHAIN = "http://otdmrup4y.bkt.clouddn.com/";
 
 }

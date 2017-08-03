@@ -282,10 +282,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         App.showToast(success);
 
         mLoginPresenter.saveLoginInfo(username, pwd);
-
         startActivity(new Intent(this, HomeActivity.class));
-
-
     }
 
     /**

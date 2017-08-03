@@ -43,6 +43,8 @@ public class UserInfoPresenterImpl extends BasePresenter<IUserInfoContract.IUser
     @Override
     public void upLoadAvater(UserInfoActivity context, String imagePath) {
 
+
+
         UpLoadHelper upLoadHelper = new UpLoadHelper();
 
         //上传结果的回调
@@ -105,10 +107,9 @@ public class UserInfoPresenterImpl extends BasePresenter<IUserInfoContract.IUser
 
                                 //获取七牛云的图片外链
                                 String outChain = uploadAvaterBean.getResponse().getMessage();
-
                                 LogHelper.i("outChain==>" + outChain + fileName);
                                 //更新数据库中的用户信息
-                                user.setUser_head(outChain + fileName);
+                                user.setUser_head(fileName);
 
 
                                 mModel.updateUserInfo(user);

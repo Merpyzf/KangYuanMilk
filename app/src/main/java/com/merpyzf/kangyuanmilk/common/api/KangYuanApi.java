@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 
 public interface KangYuanApi {
 
-    String BASE_URL = "http://115.159.127.212:8080/KangYuanMilk/";
+    String BASE_URL = "http://115.159.127.212:8080/KangYuanMilk/android/";
 //    String BASE_URL = "http://192.168.0.57:8089/";
 
     /**
@@ -39,7 +39,6 @@ public interface KangYuanApi {
      */
     @POST("user/login")
     Observable<LoginBean> login(@Body User user);
-
     /**
      * 更新用户信息
      * @return
@@ -49,5 +48,4 @@ public interface KangYuanApi {
 
     @POST("user/getHead")
     Observable<MessageBean> getUserAvater(@Body User user);
-
 }

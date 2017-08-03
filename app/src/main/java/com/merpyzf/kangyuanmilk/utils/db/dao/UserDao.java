@@ -52,40 +52,42 @@ public class UserDao {
     public void createUser(User user) {
 
         try {
-
+            //请空所有的用户数据，保证数据只有一条
+            clearUser();
             dao.createOrUpdate(user);
             long count = dao.queryBuilder().countOf();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * 更新user中的所有列
-     *
      * @param user
      */
     public void updateUser(User user) {
 
         try {
-            int id = getUserInfo().get_id();
-            user.set_id(id);
             int update = dao.update(user);
-            int _id = getUserInfo().get_id();
-            LogHelper.i("更新结果==>"+update+"_id==>"+_id);
+
+            dao.updateBuilder()
+                    .updateColumnValue("user_name", user.getUser_name())
+                    .updateColumnValue("user_pwd", user.getUser_pwd())
+                    .updateColumnValue("user_head", user.getUser_head())
+                    .updateColumnValue("user_sex", user.isUser_sex())
+                    .updateColumnValue("user_idcard", user.getUser_idcard())
+                    .updateColumnValue("address_content", user.getAddress_content())
+                    .updateColumnValue("user_tel", user.getUser_tel())
+                    .updateColumnValue("remark", user.getRemark())
+                    .where()
+                    .eq("user_id", user.getUser_id());
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-
     /**
      * 更新user 指定列
-     *
      * @param map key - 列名
      *            value - 更新的内容
      */
@@ -105,7 +107,6 @@ public class UserDao {
                 e.printStackTrace();
             }
         }
-
         try {
 
             int update = updateBuilder.update();
@@ -117,7 +118,6 @@ public class UserDao {
         }
     }
 
-
     /**
      * 清除用户信息
      */
@@ -126,7 +126,7 @@ public class UserDao {
         try {
             List<User> userList = dao.queryForAll();
 
-            for(int i=0;i<userList.size();i++){
+            for (int i = 0; i < userList.size(); i++) {
 
 
                 User userBean = userList.get(i);
@@ -137,20 +137,13 @@ public class UserDao {
 
             }
 
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
-
 
     /**
      * 获取当前表中存储的用户数量
-     *
      * @return
      * @throws SQLException
      */
@@ -160,26 +153,22 @@ public class UserDao {
     }
 
 
+    /**
+     * 获取用户的信息从数据库中
+     * @return
+     */
     public User getUserInfo() {
-
         User user = null;
-
         try {
             List<User> userList = null;
-
             userList = dao.queryForAll();
-
-            LogHelper.i("userList==>size==>"+userList.size());
-
-            if (userList.size() >= 1) {
-                user = userList.get(userList.size()-1);
-
-                LogHelper.i("用户名==>" + user.getUser_name());
+            LogHelper.i("userList==>size==>" + userList.size());
+            if (userList.size() == 1) {
+                user = userList.get(0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return user;
 
     }

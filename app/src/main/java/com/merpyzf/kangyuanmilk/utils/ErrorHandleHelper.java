@@ -45,7 +45,7 @@ public class ErrorHandleHelper {
 
         }else {
 
-            view.showErrorMsg("服务器异常，错误能未捕获");
+            view.showErrorMsg(e.getMessage());
         }
     }
 

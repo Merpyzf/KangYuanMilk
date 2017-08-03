@@ -26,9 +26,8 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    //可以被修改
-    @BindView(R.id.edt_username)
-    EditText edt_username;
+    @BindView(R.id.tv_username)
+    TextView tv_username;
     @BindView(R.id.tv_gender)
     TextView tv_gender;
     //手机号码可以被修改
@@ -90,18 +89,11 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
         toolbar.setOnMenuItemClickListener(item -> {
 
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
 
                 case R.id.action_done:
-                    // TODO: 2017-08-02 用户名输入结束后进行是否重复的验证
 
                     User user = UserDao.getInstance().getUserInfo();
-
-                    String userName = edt_username.getText().toString().trim();
-                    if (userName.equals("")) {
-                        App.showToast("用户名不能为空");
-                        return true;
-                    }
 
                     String userTel = edt_tel.getText().toString().trim();
 
@@ -112,6 +104,7 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
                     if (!RegexHelper.regexPhoneNum(userTel)) {
 
                         App.showToast("手机号格式不正确");
+                        return true;
                     }
 
                     String userIdCard = edt_identity.getText().toString();
@@ -127,9 +120,7 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
                         return true;
                     }
 
-
                     user.setUser_tel(userTel);
-                    user.setUser_name(userName);
                     user.setUser_idcard(userIdCard);
                     user.setUser_sex(tv_gender.getText().toString().equals("男") ? true : false);
 
@@ -145,7 +136,6 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
 
             }
-
 
 
             return true;
@@ -222,13 +212,12 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
         //通知观察者更新
         UserInfoSubject.getInstance().notifyChange();
 
-
     }
 
     @Override
     public void showUserInfo(User user) {
 
-        edt_username.setText(user.getUser_name());
+        tv_username.setText(user.getUser_name());
         tv_gender.setText(user.isUser_sex() == true ? "男" : "女");
         tv_default_address.setText(user.getAddress_content());
         edt_identity.setText(user.getUser_idcard());

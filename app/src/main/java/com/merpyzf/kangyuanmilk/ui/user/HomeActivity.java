@@ -24,6 +24,7 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
@@ -248,7 +249,6 @@ public class HomeActivity extends BaseActivity
     }
 
 
-
     @Override
     public void showErrorMsg(String errorMsg) {
 
@@ -321,6 +321,7 @@ public class HomeActivity extends BaseActivity
         UserDao userDao = UserDao.getInstance();
         User user = userDao.getUserInfo();
         loadAvater(user.getUser_head());
+        tv_username.setText(user.getUser_name());
     }
 
     /**
@@ -331,7 +332,7 @@ public class HomeActivity extends BaseActivity
     private void loadAvater(String avaterUrl) {
         // TODO: 2017-07-28  使用了全局的上下文对象，不受Activity生命周期的影响，容易发生内存泄露
         Glide.with(App.getContext())
-                .load(avaterUrl)
+                .load(Common.OUTSIDE_CHAIN+avaterUrl)
                 .placeholder(R.drawable.ic_avater_default)
                 .centerCrop()
                 .dontAnimate()

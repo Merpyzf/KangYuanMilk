@@ -10,8 +10,14 @@ import io.reactivex.Observable;
  * Created by wangke on 2017-07-25.
  */
 
-public class RegisterModelImpl implements IRegisterModel{
+public class RegisterModelImpl implements IRegisterModel {
 
+    /**
+     * 新用户注册
+     *
+     * @param user user对象
+     * @return Observable<RegisterBean>
+     */
     @Override
     public Observable<RegisterBean> Register(User user) {
         return RetrofitFactory.getServiceInstance()
@@ -19,10 +25,16 @@ public class RegisterModelImpl implements IRegisterModel{
 
     }
 
+    /**
+     * 检查用户名是否重复
+     *
+     * @param user user对象
+     * @return Observable<RegisterBean>
+     */
     @Override
-    public Observable<RegisterBean> checkUserRepeat( User user) {
+    public Observable<RegisterBean> checkUserRepeat(User user) {
 
-        return  RetrofitFactory.getServiceInstance()
+        return RetrofitFactory.getServiceInstance()
                 .checkRepeat(user);
     }
 

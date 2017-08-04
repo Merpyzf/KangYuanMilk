@@ -3,7 +3,6 @@ package com.merpyzf.kangyuanmilk.ui.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -63,10 +62,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     TextInputLayout text_input_code;
 
 
-
-    private Context mContext;
-
-    private ISMSVerifyContract.ISMSVerifyPresenter mSmsVerifyPresenter = null;
+    private ISMSVerifyContract.ISMSVerifyPresenter mPresenter = null;
     private int mTime;
     private Timer timer;
     private SMSReceiver mSmsReceiver;
@@ -79,15 +75,14 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void initWidget() {
 
-        mContext = this;
-
     }
 
     @Override
     public void initEvent() {
 
         showEnterAnimation();
-        //注册一个广播接受者，进行解析短信中的验证码
+
+        //解析短信中的验证码
         IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
         mSmsReceiver = new SMSReceiver(edt_code);
         registerReceiver(mSmsReceiver, filter);
@@ -101,10 +96,8 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initData() {
 
-        mSmsVerifyPresenter = new SMSVerifyPresenterImpl();
-
-        LogHelper.i("view添加进去了");
-        mSmsVerifyPresenter.attachView(this);
+        mPresenter = new SMSVerifyPresenterImpl();
+        mPresenter.attachView(this);
     }
 
 
@@ -125,7 +118,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
                 if (RegexHelper.regexPhoneNum(phoneNum)) {
 
                     text_input_phone.setErrorEnabled(false);
-                    mSmsVerifyPresenter.getVerificationCode("86", phoneNum);
+                    mPresenter.getVerificationCode("86", phoneNum);
 
                 } else {
 
@@ -142,7 +135,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
                 if (code.length() == 4) {
 
                     //提交验证码进行验证
-                    mSmsVerifyPresenter.submitVerify(code);
+                    mPresenter.submitVerify(code);
 
                     text_input_code.setErrorEnabled(false);
 
@@ -164,7 +157,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     /**
      * 验证成功后的回调(子线程)
      *
-     * @param phoneNum
+     * @param phoneNum 待验证的手机号码
      */
     @Override
     public void verifySuccess(String phoneNum) {
@@ -172,7 +165,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
         //跳转到注册页面
         App.showToast(this, "跳转到注册页面");
 
-        runOnUiThread(()->{
+        runOnUiThread(() -> {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -189,8 +182,6 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
 
 
         });
-
-
 
 
     }
@@ -223,12 +214,13 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
                 runOnUiThread(() -> {
 
                     mTime--;
-                    btn_get_code.setText(mTime + "s 后重新获取");
+                    String countDown = mTime + getString(R.string.sms_verify_activity_countdown);
+                    btn_get_code.setText(countDown);
                     btn_get_code.setEnabled(false);
                     if (mTime == 0) {
 
                         btn_get_code.setEnabled(true);
-                        btn_get_code.setText("获取验证码");
+                        btn_get_code.setText(R.string.sms_verify_activity_getcode);
                         timer.cancel();
                     }
 
@@ -334,7 +326,6 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
         mAnimator.start();
 
 
-
     }
 
 
@@ -364,7 +355,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         LogHelper.i("view被移除");
-        mSmsVerifyPresenter.detachView();
+        mPresenter.detachView();
         unregisterReceiver(mSmsReceiver);
 
         if (timer != null) {

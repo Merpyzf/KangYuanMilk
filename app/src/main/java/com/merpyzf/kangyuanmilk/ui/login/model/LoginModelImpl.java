@@ -16,7 +16,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class LoginModelImpl implements ILoginModel {
 
-
+    /**
+     * 登录
+     *
+     * @param username 用户名
+     * @param pwd      密码
+     * @return Observable<LoginBean>
+     */
     @Override
     public Observable<LoginBean> login(String username, String pwd) {
 
@@ -32,12 +38,19 @@ public class LoginModelImpl implements ILoginModel {
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread());
     }
+
+    /**
+     * 获取用户头像
+     *
+     * @param user user对象
+     * @return Observable<LoginBean>
+     */
     @Override
     public Observable<MessageBean> userAvater(User user) {
 
 
         return RetrofitFactory.getServiceInstance().getUserAvater(user)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

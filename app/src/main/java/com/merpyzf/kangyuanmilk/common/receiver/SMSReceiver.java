@@ -23,9 +23,9 @@ public class SMSReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String action =  intent.getAction();
+        String action = intent.getAction();
 
-        if(action.equals("android.provider.Telephony.SMS_RECEIVED")) {
+        if (null != action && action.equals("android.provider.Telephony.SMS_RECEIVED")) {
 
             //获取短信内容,有可能一次发来多条短信
             Object[] objects = (Object[]) intent.getExtras().get("pdus");
@@ -38,7 +38,7 @@ public class SMSReceiver extends BroadcastReceiver {
                 String msgBody = msg.getDisplayMessageBody();
                 //获取发信人的电话号码
                 String originatingAddress = msg.getOriginatingAddress();
-                Log.i("wk","短信内容==>"+msgBody+" 来自==>"+originatingAddress);
+                Log.i("wk", "短信内容==>" + msgBody + " 来自==>" + originatingAddress);
 
                 Pattern pattern = Pattern.compile("(\\d+)");
                 Matcher matcher = pattern.matcher(msgBody);

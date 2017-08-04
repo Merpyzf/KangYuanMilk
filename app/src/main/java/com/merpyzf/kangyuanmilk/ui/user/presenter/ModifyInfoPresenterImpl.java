@@ -1,34 +1,23 @@
 package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
-import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.User;
-import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
 import com.merpyzf.kangyuanmilk.ui.user.ModifyUserInfoActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IModifyInfoContract;
 import com.merpyzf.kangyuanmilk.ui.user.model.IModifyInfoModel;
-import com.merpyzf.kangyuanmilk.ui.user.model.IUserInfoModel;
 import com.merpyzf.kangyuanmilk.ui.user.model.ModifyInfoModelImpl;
-import com.merpyzf.kangyuanmilk.ui.user.model.UserInfoModelImpl;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
-import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
-import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
-import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
 
 /**
+ * 短信验证
  * Created by wangke on 2017-08-02.
  */
 
@@ -42,6 +31,11 @@ public class ModifyInfoPresenterImpl extends BasePresenter<IModifyInfoContract.I
         mContext = context;
     }
 
+    /**
+     * 更新用户信息
+     *
+     * @param user 用户信息
+     */
     @Override
     public void updateUserInfo(User user) {
 
@@ -53,6 +47,7 @@ public class ModifyInfoPresenterImpl extends BasePresenter<IModifyInfoContract.I
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
+
                     @Override
                     public void onNext(@NonNull MessageBean messageBean) {
 
@@ -94,6 +89,9 @@ public class ModifyInfoPresenterImpl extends BasePresenter<IModifyInfoContract.I
                 });
     }
 
+    /**
+     * 获取用户信息从数据库中
+     */
     @Override
     public void getUserInfo() {
 

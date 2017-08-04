@@ -66,7 +66,7 @@ public abstract class BaseFragment extends RxFragment {
 
     /**
      * 获取传递过来的参数
-     * @param arguments
+     * @param arguments Fragment传递的参数
      */
     protected void initArgs(Bundle arguments) {
 
@@ -75,7 +75,7 @@ public abstract class BaseFragment extends RxFragment {
 
     /**
      * 获取Fragment的布局id
-     * @return
+     * @return fragment的layout
      */
     protected abstract int getContentLayoutId();
 

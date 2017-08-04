@@ -39,7 +39,7 @@ public abstract class BaseLazyFragment extends Fragment {
 
     /**
      * 当Fragment添加到Activity的时候最先调用此方法
-     * @param context
+     * @param context 上下文对象
      */
     @Override
     public void onAttach(Context context) {

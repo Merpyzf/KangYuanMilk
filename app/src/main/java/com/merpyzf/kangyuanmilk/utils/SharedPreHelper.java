@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.data.Common;
+import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 
 /**
  * Created by wangke on 17-7-24.
@@ -79,7 +80,7 @@ public class SharedPreHelper {
 
 
     /**
-     * 清除保存的登录信息
+     * 清除保存的用户信息
      */
     public static void clearLoginInfo() {
 
@@ -87,6 +88,7 @@ public class SharedPreHelper {
                 .edit()
                 .clear()
                 .commit();
+        UserDao.getInstance().clearUser();
 
     }
 

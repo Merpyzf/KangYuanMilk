@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.common;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.widget.AddressSelectorView;
-import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;
 
 import butterknife.BindView;
@@ -34,7 +34,7 @@ public class AddressPickerFragment extends BottomSheetDialogFragment {
 
     public void show(FragmentManager fragmentManager) {
 
-       show(fragmentManager, "tag");
+        show(fragmentManager, "tag");
 
     }
 
@@ -47,24 +47,16 @@ public class AddressPickerFragment extends BottomSheetDialogFragment {
 
         mUnbinder = ButterKnife.bind(this, view);
 
-        addressSelectorView.setOnAddressSelectListenter((address, id) -> {
-
+        addressSelectorView.setOnAddressSelectListenter((String address, int id) -> {
             dismiss();
-            LogHelper.i("地址==》" + address);
-
             if (mOnSelectorComplete != null) {
-
                 mOnSelectorComplete.selectedComplete(address, id);
-
             }
-
-
         });
-
-
         return view;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -78,15 +70,14 @@ public class AddressPickerFragment extends BottomSheetDialogFragment {
 
     }
 
-
+    /**
+     * 地址选择结束后的回调
+     */
     public interface OnSelectorComplete {
-
         void selectedComplete(String address, int id);
-
     }
 
     public void setOnSelectorComplete(OnSelectorComplete onSelectorComplete) {
         mOnSelectorComplete = onSelectorComplete;
-
     }
 }

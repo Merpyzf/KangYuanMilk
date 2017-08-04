@@ -35,6 +35,12 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
     }
 
+    /**
+     * 登录
+     * @param context Activity
+     * @param username 用户名
+     * @param pwd 密码
+     */
     @Override
     public void login(LoginActivity context, String username, String pwd) {
 
@@ -102,6 +108,11 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
     }
 
+    /**
+     * 当用户输入用户名结束的时候,获取头像
+     * @param context Activity
+     * @param user user对象
+     */
     @Override
     public void getAvater(LoginActivity context, User user) {
 
@@ -138,6 +149,11 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
     }
 
+    /**
+     * 保存登录信息(用户名,密码)
+     * @param username
+     * @param pwd
+     */
     @Override
     public void saveLoginInfo(String username, String pwd) {
 
@@ -146,12 +162,12 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
     }
 
+    /**
+     * 保存用户信息到数据库
+     * @param user user对象
+     */
     @Override
     public void saveUserInfo(User user) {
-
-
-        LogHelper.i("需要保存的用户信息==>:" + user.getUser_name());
-
         UserDao userDao = UserDao.getInstance();
         //保存用户信息
         userDao.createUser(user);

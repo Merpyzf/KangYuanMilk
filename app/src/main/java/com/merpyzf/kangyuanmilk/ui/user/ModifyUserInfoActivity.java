@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.EditText;
@@ -45,6 +46,18 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
     private IModifyInfoContract.IModifyInfoPresenter mPresenter = null;
     private MaterialDialog mMaterialDialog;
 
+    public static void showAction(Context context, Bundle bundle) {
+
+        Intent intent = new Intent(context, ModifyUserInfoActivity.class);
+        if (bundle != null) {
+
+            intent.putExtras(bundle);
+
+        }
+        context.startActivity(intent);
+
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_modify_user_info;
@@ -54,17 +67,19 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
     public void initWidget() {
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("个人资料修改");
-
+        ActionBar supportActionBar = getSupportActionBar();
+        //给toolbar设置标题
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setTitle("个人资料修改");
+        }
         mPickerFragment = new AddressPickerFragment();
-        tv_default_address.setOnClickListener(view -> mPickerFragment.show(getSupportFragmentManager()));
 
+        tv_default_address.setOnClickListener(view -> mPickerFragment.show(getSupportFragmentManager()));
     }
 
     @Override
     public void initEvent() {
-
 
         tv_gender.setOnClickListener(view -> new MaterialDialog.Builder(this)
                 .title(R.string.diaolog_gender)
@@ -122,8 +137,7 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
                     user.setUser_tel(userTel);
                     user.setUser_idcard(userIdCard);
-                    user.setUser_sex(tv_gender.getText().toString().equals("男") ? true : false);
-
+                    user.setUser_sex(tv_gender.getText().toString().equals("男"));
                     mPresenter.updateUserInfo(user);
 
                     break;
@@ -162,18 +176,21 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
         return super.onCreateOptionsMenu(menu);
     }
 
-    public static void showAction(Context context, Bundle bundle) {
+    /**
+     * 显示用户信息
+     * @param user 用户信息
+     */
+    @Override
+    public void showUserInfo(User user) {
 
-        Intent intent = new Intent(context, ModifyUserInfoActivity.class);
-        if (bundle != null) {
+        tv_username.setText(user.getUser_name());
+        tv_gender.setText(user.isUser_sex() ? "男" : "女");
+        tv_default_address.setText(user.getAddress_content());
+        edt_identity.setText(user.getUser_idcard());
+        edt_tel.setText(user.getUser_tel());
 
-            intent.putExtras(bundle);
-
-        }
-        context.startActivity(intent);
 
     }
-
 
     @Override
     public void showLoadingDialog() {
@@ -187,8 +204,6 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
 
     }
-
-
     @Override
     public void cancelLoadingDialog() {
 
@@ -214,17 +229,6 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
     }
 
-    @Override
-    public void showUserInfo(User user) {
-
-        tv_username.setText(user.getUser_name());
-        tv_gender.setText(user.isUser_sex() == true ? "男" : "女");
-        tv_default_address.setText(user.getAddress_content());
-        edt_identity.setText(user.getUser_idcard());
-        edt_tel.setText(user.getUser_tel());
-
-
-    }
 
     @Override
     protected void onDestroy() {

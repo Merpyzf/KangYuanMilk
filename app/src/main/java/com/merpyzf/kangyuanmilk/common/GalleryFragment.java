@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -43,10 +44,8 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     @BindView(R.id.fab_croup)
     FloatingActionButton fab_croup;
 
-    private LoaderManager loaderManager;
     private Unbinder unbinder;
     private Context mContext;
-
 
 
     @Override
@@ -56,7 +55,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         unbinder = ButterKnife.bind(this, view);
         mContext = getContext();
-        loaderManager = getActivity().getLoaderManager();
+        LoaderManager loaderManager = getActivity().getLoaderManager();
         //需要从外部传入一个loaderManager对象进去，用于从数据库中读取图片,注意使用完之后一定要进行销毁
         galleryView.init(getContext(), loaderManager);
         galleryView.setMaxSelected(1);
@@ -65,6 +64,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
         return view;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //使用自己定义的dialog样式,避免顶部状态栏出现被dialog覆盖而变成黑色
@@ -73,17 +73,18 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
 
 
     /**
-     * 拍照结束时的一个回调,真实的调用发生在开启这个Fragment的Activity,需要在Activity中手动
-     * 调用onActivityResult方法
+     * 拍照结束时的回调,拍照完成后的回调发生在开启这个Fragment的Activity,需要在Activity中手动
+     * 调用当前Fragment中的onActivityResult方法
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode 请求码
+     * @param resultCode  返回码
+     * @param data        返回数据
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //刷新GalleryView将拍摄的图片加载进去
+
+        //刷新GalleryView将拍摄的图片添加进去
         galleryView.updatePhoto();
 
     }
@@ -94,13 +95,10 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
         if (count > 0) {
             //显示fab确定选择按钮
             showFab(fab_croup);
-            LogHelper.i("wk", "显示");
             //当点击Fab浮动按钮的时候进行图片的剪切
             fab_croup.setOnClickListener((view) -> {
 
-
                         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
 
                             File cacheDir = new File(mContext.getExternalCacheDir(), "temp");
                             if (!cacheDir.exists()) {
@@ -112,7 +110,6 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
                             Uri destUri = Uri.fromFile(tempFile);
                             //选择图的源文件
                             Uri sourceUri = Uri.fromFile(new File(imageList.get(0).getPath()));
-
                             UCrop.Options options = new UCrop.Options();
                             //设置裁切后生成的图片格式
                             options.setCompressionFormat(Bitmap.CompressFormat.PNG);
@@ -126,7 +123,6 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
                             options.setCropFrameColor(getResources().getColor(R.color.colorPrimary));
                             //设置toolbar的颜色
                             options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
-
                             //跳转到uCrop的裁切页面
                             UCrop.of(sourceUri, destUri)
                                     .withAspectRatio(1, 1)
@@ -134,7 +130,6 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
                                     .start(getActivity());
 
                         } else {
-
                             App.showToast("没有找到存储设备,请检查");
 
                         }
@@ -145,16 +140,16 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
             hideFab(fab_croup);
             LogHelper.i("wk", "隐藏");
         }
-
     }
 
+    /**
+     * 隐藏Fab浮动按钮
+     * @param view fab浮动按钮
+     */
     private void hideFab(View view) {
-
         Animator animator = AnimatorInflater.loadAnimator(getContext(), R.animator.anim_fab_hide);
         animator.setTarget(view);
         animator.setInterpolator(new AnticipateOvershootInterpolator());
-
-
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -182,26 +177,24 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
 
     }
 
+    /**
+     * 显示浮动按钮
+     * @param view fab浮动按钮
+     */
     private void showFab(View view) {
-
-
         Animator animator = AnimatorInflater.loadAnimator(getContext(), R.animator.anim_fab_show);
         animator.setTarget(view);
         animator.setInterpolator(new AnticipateOvershootInterpolator());
-
-
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
-                LogHelper.i("wk", "动画开始显示动画");
                 fab_croup.setVisibility(View.VISIBLE);
 
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-
 
             }
 
@@ -215,7 +208,6 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
 
             }
         });
-
         animator.start();
     }
 

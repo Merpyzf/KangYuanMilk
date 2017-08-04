@@ -38,11 +38,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             initData();
         }
 
-        Context applicationContext = getApplicationContext();
-
-        App app = (App) applicationContext;
-
-
     }
 
 
@@ -81,22 +76,21 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     /**
      * 创建控件的相关事件
      */
-    public void initEvent(){
+    public void initEvent() {
 
     }
 
     /**
      * 初始化数据
      */
-    protected  void initData(){
+    protected void initData() {
 
     }
 
     /**
      * 进行页面的跳转
      */
-    public void show(Context context,Bundle bundle) {
-
+    public void show(Context context, Bundle bundle) {
 
 
     }

@@ -44,16 +44,21 @@ public class UserInfoPresenterImpl extends BasePresenter<IUserInfoContract.IUser
     public void upLoadAvater(UserInfoActivity context, String imagePath) {
 
 
-
         UpLoadHelper upLoadHelper = new UpLoadHelper();
 
         //上传结果的回调
         upLoadHelper.upLoadAveter(imagePath, new UpLoadHelper.CompletionListener() {
             @Override
             public void onComplete(String key, ResponseInfo info, JSONObject response) {
+
+
+                LogHelper.i("============================头像上传=======================================");
+
                 LogHelper.i("onComplete==>所在线程==>" + Thread.currentThread().getName());
                 LogHelper.i("key==>" + key);
                 LogHelper.i("上传结果==>" + info.toString());
+
+                LogHelper.i("===========================================================================");
                 if (!info.isOK()) {
                     //上传失败
                     mMvpView.uploadFailed();
@@ -70,7 +75,7 @@ public class UserInfoPresenterImpl extends BasePresenter<IUserInfoContract.IUser
             public void uploadProgress(double percent) {
                 if (mMvpView == null) return;
                 mMvpView.currentUpLoadImageProgress((float) percent);
-                LogHelper.i("uploadProgress==>所在线程==>" + Thread.currentThread().getName());
+
             }
         });
     }

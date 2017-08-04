@@ -23,8 +23,8 @@ public class SMSVerifyPresenterImpl extends BasePresenter<ISMSVerifyContract.ISM
     }
 
 
-    // 创建EventHandler对象
-    EventHandler mEventHandler = new EventHandler() {
+    // 验证结果的回调
+    private EventHandler mEventHandler = new EventHandler() {
 
         public void afterEvent(int event, int result, Object data) {
             //回调在子线程中的
@@ -54,45 +54,40 @@ public class SMSVerifyPresenterImpl extends BasePresenter<ISMSVerifyContract.ISM
                         mMvpView.getVerifyCodeSuccess();
 
                     }
-
-
-                } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
-                    //返回支持发送验证码的国家列表
-
-
                 }
-
             } else {
                 ((Throwable) data).printStackTrace();
+
                 //验证失败
-
-
-                if (mMvpView == null) {
-                    LogHelper.i("===>mMvpView = null");
-                } else {
-                    LogHelper.i("执行到这里表示不为null");
+                if (mMvpView != null) {
                     mMvpView.verifyFailed();
                 }
 
             }
         }
-
-
     };
 
-
+    /**
+     * 获取短信验证码
+     *
+     * @param country  城市区号
+     * @param phoneNum 手机号码
+     */
     @Override
     public void getVerificationCode(String country, String phoneNum) {
-
-        this.phoneNum = phoneNum;
+        SMSVerifyPresenterImpl.phoneNum = phoneNum;
         SMSSDK.getVerificationCode("86", phoneNum);
 
     }
 
+    /**
+     * 提交验证码
+     *
+     * @param code 验证码
+     */
     @Override
     public void submitVerify(String code) {
         if (phoneNum == null) return;
-
         SMSSDK.submitVerificationCode("86", phoneNum, code);
     }
 

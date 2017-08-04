@@ -31,55 +31,46 @@ import butterknife.BindView;
  */
 
 public class AddressSelectorView extends LinearLayout implements View.OnClickListener, RecyclerAdapter.ItemClickListener<Address> {
-
-    private TextView tv_province = null; //省
-    private TextView tv_city = null; //市
-    private TextView tv_country = null; //县
-    private TextView tv_town = null; //镇
-
-    private View indicator = null; //指示器
+    //省
+    private TextView tv_province = null;
+    //市
+    private TextView tv_city = null;
+    //县
+    private TextView tv_country = null;
+    //镇
+    private TextView tv_town = null;
+    //指示器
+    private View indicator = null;
     private FastScrollRecyclerView recyclerView;
-
     //布局状态
     private boolean layoutStatus = true;
     private AddressAdapter mAddressAdapter;
-
     //记录所选的地址
     private Address provinceAddress = null; //省
     private Address cityAddress = null;
     private Address countryAddress = null;
     private Address townAddress = null;
-
+    //记录tab所选的状态
     private static final int PROVINCE = 0;
     private static final int CITY = 1;
     private static final int COUNTRY = 2;
     private static final int TOWN = 3;
-
     //记录当前所选中的tab
     private int currentChoice = PROVINCE;
-
-    //tab所对应的view
-    private View viewHeader;
-
-
     private OnAddressSelectListenter mOnAddressSelectListenter = null;
-
 
     public AddressSelectorView(Context context) {
         super(context);
         init(context);
     }
-
     public AddressSelectorView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
-
     public AddressSelectorView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
-
     /**
      * 初始化布局,组件,填充 view
      */
@@ -93,7 +84,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
         setLayoutParams(param);
 
 
-        viewHeader = LayoutInflater.from(context)
+        View viewHeader = LayoutInflater.from(context)
                 .inflate(R.layout.view_address_header, this, false);
         addView(viewHeader);
         View viewContent = LayoutInflater.from(context)
@@ -129,7 +120,6 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
 
     }
 
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
@@ -145,7 +135,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
      * 顶部tab的点击事件监听
      * 展示城市列表
      *
-     * @param view
+     * @param view view
      */
     @Override
     public void onClick(View view) {
@@ -215,13 +205,12 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
         }
     }
 
-
     /**
      * item点击事件的兼听，包含了地址选择器的主要逻辑
      *
-     * @param viewHolder
-     * @param address
-     * @param position
+     * @param viewHolder item对应的viewHolder
+     * @param address    address对象
+     * @param position   position位置下标
      */
     @Override
     public void onItemClick(ViewHolder viewHolder, Address address, int position) {
@@ -229,14 +218,12 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
         //根据所选的address一级一级向下获取地址列表，直到获取到的城市的数量为0结束
         List<Address> addressList = AddressDao.getInstance().getAddressList(address.getId());
         mAddressAdapter.resetData(addressList);
-
         switch (currentChoice) {
 
             case PROVINCE:
 
                 tv_province.setTag(0);
                 provinceAddress = address;
-
                 //设置当前所选的tab的名字
                 tv_province.setText(address.getName());
                 //当前点击的item所选择的地址将作为下一个tab的tag值
@@ -247,9 +234,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                 startIndicatorAnimator(tv_city);
                 //当第一个tab(省级)条目点击过了之后才设置为可点击状态
                 tv_province.setClickable(true);
-
                 //如果下级的已经选择过了就将其全部隐藏
-
                 //如果重新选择省份，那么省一下的级别的地址全部设置为null,并且将省一下级别的所有tab隐藏
                 if (cityAddress != null) {
 
@@ -361,24 +346,14 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
 
     }
 
-    /**
-     * item长按事件监听
-     *
-     * @param viewHolder
-     * @param address
-     * @param position
-     * @return
-     */
     @Override
     public boolean onItemLongClick(ViewHolder viewHolder, Address address, int position) {
         return false;
     }
-
-
     /**
      * 创建指示器运动的动画
      *
-     * @param view
+     * @param view 待移动的view
      */
     private void startIndicatorAnimator(final TextView view) {
 
@@ -386,9 +361,11 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
         view.post(() -> {
 
             //位置
-            ObjectAnimator objectAnimator = new ObjectAnimator().ofFloat(indicator, "X", indicator.getX(), view.getX());
+            ObjectAnimator objectAnimator = ObjectAnimator.
+                    ofFloat(indicator, "X", indicator.getX(), view.getX());
             //宽度
-            ValueAnimator withAnimator = new ValueAnimator().ofInt(indicator.getMeasuredWidth(), view.getMeasuredWidth());
+            ValueAnimator withAnimator = ValueAnimator
+                    .ofInt(indicator.getMeasuredWidth(), view.getMeasuredWidth());
 
             final ViewGroup.LayoutParams params = indicator.getLayoutParams();
 
@@ -407,13 +384,11 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
 
 
     }
-
-
     /**
      * 将RecyclerView中的item移动到指定的位置
      *
-     * @param position
-     * @param recyclerView
+     * @param position     要移动的位置
+     * @param recyclerView recyclerview
      */
     private void moveToPosition(int position, RecyclerView recyclerView) {
 
@@ -440,13 +415,12 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
         }
 
     }
-
     /**
      * 获取address对象在存放地址的集合中所对应的index下标值
      *
-     * @param addressList
-     * @param address
-     * @return
+     * @param addressList 当前recyclerView显示的地址的集合
+     * @param address     要获取下标位置的address对象
+     * @return 下标
      */
     private int getAddressIndex(List<Address> addressList, Address address) {
         int index = 0;
@@ -472,7 +446,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
 
     class AddressAdapter extends RecyclerAdapter<Address> implements FastScrollRecyclerView.SectionedAdapter {
 
-        public AddressAdapter(List<Address> mDatas, Context mContext, RecyclerView mRecyclerView) {
+        private AddressAdapter(List<Address> mDatas, Context mContext, RecyclerView mRecyclerView) {
             super(mDatas, mContext, mRecyclerView);
         }
 
@@ -482,16 +456,14 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
             View itemView = LayoutInflater.from(getContext())
                     .inflate(R.layout.item_address, parent, false);
 
-            ViewHodler viewHodler = new ViewHodler(itemView);
-
-            return viewHodler;
+            return new ViewHodler(itemView);
         }
 
         /**
          * FastScrollRecyclerView 显示选择菜单的第一个文字
          *
-         * @param position
-         * @return
+         * @param position position下标
+         * @return 要显示的文字
          */
         @NonNull
         @Override
@@ -506,7 +478,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
         @BindView(R.id.tv_name)
         TextView tv_name;
 
-        public ViewHodler(View itemView) {
+        ViewHodler(View itemView) {
             super(itemView);
 
         }

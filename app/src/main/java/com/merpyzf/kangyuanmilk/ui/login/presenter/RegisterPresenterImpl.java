@@ -20,7 +20,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Administrator on 2017-07-25.
+ * Created by  on 2017-07-25.
  */
 
 public class RegisterPresenterImpl extends BasePresenter<IRegisterContract.IRegisterView> implements IRegisterContract.IRegisterPresenter {
@@ -33,7 +33,12 @@ public class RegisterPresenterImpl extends BasePresenter<IRegisterContract.IRegi
 
     }
 
-
+    /**
+     * 注册
+     *
+     * @param context Activity
+     * @param user    user对象
+     */
     @Override
     public void register(RegisterActivity context, User user) {
 
@@ -79,6 +84,12 @@ public class RegisterPresenterImpl extends BasePresenter<IRegisterContract.IRegi
                 });
     }
 
+    /**
+     * 检查注册的用户名是否重复
+     *
+     * @param context Activity
+     * @param user    user对象
+     */
     @Override
     public void checkUserRepeat(RegisterActivity context, User user) {
 
@@ -102,13 +113,13 @@ public class RegisterPresenterImpl extends BasePresenter<IRegisterContract.IRegi
                             protected void deal() {
 
                                 //不重复
-                                if(registerBean.getResponse().isResult()){
+                                if (registerBean.getResponse().isResult()) {
 
                                     LogHelper.i("不重复");
                                     mMvpView.userRepeat(false);
 
-                                //重复
-                                }else {
+                                    //重复
+                                } else {
 
                                     LogHelper.i("重复");
                                     mMvpView.userRepeat(true);

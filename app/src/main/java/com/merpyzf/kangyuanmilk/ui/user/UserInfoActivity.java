@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
@@ -86,15 +87,16 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
         //设置为ActionBar
         setSupportActionBar(toolbar);
 
-        //显示toolbar上的返回箭头
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar supportActionBar = getSupportActionBar();
 
+        if (supportActionBar != null) {
+            //显示toolbar上的返回箭头
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
         //appbar默认为展开状态
         appbar.setExpanded(true);
         //展示用户信息
         showUserInfo(UserDao.getInstance().getUserInfo());
-
-
     }
 
     @Override
@@ -125,9 +127,9 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     /**
      * 拍照和UCrop裁切图片完成后的回调事件
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode 请求码
+     * @param resultCode  结果码
+     * @param data        返回数据
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -146,14 +148,23 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
                 case UCrop.REQUEST_CROP:
 
                     final Uri resultUri = UCrop.getOutput(data);
-                    String avaterPath = resultUri.getPath();
-                    Bitmap bitmap = BitmapFactory.decodeFile(avaterPath);
-                    civ_avater.setImageBitmap(bitmap);
-                    LogHelper.i("要进行上传的图片: " + resultUri.getPath());
-                    //上传头像
-                    mPresenter.upLoadAvater(this, resultUri.getPath());
-                    //隐藏图片选择器
-                    mGalleryFragment.onDismiss();
+
+                    if (resultUri != null) {
+
+                        String avaterPath = resultUri.getPath();
+
+                        if (avaterPath != null) {
+
+                            Bitmap bitmap = BitmapFactory.decodeFile(avaterPath);
+                            civ_avater.setImageBitmap(bitmap);
+                            LogHelper.i("要进行上传的图片: " + resultUri.getPath());
+                            //上传头像
+                            mPresenter.upLoadAvater(this, resultUri.getPath());
+                            //隐藏图片选择器
+                            mGalleryFragment.onDismiss();
+                        }
+
+                    }
                     break;
             }
 
@@ -176,9 +187,6 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
 
     /**
      * menu菜单的监听事件
-     *
-     * @param item
-     * @return
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -274,7 +282,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
         showAvaterImg(user.getUser_head());
         //设置用户名
         collapsing_toolbar.setTitle(user.getUser_name());
-        tv_gender.setText(user.isUser_sex() == true ? "男" : "女");
+        tv_gender.setText(user.isUser_sex() ? "男" : "女");
         tv_default_address.setText(user.getAddress_content());
         tv_identity.setText(user.getUser_idcard());
         tv_reg_date.setText(TimeHelper.getDateTime(Long.valueOf(user.getUser_registerdate())));
@@ -288,7 +296,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     /**
      * 当前页面的事件监听回调
      *
-     * @param view
+     * @param view 被点击的view
      */
     @Override
     public void onClick(View view) {
@@ -319,11 +327,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     @Override
     public void update() {
 
-        App.showToast("==》更新用户信息了");
-
         User userInfo = UserDao.getInstance().getUserInfo();
-
-        LogHelper.i("上传的更新的用户头像==>" + userInfo.getUser_head());
         //显示头像
         showAvaterImg(userInfo.getUser_head());
         //更新用户i
@@ -362,7 +366,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     /**
      * 展示错误信息
      *
-     * @param errorMsg
+     * @param errorMsg 出错时的消息提示
      */
     @Override
     public void showErrorMsg(String errorMsg) {
@@ -431,15 +435,9 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
 
         mMaterialDialog = new MaterialDialog.Builder(this)
                 .items(R.array.click_avater_items)
-                .itemsCallback((dialog, view, which, text) -> {
-
-                    showGallery();
-
-
-                })
+                .itemsCallback((dialog, view, which, text) -> showGallery())
                 .show();
     }
-
     /**
      * 隐藏提示框
      */
@@ -504,6 +502,5 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
             }
         });
     }
-
 
 }

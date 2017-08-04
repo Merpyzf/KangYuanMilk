@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.transition.Transition;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -31,6 +32,7 @@ import static com.merpyzf.kangyuanmilk.R.layout.activity_register;
 
 /**
  * 用户注册
+ *
  * @author wangke
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener, IRegisterContract.IRegisterView, View.OnFocusChangeListener {
@@ -160,7 +162,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     /**
      * 检测用户名是否重复
      *
-     * @param isRepeat
+     * @param isRepeat 用户名是否重复
+     *                 true : 重复
+     *                 false : 不重复
      */
     @Override
     public void userRepeat(boolean isRepeat) {
@@ -190,25 +194,22 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.fab_submit:
 
-
-                //登录
-
-                if (edt_username.equals("")) {
+                if (TextUtils.isEmpty(edt_username.getText().toString().trim())) {
 
                     App.showToast("用户名不能为null");
 
                     return;
                 }
 
-                if (edt_pwd.equals("") || edt_pwd.equals("")) {
+                if (TextUtils.isEmpty(edt_pwd.getText().toString().trim())) {
                     App.showToast("密码输入不能为null");
-
 
                 } else {
 
+                    //如果用户名不重复则进行注册
                     if (!isRepeat) {
 
-
+                        //检查两次密码输入是否一致
                         if (edt_pwd.getText().toString().equals(edt_repwd.getText().toString())) {
 
                             text_input_pwd.setErrorEnabled(false);
@@ -234,9 +235,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                     }
 
-
                 }
-
 
                 break;
 
@@ -250,7 +249,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
 
     /**
-     * 入场时的动画监听
+     * 共享元素动画监听
      */
     public void showEnterAnimation() {
 
@@ -291,7 +290,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     /**
-     * 开始执行圆形遮罩动画
+     * 圆形遮罩动画
      */
     public void animateRevealShow() {
 
@@ -313,25 +312,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mAnimator.start();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        // animateRevealClose();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-
-        mRegisterPresenter.detachView();
-        super.onDestroy();
-
-    }
 
     /**
      * 用户名输入框的焦点监听事件
-     * @param view
-     * @param b
+     *
+     * @param view 监听的view
+     * @param b    焦点的状态
+     *             true: 得到焦点
+     *             false: 失去焦点
      */
     @Override
     public void onFocusChange(View view, boolean b) {
@@ -344,5 +332,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (!b && value.length() > 0) {
             mRegisterPresenter.checkUserRepeat(this, user);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        mRegisterPresenter.detachView();
+        super.onDestroy();
     }
 }

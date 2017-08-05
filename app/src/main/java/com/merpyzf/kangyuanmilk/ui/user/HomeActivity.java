@@ -29,12 +29,15 @@ import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.home.CategoryFragment;
 import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
+import com.merpyzf.kangyuanmilk.ui.home.IndentFragment;
 import com.merpyzf.kangyuanmilk.ui.home.SearchActivity;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.HomePresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.NavFragManager;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 
@@ -61,6 +64,8 @@ public class HomeActivity extends BaseActivity
     TextView tv_username;
     RelativeLayout rl_nav_header;
     private HomePresenterImpl mPresenter;
+    private NavFragManager mNavFragManager = null;
+
 
     @Override
     public int getLayoutId() {
@@ -89,8 +94,8 @@ public class HomeActivity extends BaseActivity
         toggle.syncState();
 
 
-        //填充HomeFragment
-        getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
+//        //填充HomeFragment
+//        getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
 
         toolbar.post(() -> toolbar.setTitle("主页"));
 
@@ -112,6 +117,13 @@ public class HomeActivity extends BaseActivity
         mPresenter.attachView(this);
         //第一次创建的时候检查用户的当前状态
         mPresenter.checkUserCurrentStatus(this);
+        mNavFragManager = new NavFragManager(this, R.id.coordLayout, getSupportFragmentManager());
+        //初始化底部tab菜单所对应的Fragment
+        mNavFragManager.add(R.id.action_home, new NavFragManager.Tab(HomeFragment.class, R.id.action_home))
+                .add(R.id.action_goods, new NavFragManager.Tab(CategoryFragment.class, R.id.action_goods))
+                .add(R.id.action_shopping_cart, new NavFragManager.Tab(IndentFragment.class, R.id.action_shopping_cart));
+        //初始化首页
+        mNavFragManager.initHome(R.id.action_home);
     }
 
     @Override
@@ -203,20 +215,21 @@ public class HomeActivity extends BaseActivity
             case R.id.action_home:
 
                 toolbar.setTitle("主页");
+                mNavFragManager.performClickNavMenu(item.getItemId());
+
 
                 break;
 
             case R.id.action_goods:
 
                 toolbar.setTitle("商品");
-
+                mNavFragManager.performClickNavMenu(item.getItemId());
 
                 break;
             case R.id.action_shopping_cart:
 
                 toolbar.setTitle("购物车");
-
-
+                mNavFragManager.performClickNavMenu(item.getItemId());
                 break;
 
             default:
@@ -332,7 +345,7 @@ public class HomeActivity extends BaseActivity
     private void loadAvater(String avaterUrl) {
         // TODO: 2017-07-28  使用了全局的上下文对象，不受Activity生命周期的影响，容易发生内存泄露
         Glide.with(App.getContext())
-                .load(Common.OUTSIDE_CHAIN+avaterUrl)
+                .load(Common.OUTSIDE_CHAIN + avaterUrl)
                 .placeholder(R.drawable.ic_avater_default)
                 .centerCrop()
                 .dontAnimate()

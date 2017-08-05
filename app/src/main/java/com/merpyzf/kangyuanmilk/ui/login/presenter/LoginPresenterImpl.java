@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.User;
@@ -130,7 +131,7 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
                             @Override
                             protected void deal() {
 
-                                mMvpView.showAvater(messageBean.getResponse().getMessage());
+                                mMvpView.showAvater(Common.OUTSIDE_CHAIN+messageBean.getResponse().getMessage());
                                 LogHelper.i("用户头像==>"+messageBean.getResponse().getMessage());
                             }
                         };
@@ -146,7 +147,6 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
                     }
                 });
-
     }
 
     /**

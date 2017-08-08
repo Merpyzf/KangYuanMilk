@@ -4,13 +4,11 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * Created by Administrator on 2017-07-30.
+ * Created by wangke on 2017-07-30.
  */
 
 @DatabaseTable(tableName = "address_dict")
 public class Address {
-
-
 
 
     @DatabaseField(columnName = "id")

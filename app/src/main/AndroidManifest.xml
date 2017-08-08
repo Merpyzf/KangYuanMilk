@@ -43,13 +43,8 @@
             android:theme="@style/TransStatusBarTheme">
 
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/activity_login_label"
@@ -99,11 +94,28 @@
         <activity
             android:name=".ui.user.ModifyUserInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".test.StudyRecyclerViewActivity"></activity>
-        <activity android:name=".test.StudyRecycler1ViewActivity">
+        <activity android:name=".test.StudyRecyclerViewActivity" />
+        <activity android:name=".test.StudyRecycler1ViewActivity" />
+        <activity android:name=".test.ImageViewActivity" />
+        <activity
+            android:name=".ui.user.ModifyAddressActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
 
         </activity>
-        <activity android:name=".test.ImageViewActivity">
+        <activity android:name=".ui.user.UserAddressActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+
+        <activity android:name=".test.WaveActivity">
+
 
         </activity>
     </application>

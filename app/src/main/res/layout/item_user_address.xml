@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="王珂"
+                android:layout_margin="10dp"
+                android:textColor="@color/textPrimary" />
+
+
+            <TextView
+                android:id="@+id/tv_phome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="17714574929"
+                android:layout_margin="10dp"
+                android:textColor="@color/textPrimary" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize = "16sp"
+            android:textColor="@color/textSecond"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+
+            android:text="江苏省 徐州市 沛县"
+
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/divider" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+
+            >
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+
+                >
+
+                <CheckBox
+                    android:id="@+id/cb_gallery"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/selector_checkbox"
+                    android:button="@null"
+                    android:layout_gravity="end"
+                    android:clickable="false"
+                    android:layout_margin="2dp"
+                    android:gravity="center"
+                    android:backgroundTint="@color/colorAccent"
+                    />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textSecond"
+                    android:gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:text="默认地址"
+                    />
+
+
+            </LinearLayout>
+
+
+
+
+            <TextView
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 编辑"
+                android:drawableLeft="@drawable/ic_edit"
+                android:drawableTint="@color/textSecond"
+                android:gravity="center"
+                android:textColor="@color/textPrimary"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/tv_remove"
+                android:layout_toStartOf="@+id/tv_remove" />
+
+            <TextView
+                android:id="@+id/tv_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:text=" 删除"
+                android:drawableLeft="@drawable/ic_delete"
+                android:drawableTint="@color/textSecond"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/textPrimary" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+
+

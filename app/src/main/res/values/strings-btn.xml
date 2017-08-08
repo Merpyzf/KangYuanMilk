@@ -7,4 +7,5 @@
     <string name="dialog_logout_negative">否</string>
     <string name="action_avater">更换头像</string>
     <string name="menu_modify_done">提交</string>
+    <string name="save_address">保存</string>
 </resources>

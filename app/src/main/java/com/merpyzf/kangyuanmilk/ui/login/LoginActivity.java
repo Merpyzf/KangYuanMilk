@@ -211,7 +211,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void cancelLoadingDialog() {
 
-        mLoginDialog.dismiss();
+        if (mLoginDialog != null) {
+            mLoginDialog.dismiss();
+        }
     }
 
     /**

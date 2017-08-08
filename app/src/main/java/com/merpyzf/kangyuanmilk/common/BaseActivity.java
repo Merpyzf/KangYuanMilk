@@ -34,6 +34,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             unbinder = ButterKnife.bind(this);
 
             initWidget();
+
             initEvent();
             initData();
         }

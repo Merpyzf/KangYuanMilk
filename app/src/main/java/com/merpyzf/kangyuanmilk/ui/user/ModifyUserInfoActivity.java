@@ -73,9 +73,7 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setTitle("个人资料修改");
         }
-        mPickerFragment = new AddressPickerFragment();
 
-        tv_default_address.setOnClickListener(view -> mPickerFragment.show(getSupportFragmentManager()));
     }
 
     @Override

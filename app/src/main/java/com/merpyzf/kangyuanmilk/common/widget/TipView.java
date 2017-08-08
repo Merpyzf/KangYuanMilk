@@ -57,7 +57,7 @@ public class TipView extends RelativeLayout implements ITipView {
 
 
     @Override
-    public void emptyTip(String tip) {
+    public void setEmptyTip(String tip) {
         setVisibility(VISIBLE);
 
         View view = LayoutInflater.from(mContext)
@@ -73,7 +73,7 @@ public class TipView extends RelativeLayout implements ITipView {
 
 
     @Override
-    public void netErrorTip(String tip) {
+    public void setNetErrorTip(String tip) {
 
         setVisibility(VISIBLE);
 
@@ -86,7 +86,7 @@ public class TipView extends RelativeLayout implements ITipView {
     }
 
     @Override
-    public void loading() {
+    public void setLoading() {
 
         setVisibility(VISIBLE);
         View view = LayoutInflater.from(mContext)
@@ -103,7 +103,7 @@ public class TipView extends RelativeLayout implements ITipView {
     }
 
     @Override
-    public void loadingCompleted() {
+    public void setLoadingCompleted() {
 
         setVisibility(INVISIBLE);
         mBindView.setVisibility(VISIBLE);

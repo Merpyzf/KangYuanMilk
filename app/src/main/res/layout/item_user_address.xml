@@ -22,17 +22,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="王珂"
+                android:text="name"
                 android:layout_margin="10dp"
                 android:textColor="@color/textPrimary" />
 
 
             <TextView
-                android:id="@+id/tv_phome"
+                android:id="@+id/tv_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="17714574929"
+                android:text="18352250757"
                 android:layout_margin="10dp"
                 android:textColor="@color/textPrimary" />
 
@@ -41,6 +41,7 @@
 
 
         <TextView
+            android:id="@+id/tv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize = "16sp"
@@ -48,8 +49,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"
-
-            android:text="江苏省 徐州市 沛县"
+            android:text="江苏省 扬州"
 
             />
 
@@ -68,6 +68,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -76,13 +77,13 @@
                 >
 
                 <CheckBox
-                    android:id="@+id/cb_gallery"
+                    android:id="@+id/checkbox"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/selector_checkbox"
                     android:button="@null"
-                    android:layout_gravity="end"
                     android:clickable="false"
+                    android:layout_gravity="end"
                     android:layout_margin="2dp"
                     android:gravity="center"
                     android:backgroundTint="@color/colorAccent"
@@ -90,12 +91,13 @@
 
 
                 <TextView
+                    android:id="@+id/tv_cb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/textSecond"
                     android:gravity="center"
                     android:layout_marginLeft="2dp"
-                    android:text="默认地址"
+                    android:text="设置地址"
                     />
 
 

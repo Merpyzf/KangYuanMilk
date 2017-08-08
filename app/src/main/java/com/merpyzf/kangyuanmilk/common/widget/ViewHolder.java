@@ -15,7 +15,7 @@ import butterknife.Unbinder;
 public abstract class ViewHolder<Data> extends RecyclerView.ViewHolder {
     private View mItemView;
     //当前item所对应的那条数据
-    private Data data;
+    protected Data data;
     private final Unbinder unbinder;
 
     public ViewHolder(View itemView) {

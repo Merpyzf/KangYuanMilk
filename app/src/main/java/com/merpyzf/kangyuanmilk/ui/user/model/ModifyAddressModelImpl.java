@@ -26,4 +26,14 @@ public class ModifyAddressModelImpl implements IModifyAddressModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<MessageBean> updateAddress(Address address) {
+
+        return RetrofitFactory.getServiceInstance()
+                .updateAddress(address)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }

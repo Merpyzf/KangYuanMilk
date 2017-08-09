@@ -13,21 +13,39 @@ import java.util.List;
 
 public interface IUserAddressContract {
 
-    interface IUserAddressView extends IBaseView{
+    interface IUserAddressView extends IBaseView {
 
         /**
          * 显示用户的所有地址信息
+         *
          * @param addressList 获取到的地址列表集合
          */
         void showUserAddress(List<Address> addressList);
+
         /**
          * 添加一个用户的地址信息
+         *
          * @param address
          */
         void addUserAddress(Address address);
 
         /**
-         *显示网络错误时的提示
+         * 设置默认地址成功
+         *
+         * @param address
+         */
+        void setAdsDefaultSuccess(Address address);
+
+        /**
+         * 删除地址成功
+         *
+         * @param address
+         */
+        void removeAdsSuccess(Address address);
+
+
+        /**
+         * 显示网络错误时的提示
          */
         void showNetErrorTip(String msg);
 
@@ -38,6 +56,7 @@ public interface IUserAddressContract {
 
         /**
          * 操作成功时的提示
+         *
          * @param msg 提示信息
          */
         void showSuccess(String msg);
@@ -46,8 +65,7 @@ public interface IUserAddressContract {
     }
 
 
-
-    interface IUserAddressPresenter extends IBasePresenter<IUserAddressView>{
+    interface IUserAddressPresenter extends IBasePresenter<IUserAddressView> {
 
         /**
          * 获取用户的所有地址信息
@@ -56,15 +74,17 @@ public interface IUserAddressContract {
 
         /**
          * 将地址设置成默认地址
+         *
          * @param address
          */
-        void setAdsAsDefault(UserAddressActivity context,Address address);
+        void setAdsAsDefault(UserAddressActivity context, Address address);
 
         /**
          * 删除地址
+         *
          * @param address
          */
-        void deleteAds(UserAddressActivity context,Address address);
+        void deleteAds(UserAddressActivity context, Address address);
 
     }
 

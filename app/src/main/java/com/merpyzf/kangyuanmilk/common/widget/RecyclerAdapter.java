@@ -216,6 +216,9 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
         notifyItemChanged(position);
     }
 
+
+
+
     /**
      * 根据传入的对象找到位置并刷新view
      *
@@ -275,6 +278,23 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
         notifyItemRangeChanged(start, end);
 
     }
+
+
+    /**
+     * 移除一条数据
+     * @param data
+     */
+    public void remove(Data data){
+
+        mDatas.remove(data);
+        notifyDataSetChanged();
+
+    }
+
+
+
+
+
 
 
     public View getItemView() {

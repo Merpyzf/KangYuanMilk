@@ -18,7 +18,7 @@ public interface ITipView {
      * 网络出错时的提示
      * @param tip
      */
-    void setNetErrorTip(String tip);
+    void setErrorTip(String tip);
 
     /**
      * 数据加载中
@@ -28,7 +28,7 @@ public interface ITipView {
     /**
      * 数据加载完成
      */
-    void setLoadingCompleted();
+    void reset();
 
     /**
      * 绑定要进行数据加载的那个区域的View,在这个区域内进行相关提示

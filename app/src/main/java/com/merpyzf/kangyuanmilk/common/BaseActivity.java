@@ -100,6 +100,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected void onDestroy() {
 
         App.getRefWatcher().watch(this);
+
         //activity销毁的时候解除bind
         if (unbinder != null) {
             unbinder.unbind();

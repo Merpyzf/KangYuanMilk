@@ -16,4 +16,11 @@ public interface IModifyAddressModel {
      */
     Observable<MessageBean> addAddress(Address address);
 
+    /**
+     * 更新某一条地址的信息
+     * @param address
+     * @return
+     */
+    Observable<MessageBean> updateAddress(Address address);
+
 }

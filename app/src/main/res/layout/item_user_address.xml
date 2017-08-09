@@ -73,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
+                android:stateListAnimator="@drawable/btn_state_scale_animator"
 
                 >
 
@@ -117,6 +118,7 @@
                 android:textColor="@color/textPrimary"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="10dp"
+                android:stateListAnimator="@drawable/btn_state_scale_animator"
                 android:layout_toLeftOf="@+id/tv_remove"
                 android:layout_toStartOf="@+id/tv_remove" />
 
@@ -129,6 +131,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:text=" 删除"
+                android:stateListAnimator="@drawable/btn_state_scale_animator"
                 android:drawableLeft="@drawable/ic_delete"
                 android:drawableTint="@color/textSecond"
                 android:gravity="center"

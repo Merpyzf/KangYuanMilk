@@ -1,11 +1,15 @@
 package com.merpyzf.kangyuanmilk.ui.user;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,9 +18,11 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.AddressPickerFragment;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IModifyAddressContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.ModifyAddressPresenterImpl;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.RegexHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 
@@ -46,14 +52,48 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
 
     private IModifyAddressContract.IModefyAddressPresenter mPresenter = null;
     private AddressPickerFragment mPickerFragment;
-    private Address mAddress = new Address();
     private MaterialDialog mMaterialDialog;
+    private Address mAddress = new Address();
+    private Address mAds;
 
+    /**
+     * 开启当前的Activity
+     *
+     * @param context 上下文
+     * @param bundle  Bundle参数传递
+     */
+    public static void showAction(Context context, Bundle bundle) {
+
+        Intent intent = new Intent(context, ModifyAddressActivity.class);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+
+
+        mAds = (Address) bundle.getSerializable("address");
+        //如果没有更改所在地址的时候就使用之前的地址id
+
+        if (mAds == null)
+            return true;
+
+        mAddress.setAds_id(mAds.getAds_id());
+        mAddress.setAddress_id(mAds.getAddress_id());
+        setSupportActionBar(toolbar);
+
+        LogHelper.i("待编辑的地址==> " + mAds.getAddress_content());
+
+
+        return true;
+    }
 
     @Override
     public int getLayoutId() {
         return R.layout.activity_modify_address;
     }
+
 
     @Override
     public void initWidget() {
@@ -63,6 +103,18 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
         bar.setTitle("添加收货物地址");
         bar.setDisplayHomeAsUpEnabled(true);
         mPickerFragment = new AddressPickerFragment();
+
+        if (mAds != null) {
+
+            edt_name.setText(mAds.getConsignee());
+            edt_phone.setText(mAds.getConsignee_tel());
+            tv_choice_address.setText(mAds.getAddress_all());
+            edt_address_detail.setText(" " + mAds.getAddress_content());
+            getSupportActionBar().setTitle("修改收货地址");
+        } else {
+
+            getSupportActionBar().setTitle("添加收货地址");
+        }
 
 
     }
@@ -104,6 +156,7 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
 
         cancelLoadingDialog();
         App.showToast(msg);
+        UserInfoSubject.getInstance().notifyChange(UserAddressActivity.class.getName());
 
     }
 
@@ -124,7 +177,6 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
         String address = tv_choice_address.getText().toString();
         //详细地址
         String addressDetail = edt_address_detail.getText().toString().trim();
-
 
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(address) || TextUtils.isEmpty(addressDetail)) {
 
@@ -147,7 +199,7 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
         //设置收货人电话
         mAddress.setConsignee_tel(phone);
         //设置收获地址
-        mAddress.setAddress_content(address + addressDetail);
+        mAddress.setAddress_content(addressDetail);
         //设置userId
         mAddress.setUser_id(UserDao.getInstance().getUserInfo().getUser_id());
 
@@ -163,10 +215,24 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
             case R.id.btn_save_address:
                 Address addressInfo = getAddressInfo();
 
-                if (addressInfo != null) {
+                //新增一条地址
+                if (mAds == null) {
+                    if (addressInfo != null) {
 
-                    mPresenter.addAddress(addressInfo);
+                        mPresenter.addAddress(ModifyAddressActivity.this, addressInfo);
+                    }
+
+                } else {
+
+                    //更新一条地址
+                    if (addressInfo != null) {
+
+                        mPresenter.updateAddress(ModifyAddressActivity.this, addressInfo);
+                    }
+
                 }
+
+
                 break;
 
             case R.id.ll_choice_address:
@@ -181,6 +247,18 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
+
+
     /**
      * 地址选择完成后回调
      *
@@ -192,5 +270,12 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
         tv_choice_address.setText(address);
         mAddress.setAds_id(id);
         mPickerFragment.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        mPresenter.detachView();
+        super.onDestroy();
     }
 }

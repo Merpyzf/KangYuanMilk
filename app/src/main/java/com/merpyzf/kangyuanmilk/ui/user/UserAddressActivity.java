@@ -1,15 +1,23 @@
 package com.merpyzf.kangyuanmilk.ui.user;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.common.observer.Observer;
+import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.TipView;
+import com.merpyzf.kangyuanmilk.ui.adapter.IUserAddressCallBack;
 import com.merpyzf.kangyuanmilk.ui.adapter.UserAddressAdapter;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IUserAddressContract;
@@ -26,7 +34,7 @@ import butterknife.BindView;
  *
  * @author wangke
  */
-public class UserAddressActivity extends BaseActivity implements IUserAddressContract.IUserAddressView, UserAddressAdapter.onItemWidgetClickListener {
+public class UserAddressActivity extends BaseActivity implements IUserAddressContract.IUserAddressView, IUserAddressCallBack.onItemWidgetClickListener, Observer {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -40,9 +48,14 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     TipView tipView;
     @BindView(R.id.ll_container)
     LinearLayout ll_container;
-
     private IUserAddressContract.IUserAddressPresenter mPresenter = null;
     private UserAddressAdapter mAdapter = null;
+
+    public static void showAction(Context context) {
+
+        context.startActivity(new Intent(context, UserAddressActivity.class));
+
+    }
 
     @Override
     public int getLayoutId() {
@@ -54,9 +67,11 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new ItemMarginDecoration());
         tipView.bindView(ll_container);
-
         //设置RecyclerView中item中widget点击事件的监听回调
-
+        tv_add_address.setOnClickListener(view -> ModifyAddressActivity.showAction(this, new Bundle()));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("地址管理");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -64,6 +79,8 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
         mPresenter = new UserAddressPresenterImpl();
         mPresenter.attachView(this);
         mPresenter.getUserAds(this);
+
+        UserInfoSubject.getInstance().attach(UserAddressActivity.class.getName(), this);
 
 
     }
@@ -76,6 +93,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     @Override
     public void showSuccess(String msg) {
 
+        App.showToast(msg);
     }
 
     /**
@@ -85,6 +103,9 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
      */
     @Override
     public void showErrorMsg(String errorMsg) {
+
+        App.showToast(errorMsg);
+        tipView.setErrorTip(errorMsg);
 
     }
 
@@ -96,7 +117,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     @Override
     public void showNetErrorTip(String msg) {
 
-        tipView.setNetErrorTip(msg);
+        tipView.setErrorTip(msg);
 
     }
 
@@ -145,12 +166,22 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
     }
 
+    @Override
+    public void setAdsDefaultSuccess(Address address) {
+
+        mAdapter.updateItem(address);
+
+
+    }
+
 
     /**
      * 加载时的dialog
      */
     @Override
     public void showLoadingDialog() {
+
+        tipView.setLoading();
 
     }
 
@@ -162,22 +193,19 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
     }
 
-    @Override
-    protected void onDestroy() {
-        mPresenter.detachView();
-        super.onDestroy();
-    }
 
     /**
      * checkbox被i选中的时候设为默认地址
      *
-     * @param checked 当前cb的状态
      * @param address 要设置成默认地址
      */
     @Override
     public void onCheckedChanged(Address address) {
 
         LogHelper.i("被选中的地址==>" + address.getAddress_content());
+
+        //将选中地址设置为默认
+        mPresenter.setAdsAsDefault(this, address);
 
     }
 
@@ -186,9 +214,9 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
      */
     @Override
     public void onEditClick(Address address) {
-
-        LogHelper.i("待编辑的地址信息==>" + address.getAddress_content());
-
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("address", address);
+        ModifyAddressActivity.showAction(this, bundle);
     }
 
     /**
@@ -200,6 +228,53 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     public void onRemoveClick(Address address) {
 
         LogHelper.i("待删除的地址信息==>" + address.getAddress_content());
+        mPresenter.deleteAds(this, address);
+
 
     }
+
+    /**
+     * 删除地址信息成功的回调
+     *
+     * @param address
+     */
+    @Override
+    public void removeAdsSuccess(Address address) {
+
+        mAdapter.remove(address);
+
+        int itemCount = mAdapter.getItemCount();
+
+        if (itemCount == 0) showEmptyTip("还没有收货地址呢,快来创建一个吧!");
+
+    }
+
+
+    @Override
+    public void update() {
+
+        if (mPresenter != null) {
+            tipView.reset();
+            mPresenter.getUserAds(this);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachView();
+        UserInfoSubject.getInstance().detach(UserAddressActivity.class.getName());
+        super.onDestroy();
+    }
+
 }

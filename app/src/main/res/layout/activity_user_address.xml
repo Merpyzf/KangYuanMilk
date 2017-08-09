@@ -27,49 +27,48 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+        android:layout_weight="1">
 
 
-    <com.merpyzf.kangyuanmilk.common.widget.TipView
-        android:id="@+id/tipView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
-    <LinearLayout
-        android:id="@+id/ll_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-      >
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/refreshLayout"
+        <com.merpyzf.kangyuanmilk.common.widget.TipView
+            android:id="@+id/tipView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
+        <LinearLayout
+            android:id="@+id/ll_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/refreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+                </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
 
 
     </FrameLayout>
+
     <TextView
         android:id="@+id/tv_add_address"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
+        android:stateListAnimator="@drawable/btn_state_list_animator"
         android:gravity="center"
         android:text="+ 添加收货地址"
         android:textColor="@color/white"

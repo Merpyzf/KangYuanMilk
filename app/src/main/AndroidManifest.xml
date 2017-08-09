@@ -42,6 +42,12 @@
             android:launchMode="singleTask"
             android:theme="@style/TransStatusBarTheme">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
 
         </activity>
 
@@ -99,27 +105,14 @@
         <activity android:name=".test.ImageViewActivity" />
         <activity
             android:name=".ui.user.ModifyAddressActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.user.UserAddressActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".test.WaveActivity"/>
 
 
-
-        </activity>
-        <activity android:name=".ui.user.UserAddressActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-
-
-        <activity android:name=".test.WaveActivity">
-
-
-        </activity>
     </application>
 
 </manifest>

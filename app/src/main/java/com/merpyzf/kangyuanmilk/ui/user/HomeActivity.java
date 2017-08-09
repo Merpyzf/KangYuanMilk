@@ -161,6 +161,9 @@ public class HomeActivity extends BaseActivity
 
             case R.id.nav_address:
 
+                UserAddressActivity.showAction(this);
+
+
                 break;
 
             case R.id.nav_service:
@@ -277,6 +280,7 @@ public class HomeActivity extends BaseActivity
             if (!isLogin) {
                 //未登录状态
                 startActivity(new Intent(this, LoginActivity.class));
+
             } else {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

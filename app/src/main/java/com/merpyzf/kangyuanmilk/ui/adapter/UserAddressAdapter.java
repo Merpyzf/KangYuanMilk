@@ -25,7 +25,7 @@ import butterknife.BindView;
 
 public class UserAddressAdapter extends RecyclerAdapter<Address> {
 
-    private onItemWidgetClickListener mOnItemWidgetClickListener = null;
+    private IUserAddressCallBack.onItemWidgetClickListener mOnItemWidgetClickListener = null;
 
     public UserAddressAdapter(List<Address> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
@@ -71,7 +71,7 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
 
             tv_name.setText(address.getConsignee());
             tv_phone.setText(address.getConsignee_tel());
-            tv_address.setText(address.getAddress_content());
+            tv_address.setText(address.getAddress_all()+" "+address.getAddress_content());
             checkBox.setChecked(address.isDefault());
             if (checkBox.isChecked()) {
                 ll_cb.setClickable(false);
@@ -136,31 +136,9 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
 
     }
 
-
-    public interface onItemWidgetClickListener {
-        /**
-         * 点击checkbox的回调，用来设置默认地址
-         *
-         * @param address 要设置成默认地址
-         */
-        void onCheckedChanged(Address address);
-
-        /**
-         * 编辑的按钮被点击后的回调
-         *
-         * @param address 待编辑的那条地址的信息
-         */
-        void onEditClick(Address address);
-
-        /**
-         * 删除按钮被点击后的回调
-         *
-         * @param address
-         */
-        void onRemoveClick(Address address);
-    }
-
-    public void setmOnItemWidgetClickListener(onItemWidgetClickListener mOnItemWidgetClickListener) {
+    public void setmOnItemWidgetClickListener(IUserAddressCallBack.onItemWidgetClickListener mOnItemWidgetClickListener) {
         this.mOnItemWidgetClickListener = mOnItemWidgetClickListener;
     }
+
+
 }

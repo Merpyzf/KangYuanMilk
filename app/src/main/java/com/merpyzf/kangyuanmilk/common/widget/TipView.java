@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,12 +67,11 @@ public class TipView extends RelativeLayout implements ITipView {
         addView(view);
 
 
-
     }
 
 
     @Override
-    public void setNetErrorTip(String tip) {
+    public void setErrorTip(String tip) {
 
         setVisibility(VISIBLE);
 
@@ -91,19 +89,25 @@ public class TipView extends RelativeLayout implements ITipView {
         setVisibility(VISIBLE);
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.layout_loading, this, false);
+
         LVEatBeans eatBeans = view.findViewById(R.id.lvEatBeans);
+
+
         eatBeans.setEyeColor(Resource.Color.WHITE);
         eatBeans.setViewColor(Resource.Color.CYAN);
         eatBeans.startAnim(2000);
         //隐藏bind的View和其他的错误其实的view
         removeOtherView(view);
         this.addView(view);
-        ViewParent parent = view.getParent();
+
 
     }
 
+    /**
+     * 重置
+     */
     @Override
-    public void setLoadingCompleted() {
+    public void reset() {
 
         setVisibility(INVISIBLE);
         mBindView.setVisibility(VISIBLE);

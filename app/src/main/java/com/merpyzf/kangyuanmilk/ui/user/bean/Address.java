@@ -1,13 +1,17 @@
 package com.merpyzf.kangyuanmilk.ui.user.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by wangke on 2017-08-08.
  * 用户地址信息
  */
 
-public class Address {
+public class Address implements Serializable {
 
     private int address_id;
+
+    private String address_all;
     //地址
     private String address_content;
     //收货人姓名
@@ -88,5 +92,13 @@ public class Address {
 
     public void setDefault(boolean aDefault) {
         isDefault = aDefault;
+    }
+
+    public String getAddress_all() {
+        return address_all;
+    }
+
+    public void setAddress_all(String address_all) {
+        this.address_all = address_all;
     }
 }

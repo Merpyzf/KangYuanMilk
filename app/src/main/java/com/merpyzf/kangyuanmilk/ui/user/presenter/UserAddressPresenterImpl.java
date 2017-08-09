@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.user.presenter;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.user.UserAddressActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
+import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.ui.user.bean.UserAddressBean;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IUserAddressContract;
 import com.merpyzf.kangyuanmilk.ui.user.model.IUserAddressModel;
@@ -39,6 +40,8 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
     public void getUserAds(UserAddressActivity context) {
 
         LogHelper.i("执行了");
+
+        mMvpView.showLoadingDialog();
 
         mModel.getUserAddress(UserDao.getInstance().getUserInfo())
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
@@ -102,31 +105,59 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
     }
 
     /**
-     * 对获取到的地址集合进行预处理,给每一个address对象添加一个isDefault属性
-     *
-     * @param addressList  地址集合
-     * @param adsDafaultId 默认地址的id
-     */
-    private void prepList(List<Address> addressList, int adsDafaultId) {
-
-        addressList.forEach(address -> {
-
-            if (address.getAddress_id() == adsDafaultId)
-                address.setDefault(true);
-
-        });
-
-    }
-
-    /**
      * 设置地址作为默认地址
      *
      * @param address
      */
     @Override
-    public void setAdsAsDefault(UserAddressActivity context,Address address) {
+    public void setAdsAsDefault(UserAddressActivity context, Address address) {
+
+        mModel.setAddressAsDefault(address)
+                .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Observer<MessageBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(MessageBean messageBean) {
+
+                        new ErrorHandle(this, messageBean.getStatus()) {
+                            @Override
+                            protected void deal() {
+
+                                if (messageBean.getResponse().isResult()) {
+
+                                    mMvpView.showSuccess("设置默认地址成功");
 
 
+                                } else {
+
+
+                                    mMvpView.showErrorMsg("设置默认地址失败");
+
+                                }
+
+
+                            }
+                        };
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        ErrorHandleHelper.handle(e, mMvpView);
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     /**
@@ -135,7 +166,75 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
      * @param address
      */
     @Override
-    public void deleteAds(UserAddressActivity context,Address address) {
+    public void deleteAds(UserAddressActivity context, Address address) {
+        mModel.deleteAddress(address)
+                .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Observer<MessageBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(MessageBean messageBean) {
+                        new ErrorHandle(this, messageBean.getStatus()) {
+                            @Override
+                            protected void deal() {
+
+                                if (messageBean.getResponse().isResult()) {
+
+                                    mMvpView.showSuccess("删除成功");
+                                    mMvpView.removeAdsSuccess(address);
+
+
+                                } else {
+
+                                    mMvpView.showErrorMsg("删除失败");
+                                }
+
+                            }
+                        };
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ErrorHandleHelper.handle(e, mMvpView);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
+
+
+    /**
+     * 对获取到的地址集合进行预处理,给每一个address对象添加一个isDefault属性
+     *
+     * @param addressList  地址集合
+     * @param adsDafaultId 默认地址的id
+     */
+    private void prepList(List<Address> addressList, int adsDafaultId) {
+
+        final Address[] tmpAddress = {null};
+
+        addressList.forEach(address -> {
+
+            if (address.getAddress_id() == adsDafaultId) {
+                address.setDefault(true);
+                tmpAddress[0] = address;
+            }
+
+        });
+
+        if (tmpAddress[0] != null) {
+            addressList.remove(tmpAddress[0]);
+            addressList.add(0, tmpAddress[0]);
+        }
+
+    }
+
 }

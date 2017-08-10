@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="center_vertical|end"
                     android:text="春水碧于天"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_16"
@@ -96,7 +96,7 @@
                     android:id="@+id/tv_gender"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="center_vertical|end"
                     android:text="男"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_16"
@@ -116,6 +116,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="14dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -132,7 +133,7 @@
                     android:id="@+id/edt_tel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="center_vertical|end"
                     android:text="17714574929"
                     android:background="@null"
                     android:hint="用于密码找回"
@@ -152,6 +153,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="14dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -168,7 +170,7 @@
                     android:id="@+id/tv_defalut_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="center_vertical|end"
                     android:text="江苏省扬州市邗江区"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_16"
@@ -189,6 +191,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="14dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -205,7 +208,7 @@
                     android:id="@+id/edt_identity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="center_vertical|end"
                     android:background="@null"
                     android:hint="输入身份证号码"
                     android:text="320322199703106814"
@@ -225,6 +228,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="14dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -241,7 +245,7 @@
                     android:id="@+id/tv_reg_date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="center_vertical|end"
                     android:text="2017-8-02"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_16"

@@ -10,6 +10,8 @@ public class Common {
     //用户登录信息保存的sp文件的文件名
     public static final String SP_LOGININFO = "loginInfo";
 
+    public static final String SP_DEFAULT_ADDRESS = "sp_default_ads";
+
     //网络请求返回的几种状态
     public static final int HTTP_OK = 200;
     public static final int HTTP_ERROR = 500;

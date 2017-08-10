@@ -22,12 +22,6 @@ public interface IUserAddressContract {
          */
         void showUserAddress(List<Address> addressList);
 
-        /**
-         * 添加一个用户的地址信息
-         *
-         * @param address
-         */
-        void addUserAddress(Address address);
 
         /**
          * 设置默认地址成功

@@ -23,7 +23,10 @@ import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IUserAddressContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.UserAddressPresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.merpyzf.kangyuanmilk.utils.ui.ItemMarginDecoration;
+
+import net.qiujuer.genius.res.Resource;
 
 import java.util.List;
 
@@ -72,6 +75,9 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("地址管理");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        refresh_layout.setColorSchemeColors(new int[]{Resource.Color.GREEN, Resource.Color.PINK});
+
+
     }
 
     @Override
@@ -82,6 +88,35 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
         UserInfoSubject.getInstance().attach(UserAddressActivity.class.getName(), this);
 
+
+    }
+
+    @Override
+    public void initEvent() {
+        super.initEvent();
+
+        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                LogHelper.i("刷新中……");
+                mPresenter.getUserAds(UserAddressActivity.this);
+
+
+            }
+        });
+
+    }
+
+    /**
+     * 网路错误无法加载数据时的提示
+     *
+     * @param msg
+     */
+    @Override
+    public void showNetErrorTip(String msg) {
+
+        tipView.setErrorTip(msg);
 
     }
 
@@ -109,17 +144,6 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
     }
 
-    /**
-     * 网路错误无法加载数据时的提示
-     *
-     * @param msg
-     */
-    @Override
-    public void showNetErrorTip(String msg) {
-
-        tipView.setErrorTip(msg);
-
-    }
 
     /**
      * 加载数据为空的时候的提示
@@ -141,7 +165,9 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
      */
     @Override
     public void showUserAddress(List<Address> addressList) {
-
+        tipView.reset();
+        //刷新完毕
+        refresh_layout.setRefreshing(false);
         mAdapter = new UserAddressAdapter(addressList, this, recyclerView);
         mAdapter.setmOnItemWidgetClickListener(this);
 
@@ -156,22 +182,12 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
     }
 
-    /**
-     * 给用户添加一个地址
-     *
-     * @param address
-     */
-    @Override
-    public void addUserAddress(Address address) {
-
-    }
 
     @Override
     public void setAdsDefaultSuccess(Address address) {
 
         mAdapter.updateItem(address);
-
-
+        UserDao.getInstance().setUserDefaultAds(address);
     }
 
 
@@ -203,9 +219,9 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     public void onCheckedChanged(Address address) {
 
         LogHelper.i("被选中的地址==>" + address.getAddress_content());
-
         //将选中地址设置为默认
         mPresenter.setAdsAsDefault(this, address);
+
 
     }
 

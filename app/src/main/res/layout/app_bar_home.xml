@@ -7,51 +7,49 @@
     android:orientation="vertical"
     tools:context="com.merpyzf.kangyuanmilk.ui.user.HomeActivity">
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    tools:context="com.merpyzf.kangyuanmilk.ui.user.HomeActivity">
-
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:context="com.merpyzf.kangyuanmilk.ui.user.HomeActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
 
 
-            />
+                />
 
-    </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.AppBarLayout>
 
-    <!--承装内容的布局,用来填充Fragment-->
-    <include layout="@layout/content_home" />
+        <!--承装内容的布局,用来填充Fragment-->
+        <include layout="@layout/content_home" />
 
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_nav_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/len_52"
+        android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
-        app:menu="@menu/menu_bottom_navigation"
-        android:clickable="true"
         android:background="@color/white"
+        android:clickable="true"
         android:elevation="@dimen/len_4"
         android:outlineProvider="bounds"
         android:translationZ="8dp"
-        ></android.support.design.widget.BottomNavigationView>
+        app:menu="@menu/menu_bottom_navigation"></android.support.design.widget.BottomNavigationView>
 
 
 </LinearLayout>

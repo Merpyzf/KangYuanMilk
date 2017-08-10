@@ -93,10 +93,6 @@ public class HomeActivity extends BaseActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-//        //填充HomeFragment
-//        getSupportFragmentManager().beginTransaction().add(R.id.coordLayout, new HomeFragment()).commit();
-
         toolbar.post(() -> toolbar.setTitle("主页"));
 
 
@@ -161,8 +157,10 @@ public class HomeActivity extends BaseActivity
 
             case R.id.nav_address:
 
-                UserAddressActivity.showAction(this);
+                if (UserDao.getInstance().isLogin()) {
 
+                    UserAddressActivity.showAction(this);
+                }
 
                 break;
 
@@ -173,7 +171,7 @@ public class HomeActivity extends BaseActivity
             //注销登录
             case R.id.nav_logout:
 
-                if (UserDao.getInstance().getUserInfo() != null) {
+                if (UserDao.getInstance().isLogin()) {
 
                     new MaterialDialog.Builder(this)
                             .title(R.string.dialog_logout)
@@ -292,6 +290,7 @@ public class HomeActivity extends BaseActivity
                 } else {
 
                     startActivity(new Intent(HomeActivity.this, UserInfoActivity.class));
+
                 }
 
             }

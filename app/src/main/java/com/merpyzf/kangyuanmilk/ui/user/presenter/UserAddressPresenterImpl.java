@@ -130,6 +130,7 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
                                 if (messageBean.getResponse().isResult()) {
 
                                     mMvpView.showSuccess("设置默认地址成功");
+                                    mMvpView.setAdsDefaultSuccess(address);
 
 
                                 } else {
@@ -221,14 +222,22 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
 
         final Address[] tmpAddress = {null};
 
-        addressList.forEach(address -> {
 
-            if (address.getAddress_id() == adsDafaultId) {
-                address.setDefault(true);
-                tmpAddress[0] = address;
-            }
 
-        });
+            addressList.forEach(address -> {
+
+
+                if (address.getAddress_id() == adsDafaultId) {
+                    address.setDefault(true);
+                    tmpAddress[0] = address;
+                    //更新用户的默认地址
+                    UserDao.getInstance().setUserDefaultAds(address);
+                }
+
+
+            });
+
+
 
         if (tmpAddress[0] != null) {
             addressList.remove(tmpAddress[0]);

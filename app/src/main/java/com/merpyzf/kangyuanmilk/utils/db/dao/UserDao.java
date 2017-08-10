@@ -2,13 +2,14 @@ package com.merpyzf.kangyuanmilk.utils.db.dao;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.UpdateBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,7 @@ public class UserDao {
         try {
             //请空所有的用户数据，保证数据只有一条
             clearUser();
+            LogHelper.i("用户的默认地址==> "+user.getAddress_content());
             dao.createOrUpdate(user);
             long count = dao.queryBuilder().countOf();
         } catch (SQLException e) {
@@ -63,6 +65,7 @@ public class UserDao {
 
     /**
      * 更新user中的所有列
+     *
      * @param user
      */
     public void updateUser(User user) {
@@ -86,37 +89,32 @@ public class UserDao {
             e.printStackTrace();
         }
     }
+
     /**
-     * 更新user 指定列
+     * 更新user的指定列
+     *
      * @param map key - 列名
      *            value - 更新的内容
      */
-    public void updateUser(HashMap<String, Object> map) {
+    public void updateColumns(int userId, Map<String, String> map) {
 
         if (map == null) {
             return;
         }
 
         UpdateBuilder<User, Integer> updateBuilder = dao.updateBuilder();
-        Iterator<Map.Entry<String, Object>> entries = map.entrySet().iterator();
+        Iterator<Map.Entry<String, String>> entries = map.entrySet().iterator();
         while (entries.hasNext()) {
-            Map.Entry<String, Object> entry = entries.next();
+            Map.Entry<String, String> entry = entries.next();
             try {
-                updateBuilder.updateColumnValue(entry.getKey(), entry.getValue());
+                updateBuilder.updateColumnValue(entry.getKey(), entry.getValue()).where().eq("user_id", userId);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        try {
 
-            int update = updateBuilder.update();
-
-            LogHelper.i("UserDao中更新指定列 ==> " + update);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
+
 
     /**
      * 清除用户信息
@@ -144,6 +142,7 @@ public class UserDao {
 
     /**
      * 获取当前表中存储的用户数量
+     *
      * @return
      * @throws SQLException
      */
@@ -155,6 +154,7 @@ public class UserDao {
 
     /**
      * 获取用户的信息从数据库中
+     *
      * @return
      */
     public User getUserInfo() {
@@ -171,6 +171,36 @@ public class UserDao {
         }
         return user;
 
+    }
+
+    /***
+     * 更新用户的默认地址
+     * @param address
+     */
+    public void setUserDefaultAds(Address address) {
+
+
+
+        try {
+            Where<User, Integer> eq = dao.updateBuilder()
+                    .updateColumnValue("address_content", address.getConsignee()
+                            + "-" + address.getConsignee_tel() + "-" + address.getAddress_all()
+                            + " " + address.getAddress_content())
+                    .where()
+                    .eq("user_id",getUserInfo().getUser_id());
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public boolean isLogin() {
+
+        return UserDao.getInstance().getUserInfo() != null;
     }
 
 

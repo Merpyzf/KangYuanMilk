@@ -14,7 +14,7 @@ import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
-import com.merpyzf.kangyuanmilk.ui.home.adapter.SearchHistoryAdapter;
+import com.merpyzf.kangyuanmilk.ui.adapter.SearchHistoryAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.contract.ISearchContract;
 import com.merpyzf.kangyuanmilk.ui.home.model.SearchBean;
 import com.merpyzf.kangyuanmilk.ui.home.presenter.SearchPresenterImpl;

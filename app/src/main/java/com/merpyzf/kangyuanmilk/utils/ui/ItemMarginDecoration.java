@@ -12,10 +12,16 @@ import net.qiujuer.genius.ui.Ui;
  */
 
 public class ItemMarginDecoration extends RecyclerView.ItemDecoration {
-
+    private int margin = 5;
+    private int flag = 0;
 
     public ItemMarginDecoration() {
         super();
+    }
+
+    public ItemMarginDecoration(int margin, int flag) {
+        this.margin = margin;
+        this.flag = flag;
     }
 
     @Override
@@ -23,9 +29,20 @@ public class ItemMarginDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
 
         int position = parent.getChildAdapterPosition(view);
-        if(position!=0){
 
-            outRect.top = (int) Ui.dipToPx(view.getResources(),5);
+        if (flag == 0) {
+
+            if (position != 0) {
+
+                outRect.top = (int) Ui.dipToPx(view.getResources(), margin);
+
+            }
+        } else if (flag == 1) {
+
+
+            outRect.top = (int) Ui.dipToPx(view.getResources(), margin);
+            outRect.left = (int) Ui.dipToPx(view.getResources(), margin);
+            outRect.right = (int) Ui.dipToPx(view.getResources(), margin);
 
         }
 

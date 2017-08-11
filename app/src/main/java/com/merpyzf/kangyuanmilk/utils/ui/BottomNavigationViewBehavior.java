@@ -13,7 +13,7 @@ import android.view.View;
 
 public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<View> {
 
-
+    
     public BottomNavigationViewBehavior() {
 
     }
@@ -31,14 +31,32 @@ public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<Vie
         return super.onLayoutChild(parent, child, layoutDirection);
     }
 
-
+    /**
+     *
+     *
+     *
+     * @param parent
+     * @param child
+     * @param dependency
+     * @return
+     *
+     *
+     */
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
 
         return dependency instanceof AppBarLayout;
     }
 
-
+    /**
+     *
+     * @param parent
+     * @param child
+     * @param dependency
+     * @return
+     *
+     *
+     */
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
         //得到依赖View的滑动距离

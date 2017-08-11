@@ -1,12 +1,17 @@
 package com.merpyzf.kangyuanmilk.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.data.Response;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 import com.merpyzf.kangyuanmilk.utils.ui.GliderImageLoader;
@@ -15,7 +20,6 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,13 +28,14 @@ import butterknife.BindView;
  * Created by wangke on 2017-08-10.
  */
 
-public class HomeAdapter extends RecyclerAdapter<String> {
+public class HomeAdapter extends RecyclerAdapter<Response.Data> {
 
-    private static final int ONE = 1;
-    private static final int TWO = 2;
-    private static final int THREE = 3;
+    private static final int HEADER_BANNER = 0;
+    private static final int NEW_ACTIVITY = 1;
+    private static final int HOT_PRODUCT = 2;
+    private static final int NEW_PRODUCT = 3;
 
-    public HomeAdapter(List<String> mDatas, Context mContext, RecyclerView mRecyclerView) {
+    public HomeAdapter(List<Response.Data> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
     }
 
@@ -39,57 +44,84 @@ public class HomeAdapter extends RecyclerAdapter<String> {
 
         switch (viewType) {
 
-            case ONE:
-                View view = LayoutInflater.from(mContext)
+            case HEADER_BANNER:
+                View view_header = LayoutInflater.from(mContext)
                         .inflate(R.layout.item_home_header, parent, false);
-                return new ViewHolderHeader(view);
+
+                return new HeaderViewHolder(view_header);
+
+            case NEW_ACTIVITY:
+
+                View view_active = LayoutInflater.from(mContext)
+                        .inflate(R.layout.item_home_new_activity, parent, false);
+
+                return new ActiveViewHolder(view_active);
+
+
+            case HOT_PRODUCT:
+
+                View view_hot = LayoutInflater.from(mContext)
+                        .inflate(R.layout.item_home_hot_product, parent, false);
+                return new HotSellViewHolder(view_hot);
+
+            case NEW_PRODUCT:
+
+                View view_new = LayoutInflater.from(mContext)
+                        .inflate(R.layout.item_home_new_product, parent, false);
+                return new NewProductViewHolder(view_new);
 
 
         }
+
 
         return null;
 
     }
 
 
-
     @Override
     public int getItemViewType(int position) {
 
-        if (position == 0) {
+        if (mDatas.get(position).getType().equals("HEADER_BANNER")) {
 
-            return ONE;
+            return HEADER_BANNER;
+        } else if (mDatas.get(position).getType().equals("NEW_ACTIVITY")) {
+
+            return NEW_ACTIVITY;
+        } else if (mDatas.get(position).getType().equals("HOT_PRODUCT")) {
+
+            return HOT_PRODUCT;
+        } else if (mDatas.get(position).getType().equals("NEW_PRODUCT")) {
+
+            return NEW_PRODUCT;
         }
 
-        return ONE;
+        return -1;
     }
 
-    class ViewHolderHeader extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<String> {
+    /**
+     * HeaderBanner
+     */
+    class HeaderViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
 
         @BindView(R.id.banner)
         Banner mBanner;
 
-        public ViewHolderHeader(View itemView) {
+        public HeaderViewHolder(View itemView) {
             super(itemView);
         }
 
         @Override
-        protected void onBindWidget(String s) {
+        protected void onBindWidget(Response.Data data) {
 
-            String[] images = {
-                    "http://otdmrup4y.bkt.clouddn.com/avatar/f404bcfe254b916019077099e6d28a4a",
-                    "http://otdmrup4y.bkt.clouddn.com/avatar/f362347c3fa8404670eaf7219793264c",
-                    "http://otdmrup4y.bkt.clouddn.com/avatar/d95503979f8f27038a8c020acacbada7",
-                    "http://otdmrup4y.bkt.clouddn.com/avatar/cd015e51774f5c773026685ac4498b19"
-            };
 
-            List<String> imageList = Arrays.asList(images);
-
+            List<String> imageList = new ArrayList<>();
             List<String> titleList = new ArrayList<>();
-            titleList.add("第一张图片");
-            titleList.add("第二张图片");
-            titleList.add("第三张图片");
-            titleList.add("第四张图片");
+            for (int i = 0; i < data.getDataInfoList().size(); i++) {
+
+                imageList.add(data.getDataInfoList().get(i).getImageview());
+                titleList.add(data.getDataInfoList().get(i).getTitle());
+            }
 
 
             mBanner.isAutoPlay(true);
@@ -102,5 +134,108 @@ public class HomeAdapter extends RecyclerAdapter<String> {
 
         }
     }
+
+    /**
+     * 最新活动
+     */
+    class ActiveViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
+
+        @BindView(R.id.banner_new_active)
+        Banner mBanner;
+        @BindView(R.id.tv_title)
+        TextView tv_title;
+
+
+        public ActiveViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void onBindWidget(Response.Data data) {
+
+            List<String> imageList = new ArrayList<>();
+
+            for (int i = 0; i < data.getDataInfoList().size(); i++) {
+                imageList.add(data.getDataInfoList().get(i).getImageview());
+            }
+            mBanner.isAutoPlay(true);
+            mBanner.setImages(imageList);
+            mBanner.setImageLoader(new GliderImageLoader());
+            mBanner.setIndicatorGravity(BannerConfig.RIGHT);
+            mBanner.start();
+
+        }
+    }
+
+    /**
+     * 热销产品
+     */
+    class HotSellViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
+
+        @BindView(R.id.recyclerView)
+        RecyclerView recyclerView;
+        @BindView(R.id.tv_title)
+        TextView tv_title;
+
+
+        public HotSellViewHolder(View itemView) {
+            super(itemView);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+        }
+
+        @Override
+        protected void onBindWidget(Response.Data data) {
+
+            HotSellAdapter adapter = new HotSellAdapter(data.getDataInfoList(), mContext, recyclerView);
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
+    /**
+     * 新品尝鲜
+     */
+    class NewProductViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
+
+        @BindView(R.id.iv_large)
+        ImageView iv_large;
+        @BindView(R.id.iv_small1)
+        ImageView iv_small1;
+        @BindView(R.id.iv_small2)
+        ImageView iv_small2;
+        @BindView(R.id.tv_title)
+        TextView tv_title;
+
+
+        public NewProductViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void onBindWidget(Response.Data data) {
+
+            List<Response.DataInfo> dataInfoList = data.getDataInfoList();
+
+            loadImage(iv_large, dataInfoList.get(0).getImageview());
+            loadImage(iv_small1, dataInfoList.get(1).getImageview());
+            loadImage(iv_small2, dataInfoList.get(2).getImageview());
+
+        }
+
+        private void loadImage(ImageView iv_large, String imageview) {
+
+            Glide.with(mContext)
+                    .load(imageview)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_avater_default)
+                    .into(iv_large);
+        }
+
+    }
+
+
 
 }

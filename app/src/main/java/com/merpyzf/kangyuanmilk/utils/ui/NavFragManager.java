@@ -1,10 +1,12 @@
-package com.merpyzf.kangyuanmilk.utils;
+package com.merpyzf.kangyuanmilk.utils.ui;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
+
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 /**
  * Created by wangke on 2017-08-05.

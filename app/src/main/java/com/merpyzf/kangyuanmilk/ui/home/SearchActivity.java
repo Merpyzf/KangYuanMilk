@@ -3,7 +3,9 @@ package com.merpyzf.kangyuanmilk.ui.home;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,8 +36,6 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @BindView(R.id.iv_open)
     ImageView iv_open; //开启搜索框
 
-    @BindView(R.id.iv_back)
-    ImageView iv_back; //返回到上一个界面
 
     @BindView(R.id.tv_search)
     TextView tv_search; //搜索按钮
@@ -48,6 +48,9 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
 
     @BindView(R.id.rv_search_history)
     RecyclerView rv_search_history;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
 
     private ISearchContract.ISearchPresenter mPresenter;
@@ -63,8 +66,8 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
 
         cardView.post(() -> SearchViewHelper.excuteAnimator(cardView));
         rv_search_history.setLayoutManager(new LinearLayoutManager(this));
-
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -136,12 +139,11 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @Override
     public void showSearchHistory(List<SearchBean> searchBeanList) {
 
-        LogHelper.i("changdu ==>"+searchBeanList.size());
+        LogHelper.i("changdu ==>" + searchBeanList.size());
 
-        mAdapter = new SearchHistoryAdapter(mPresenter,searchBeanList, this, rv_search_history);
+        mAdapter = new SearchHistoryAdapter(mPresenter, searchBeanList, this, rv_search_history);
         rv_search_history.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
-
 
 
     }
@@ -176,9 +178,25 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+
+                onBackPressed();
+
+                break;
+
+        }
+
+        return true;
+    }
+
+    @Override
     public void onItemClick(ViewHolder viewHolder, SearchBean searchBean, int position) {
 
-        LogHelper.i("====>"+searchBean.getSearchInfo());
+        LogHelper.i("====>" + searchBean.getSearchInfo());
         edt_search.setText(searchBean.getSearchInfo());
 
     }

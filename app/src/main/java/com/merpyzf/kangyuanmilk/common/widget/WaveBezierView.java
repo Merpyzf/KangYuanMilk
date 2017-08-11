@@ -15,7 +15,7 @@ import android.view.animation.LinearInterpolator;
  * Created by wangke on 2017-08-08.
  */
 
-public class WaveBezierView extends View implements View.OnClickListener {
+public class WaveBezierView extends View {
 
     private Paint mPaint;
     private Path mPath;
@@ -55,9 +55,8 @@ public class WaveBezierView extends View implements View.OnClickListener {
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaint.setStrokeWidth(2);
         mPaint.setColor(Color.LTGRAY);
-        mPaint.setColor(Color.parseColor("#87CEFA"));
+        mPaint.setColor(Color.parseColor("#5f87CEFA"));
         mPath = new Path();
-        setOnClickListener(this);
     }
 
     @Override
@@ -66,9 +65,8 @@ public class WaveBezierView extends View implements View.OnClickListener {
         mHeight = h;
         mWidth = w;
         mWaveLength = 800;
-        mCenterY = h/2;
-        mWaveCount = (int) Math.round(mWidth/mWaveLength+1.5);
-
+        mCenterY = h / 2;
+        mWaveCount = (int) Math.round(mWidth / mWaveLength + 1.5);
 
 
     }
@@ -77,26 +75,26 @@ public class WaveBezierView extends View implements View.OnClickListener {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPath.reset();
-        mPath.moveTo(-mWaveLength+mOffset,mCenterY);
+        mPath.moveTo(-mWaveLength + mOffset, mCenterY);
         for (int i = 0; i < mWaveCount; i++) {
 
-            mPath.quadTo(-mWaveLength*3/4+i*mWaveLength+mOffset,mCenterY-60,-mWaveLength/2+i*mWaveLength+mOffset,mCenterY);
-            mPath.quadTo(-mWaveLength/4+i*mWaveLength+mOffset,mCenterY+60,i*mWaveLength+mOffset,mCenterY);
+            mPath.quadTo(-mWaveLength * 3 / 4 + i * mWaveLength + mOffset, mCenterY - 60, -mWaveLength / 2 + i * mWaveLength + mOffset, mCenterY);
+            mPath.quadTo(-mWaveLength / 4 + i * mWaveLength + mOffset, mCenterY + 60, i * mWaveLength + mOffset, mCenterY);
         }
 
 
-        mPath.lineTo(mWidth,mHeight);
-        mPath.lineTo(0,mHeight);
+        mPath.lineTo(mWidth, mHeight);
+        mPath.lineTo(0, mHeight);
         mPath.close();
-        canvas.drawPath(mPath,mPaint);
+        canvas.drawPath(mPath, mPaint);
 
     }
 
-    @Override
-    public void onClick(View view) {
+
+    public void start() {
 
 
-        animator = ValueAnimator.ofInt(0,mWaveLength);
+        animator = ValueAnimator.ofInt(0, mWaveLength);
         animator.setDuration(1000);
         animator.setInterpolator(new LinearInterpolator());
         animator.start();
@@ -109,4 +107,6 @@ public class WaveBezierView extends View implements View.OnClickListener {
 
 
     }
+
+
 }

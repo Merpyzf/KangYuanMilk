@@ -28,6 +28,7 @@
     <string name="login_check_toast">请检查用户名或密码输入不能为空</string>
     <string name="sms_verify_activity_countdown">s 后重新获取</string>
     <string name="sms_verify_activity_getcode">获取验证码</string>
+    <string name="action_search">搜索</string>
 
 
 </resources>

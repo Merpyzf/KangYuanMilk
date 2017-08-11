@@ -3,7 +3,9 @@ package com.merpyzf.kangyuanmilk.ui.user;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,9 +39,9 @@ import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.HomePresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
-import com.merpyzf.kangyuanmilk.utils.ui.NavFragManager;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
+import com.merpyzf.kangyuanmilk.utils.ui.NavFragManager;
 
 import butterknife.BindView;
 
@@ -60,11 +62,18 @@ public class HomeActivity extends BaseActivity
     DrawerLayout drawer;
     @BindView(R.id.bottom_nav_view)
     BottomNavigationView bottom_nav_view;
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
+    @BindView(R.id.coordLayout)
+    CoordinatorLayout coordinatorLayout;
+
+
     AvaterView civ_avater;
     TextView tv_username;
     RelativeLayout rl_nav_header;
     private HomePresenterImpl mPresenter;
     private NavFragManager mNavFragManager = null;
+    private AppBarState mCurrentAppBarState = AppBarState.IDLE;
 
 
     @Override
@@ -85,6 +94,7 @@ public class HomeActivity extends BaseActivity
         rl_nav_header = view.findViewById(R.id.rl_nav_header);
         civ_avater = view.findViewById(R.id.iv_avater);
         tv_username = view.findViewById(R.id.tv_username);
+
         //设置抽屉菜单头部背景
         setNavHeaderBg(rl_nav_header);
         //将抽屉菜单和ToolBar关联在一起
@@ -102,6 +112,26 @@ public class HomeActivity extends BaseActivity
     public void initEvent() {
         navigationView.setNavigationItemSelectedListener(this);
         bottom_nav_view.setOnNavigationItemSelectedListener(this);
+
+        /**
+         * 监听AppBarLayout的当前状态: 隐藏/展开/变化中
+         */
+        appbar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+
+            int height = toolbar.getHeight();
+
+            if (verticalOffset == 0) {
+                mCurrentAppBarState = AppBarState.EXPAND;
+            } else if (verticalOffset == -height) {
+                mCurrentAppBarState = AppBarState.COLLAPSED;
+            } else {
+                mCurrentAppBarState = AppBarState.IDLE;
+            }
+
+
+        });
+
+
     }
 
     @Override
@@ -132,14 +162,18 @@ public class HomeActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        switch (item.getItemId()) {
 
-            startActivity(new Intent(this, SearchActivity.class));
+            case R.id.action_home_search:
 
-            return true;
+                startActivity(new Intent(this, SearchActivity.class));
+
+                return true;
+
+
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -159,7 +193,7 @@ public class HomeActivity extends BaseActivity
 
                 if (UserDao.getInstance().isLogin()) {
 
-                    UserAddressActivity.showAction(this);
+                    UserAddressActivity.showAction(HomeActivity.this);
                 }
 
                 break;
@@ -173,7 +207,7 @@ public class HomeActivity extends BaseActivity
 
                 if (UserDao.getInstance().isLogin()) {
 
-                    new MaterialDialog.Builder(this)
+                    new MaterialDialog.Builder(HomeActivity.this)
                             .title(R.string.dialog_logout)
                             .content(R.string.dialog_logout_content)
                             .positiveText(R.string.dialog_logout_positive)
@@ -217,7 +251,7 @@ public class HomeActivity extends BaseActivity
 
                 toolbar.setTitle("主页");
                 mNavFragManager.performClickNavMenu(item.getItemId());
-
+                coordinatorLayout.setEnabled(true);
 
                 break;
 
@@ -225,20 +259,21 @@ public class HomeActivity extends BaseActivity
 
                 toolbar.setTitle("商品");
                 mNavFragManager.performClickNavMenu(item.getItemId());
-
+                coordinatorLayout.setEnabled(false);
                 break;
             case R.id.action_shopping_cart:
 
                 toolbar.setTitle("购物车");
                 mNavFragManager.performClickNavMenu(item.getItemId());
+                coordinatorLayout.setEnabled(false);
                 break;
 
             default:
 
                 break;
         }
-
         drawer.closeDrawer(GravityCompat.START);
+
 
         return true;
     }
@@ -376,9 +411,14 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         //根据DrawerLayout的当前状态选择是开启还是关闭
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+
+
+        } else if (mCurrentAppBarState == AppBarState.COLLAPSED) {
+
+            appbar.setExpanded(true, true);
+
         } else {
             super.onBackPressed();
         }
@@ -393,6 +433,12 @@ public class HomeActivity extends BaseActivity
     @Override
     public void cancelLoadingDialog() {
 
+    }
+
+    public enum AppBarState {
+        EXPAND,
+        COLLAPSED,
+        IDLE
     }
 
     @Override

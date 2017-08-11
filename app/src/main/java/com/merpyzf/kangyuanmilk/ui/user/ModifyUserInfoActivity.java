@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -74,6 +75,21 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
             supportActionBar.setTitle("个人资料修改");
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                onBackPressed();
+
+                break;
+
+        }
+
+        return true;
     }
 
     @Override
@@ -154,6 +170,7 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
         });
 
+
     }
 
 
@@ -176,6 +193,7 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
     /**
      * 显示用户信息
+     *
      * @param user 用户信息
      */
     @Override
@@ -202,6 +220,7 @@ public class ModifyUserInfoActivity extends BaseActivity implements IModifyInfoC
 
 
     }
+
     @Override
     public void cancelLoadingDialog() {
 

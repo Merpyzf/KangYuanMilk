@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.utils.ui;
+package com.merpyzf.kangyuanmilk.common.widget.behavior;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;

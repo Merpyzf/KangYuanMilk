@@ -71,7 +71,7 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
 
             tv_name.setText(address.getConsignee());
             tv_phone.setText(address.getConsignee_tel());
-            tv_address.setText(address.getAddress_all()+" "+address.getAddress_content());
+            tv_address.setText(address.getAddress_all() + " " + address.getAddress_content());
             checkBox.setChecked(address.isDefault());
             if (checkBox.isChecked()) {
                 ll_cb.setClickable(false);
@@ -114,11 +114,11 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
                 case R.id.ll_cb:
 
 
-                    mDatas.forEach(address -> {
+                    for (int i = 0; i < mDatas.size(); i++) {
 
-                        address.setDefault(false);
+                        mDatas.get(i).setDefault(false);
+                    }
 
-                    });
                     data.setDefault(true);
                     if (mOnItemWidgetClickListener != null) {
 

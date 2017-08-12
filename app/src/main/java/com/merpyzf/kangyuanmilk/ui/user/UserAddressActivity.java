@@ -173,11 +173,6 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
         recyclerView.setAdapter(mAdapter);
 
-        addressList.forEach(address -> {
-
-            LogHelper.i("用户的地址==>" + address.getAddress_content());
-
-        });
 
 
     }

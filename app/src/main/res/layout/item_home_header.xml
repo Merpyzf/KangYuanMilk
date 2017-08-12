@@ -20,6 +20,7 @@
             android:orientation="vertical">
 
 
+
             <com.youth.banner.Banner
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
@@ -71,8 +72,7 @@
                         android:layout_gravity="center_horizontal"
                         android:padding="5dp"
                         android:tint="@color/textSecond"
-                        android:src="@drawable/ic_yoghurt" />
-
+                        android:src="@drawable/ic_yogurt" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -120,12 +120,11 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_repeatorder"
+                        android:src="@drawable/ic_order_repeat"
                         android:padding="5dp"
                         android:tint="@color/textSecond"
 
                         />
-
 
                     <TextView
                         android:layout_width="match_parent"

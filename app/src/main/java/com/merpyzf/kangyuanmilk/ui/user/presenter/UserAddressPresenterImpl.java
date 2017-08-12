@@ -223,20 +223,19 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
         final Address[] tmpAddress = {null};
 
 
+        for (int i = 0; i < addressList.size(); i++) {
 
-            addressList.forEach(address -> {
+            Address address = addressList.get(i);
+
+            if (address.getAddress_id() == adsDafaultId) {
+                address.setDefault(true);
+                tmpAddress[0] = address;
+                //更新用户的默认地址
+                UserDao.getInstance().setUserDefaultAds(address);
+            }
 
 
-                if (address.getAddress_id() == adsDafaultId) {
-                    address.setDefault(true);
-                    tmpAddress[0] = address;
-                    //更新用户的默认地址
-                    UserDao.getInstance().setUserDefaultAds(address);
-                }
-
-
-            });
-
+        }
 
 
         if (tmpAddress[0] != null) {

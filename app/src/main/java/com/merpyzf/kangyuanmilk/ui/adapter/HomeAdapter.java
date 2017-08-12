@@ -14,6 +14,7 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.data.Response;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.GliderImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -123,6 +124,17 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
                 titleList.add(data.getDataInfoList().get(i).getTitle());
             }
 
+            mBanner.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    int height = mBanner.getHeight();
+                    LogHelper.i("Banner的高度==>" + height);
+
+
+                }
+            });
+
 
             mBanner.isAutoPlay(true);
             mBanner.setImages(imageList);
@@ -131,6 +143,7 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
             mBanner.setBannerTitles(titleList);
             mBanner.setBannerAnimation(Transformer.Stack);
             mBanner.start();
+
 
         }
     }
@@ -235,7 +248,6 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
         }
 
     }
-
 
 
 }

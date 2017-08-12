@@ -1,6 +1,8 @@
 package com.merpyzf.kangyuanmilk.ui.user;
 
+import android.app.ActivityManager;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
@@ -105,7 +107,19 @@ public class HomeActivity extends BaseActivity
 
         toolbar.post(() -> toolbar.setTitle("主页"));
 
+        getMaxMemoryInfo();
 
+
+    }
+
+    private void getMaxMemoryInfo() {
+        Runtime rt = Runtime.getRuntime();
+        long maxMemory = rt.maxMemory();
+
+        LogHelper.i("MaxMemory: ==> " + Long.toString(maxMemory / (1024 * 1024)));
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        LogHelper.i("MemoryClass: ==> " + Long.toString(activityManager.getMemoryClass()));
+        LogHelper.i("LargeMemoryClass:==> " + Long.toString(activityManager.getLargeMemoryClass()));
     }
 
     @Override

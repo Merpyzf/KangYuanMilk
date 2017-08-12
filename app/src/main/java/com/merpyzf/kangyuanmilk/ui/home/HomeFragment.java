@@ -27,6 +27,7 @@ public class HomeFragment extends BaseFragment {
     private List<String> mDatas = new ArrayList<>();
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected int getContentLayoutId() {
@@ -36,7 +37,9 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initWidget(View rootview) {
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+
 
 
     }
@@ -86,7 +89,7 @@ public class HomeFragment extends BaseFragment {
 
         newHeader.setDataInfoList(newHeaderList);
         newHeader.setType("HEADER_BANNER");
-        dataList.add(0, newHeader);
+
 
 
         //最新活动
@@ -114,7 +117,7 @@ public class HomeFragment extends BaseFragment {
 
         newActivity.setDataInfoList(newActivityList);
         newActivity.setType("NEW_ACTIVITY");
-        dataList.add(newActivity);
+
 
 
         Response.DataInfo dataInfo1 = new Response.DataInfo();
@@ -153,7 +156,7 @@ public class HomeFragment extends BaseFragment {
 
         dataMilk.setDataInfoList(dataInfoList);
         dataMilk.setType("HOT_PRODUCT");
-        dataList.add(dataMilk);
+
 
 
         //新品
@@ -187,12 +190,18 @@ public class HomeFragment extends BaseFragment {
 
         dataNewProduct.setDataInfoList(dataInfoListNew);
         dataNewProduct.setType("NEW_PRODUCT");
+
+        dataList.add(newHeader);
+        dataList.add(newActivity);
+        dataList.add(dataMilk);
         dataList.add(dataNewProduct);
+
 
 
         response.setData(dataList);
 
         recyclerView.setAdapter(new HomeAdapter(response.getData(), getContext(), recyclerView));
+        mLayoutManager.scrollToPosition(0);
 
         Gson gson = new Gson();
 

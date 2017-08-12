@@ -11,8 +11,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         tools:context="com.merpyzf.kangyuanmilk.ui.user.HomeActivity">
 
 
@@ -38,18 +37,18 @@
         <include layout="@layout/content_home" />
 
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_nav_view"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        android:clickable="true"
-        android:elevation="@dimen/len_4"
-        android:outlineProvider="bounds"
-        android:translationZ="8dp"
-        app:layout_behavior="com.merpyzf.kangyuanmilk.common.widget.behavior.BottomNavigationViewBehavior"
-        app:menu="@menu/menu_bottom_navigation"></android.support.design.widget.BottomNavigationView>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:clickable="true"
+            android:elevation="@dimen/len_4"
+            android:outlineProvider="bounds"
+            android:translationZ="8dp"
+            app:layout_behavior="com.merpyzf.kangyuanmilk.common.widget.behavior.BottomNavigationViewBehavior"
+            app:menu="@menu/menu_bottom_navigation"></android.support.design.widget.BottomNavigationView>
 
     </android.support.design.widget.CoordinatorLayout>
 

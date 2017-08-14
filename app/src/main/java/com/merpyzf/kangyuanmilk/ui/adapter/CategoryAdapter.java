@@ -13,8 +13,8 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
+import com.merpyzf.kangyuanmilk.utils.ScreenHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -26,10 +26,13 @@ import butterknife.BindView;
 
 public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
 
-    private List<Integer> mHeight = new ArrayList();
+    //item中imageView的默认高度，用于实现瀑布流效果
+    private int mImageViewHeight = 200;
 
     public CategoryAdapter(List<Meizi.ResultsBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
+        mImageViewHeight = ScreenHelper.getScreenHeight()/5;
+
     }
 
     @Override
@@ -68,15 +71,13 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
             } else {
 
                 Random random = new Random();
-                int height = 500 + random.nextInt(200);
+                int height = mImageViewHeight + random.nextInt(mImageViewHeight/2);
                 iv_goods.setTag(R.id.item_iv_height, height);
                 params.height = height;
             }
 
 
             iv_goods.setLayoutParams(params);
-
-//            LogHelper.i("高度==》"+integer);
 
 
             Glide.with(mContext)

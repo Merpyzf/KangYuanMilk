@@ -14,7 +14,12 @@ import java.security.NoSuchAlgorithmException;
  * 对文件或者字符串进行Hash算法，返回MD5值
  *
  */
-public class HashHelper {
+public final class HashHelper {
+
+    private HashHelper(){
+        throw new UnsupportedOperationException("u can't instantiante me……");
+    }
+
     private static final char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'a', 'b', 'c', 'd', 'e', 'f'};
 

@@ -12,8 +12,11 @@ import java.net.UnknownHostException;
  * Rx异常处理
  */
 
-public class ErrorHandleHelper {
+public final class ErrorHandleHelper {
 
+    private ErrorHandleHelper(){
+        throw new UnsupportedOperationException("u can't instantiante me……");
+    }
 
     public static void handle(Throwable e, IBaseView view) {
 

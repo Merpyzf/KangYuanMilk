@@ -12,7 +12,12 @@ import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
  * SharedPreferences文件存储的工具类
  */
 
-public class SharedPreHelper {
+public final class SharedPreHelper {
+
+    private SharedPreHelper(){
+        throw new UnsupportedOperationException("u can't instantiante me……");
+    }
+
 
     private static Context context;
 

@@ -10,6 +10,20 @@
         app:showAsAction="always" />
 
     <item
+    android:id="@+id/action_home_category"
+    android:orderInCategory="100"
+    android:title="@string/action_category"
+    android:icon="@drawable/ic_action_category"
+    app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_home_remove"
+        android:orderInCategory="100"
+        android:title="@string/action_remove"
+        android:icon="@drawable/ic_action_remove"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_home_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

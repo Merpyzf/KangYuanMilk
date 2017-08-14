@@ -39,10 +39,15 @@ public class ItemMarginDecoration extends RecyclerView.ItemDecoration {
             }
         } else if (flag == 1) {
 
+            if (position != 0) {
 
-            outRect.top = (int) Ui.dipToPx(view.getResources(), margin);
-            outRect.left = (int) Ui.dipToPx(view.getResources(), margin);
-            outRect.right = (int) Ui.dipToPx(view.getResources(), margin);
+
+                outRect.top = (int) Ui.dipToPx(view.getResources(), margin);
+                outRect.left = (int) Ui.dipToPx(view.getResources(), margin);
+                outRect.right = (int) Ui.dipToPx(view.getResources(), margin);
+
+            }
+
 
         }
 

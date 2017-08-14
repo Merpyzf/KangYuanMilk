@@ -1,8 +1,5 @@
 package com.merpyzf.kangyuanmilk.common.widget.behavior;
 
-/**
- * Created by Administrator on 2017-07-21.
- */
 
 import android.content.Context;
 import android.os.Build;
@@ -17,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 /**
  * Created by Lv on 2016/10/8.
@@ -33,6 +31,8 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
     @Override
     public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout, final FloatingActionButton child,
                                        final View directTargetChild, final View target, final int nestedScrollAxes) {
+
+        LogHelper.i("onStartNestedScroll==> ");
         // Ensure we react to vertical scrolling
         return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL
                 || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
@@ -42,7 +42,11 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
     public void onNestedScroll(final CoordinatorLayout coordinatorLayout, final FloatingActionButton child,
                                final View target, final int dxConsumed, final int dyConsumed,
                                final int dxUnconsumed, final int dyUnconsumed) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+
+
+        LogHelper.i("onNestedScroll==> "+dyConsumed+"mIsAnimatingOut==>"+mIsAnimatingOut);
+
+
         if (dyConsumed > 0 && !this.mIsAnimatingOut && child.getVisibility() == View.VISIBLE) {
             // User scrolled down and the FAB is currently visible -> hide the FAB
             animateOut(child);
@@ -50,6 +54,7 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
             // User scrolled up and the FAB is currently not visible -> show the FAB
             animateIn(child);
         }
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
     }
 
     // Same animation that FloatingActionButton.Behavior uses to hide the FAB when the AppBarLayout exits

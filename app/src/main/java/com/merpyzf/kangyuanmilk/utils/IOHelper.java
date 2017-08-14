@@ -10,7 +10,11 @@ import java.io.InputStream;
  * IO工具类
  */
 
-public class IOHelper {
+public final class IOHelper {
+
+    private IOHelper(){
+        throw new UnsupportedOperationException("u can't instantiante me……");
+    }
 
     /**
      * 将流写入到文件

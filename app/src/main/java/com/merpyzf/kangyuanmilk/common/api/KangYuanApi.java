@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
 import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
@@ -9,7 +10,9 @@ import com.merpyzf.kangyuanmilk.ui.user.bean.UserAddressBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by Administrator on 2017-07-17.
@@ -99,5 +102,10 @@ public interface KangYuanApi {
 
     @POST("user/changeAddress")
     Observable<MessageBean> updateAddress(@Body Address address);
+
+
+    @GET("http://gank.io/api/data/福利/9/{page}")
+    Observable<Meizi> getMeizi(@Path("page")String page);
+
 
 }

@@ -8,7 +8,13 @@ import java.util.regex.Pattern;
  * 正则校验
  */
 
-public class RegexHelper {
+public final class RegexHelper {
+
+    private RegexHelper(){
+        throw new UnsupportedOperationException("u can't instantiante me……");
+    }
+
+
 
     /**
      * 正则表达式：验证身份证,粗略验证

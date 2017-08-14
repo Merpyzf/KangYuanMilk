@@ -7,7 +7,12 @@ import java.io.File;
  * 与文件操作有关的工具类
  */
 
-public class FileHelper {
+public final class FileHelper {
+
+    private FileHelper(){
+        throw new UnsupportedOperationException("u can't instantiante me……");
+    }
+
 
     /**
      * 清理文件夹中不需要的文件

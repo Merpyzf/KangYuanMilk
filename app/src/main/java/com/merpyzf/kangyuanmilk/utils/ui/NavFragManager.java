@@ -136,6 +136,15 @@ public class NavFragManager {
 
     }
 
+    /**
+     * 获取当前所在的Fragment
+     * @return 返回当前的fragment
+     */
+    public Fragment getCurrentTab(){
+        return mCurrent.fragment;
+    }
+
+
 
     public static class Tab {
 

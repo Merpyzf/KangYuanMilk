@@ -28,6 +28,7 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.ui.home.CategoryPickerFragment;
 import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
@@ -68,7 +69,8 @@ public class HomeActivity extends BaseActivity
     AppBarLayout appbar;
     @BindView(R.id.coordLayout)
     CoordinatorLayout coordinatorLayout;
-
+    //默认为主页
+    private CurrentPage mCurrentPage = CurrentPage.HOME;
 
     AvaterView civ_avater;
     TextView tv_username;
@@ -76,6 +78,14 @@ public class HomeActivity extends BaseActivity
     private HomePresenterImpl mPresenter;
     private NavFragManager mNavFragManager = null;
     private AppBarState mCurrentAppBarState = AppBarState.IDLE;
+
+
+    private enum CurrentPage{
+        HOME,
+        GOODS,
+        SHOPPING_CART
+
+    }
 
 
     @Override
@@ -166,31 +176,6 @@ public class HomeActivity extends BaseActivity
         mNavFragManager.initHome(R.id.action_home);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-
-        switch (item.getItemId()) {
-
-            case R.id.action_home_search:
-
-                startActivity(new Intent(this, SearchActivity.class));
-
-                return true;
-
-
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -267,6 +252,9 @@ public class HomeActivity extends BaseActivity
                 mNavFragManager.performClickNavMenu(item.getItemId());
                 coordinatorLayout.setEnabled(true);
 
+                mCurrentPage = CurrentPage.HOME;
+                //刷新menu中的item
+                invalidateOptionsMenu();
                 break;
 
             case R.id.action_goods:
@@ -274,12 +262,18 @@ public class HomeActivity extends BaseActivity
                 toolbar.setTitle("商品");
                 mNavFragManager.performClickNavMenu(item.getItemId());
                 coordinatorLayout.setEnabled(false);
+
+                mCurrentPage = CurrentPage.GOODS;
+                invalidateOptionsMenu();
                 break;
             case R.id.action_shopping_cart:
 
                 toolbar.setTitle("购物车");
                 mNavFragManager.performClickNavMenu(item.getItemId());
                 coordinatorLayout.setEnabled(false);
+
+                mCurrentPage = CurrentPage.SHOPPING_CART;
+                invalidateOptionsMenu();
                 break;
 
             default:
@@ -292,6 +286,85 @@ public class HomeActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.home, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+
+        //主页
+        if(mCurrentPage == CurrentPage.HOME){
+
+            menu.findItem(R.id.action_home_category).setVisible(false);
+            menu.findItem(R.id.action_home_remove).setVisible(false);
+            //商品
+        }else if(mCurrentPage == CurrentPage.GOODS){
+
+
+            menu.findItem(R.id.action_home_category).setVisible(true);
+            menu.findItem(R.id.action_home_remove).setVisible(false);
+        }else {
+
+            menu.findItem(R.id.action_home_category).setVisible(false);
+            menu.findItem(R.id.action_home_remove).setVisible(true);
+
+        }
+
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()) {
+
+            //商品搜索
+            case R.id.action_home_search:
+
+                startActivity(new Intent(this, SearchActivity.class));
+
+                return true;
+
+            //商品分类
+            case R.id.action_home_category:
+
+
+
+
+
+                CategoryPickerFragment categoryPickerFragment = new CategoryPickerFragment();
+
+                categoryPickerFragment.show(getSupportFragmentManager());
+
+
+                return true;
+
+
+            //清空购物车
+            case R.id.action_home_remove:
+
+                return true;
+
+
+            //搜索
+            case R.id.action_home_settings:
+
+
+                return true;
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
     /**
      * 设置导航抽屉头部的背景图片
      *

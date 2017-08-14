@@ -2,5 +2,6 @@
 <resources>
 
     <item name="tag_holder" type="id"></item>
+    <item name="item_iv_height" type="id"></item>
 
 </resources>

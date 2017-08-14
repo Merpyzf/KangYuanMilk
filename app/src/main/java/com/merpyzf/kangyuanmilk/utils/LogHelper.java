@@ -7,7 +7,13 @@ import android.util.Log;
  *
  * @author wangke
  */
-public class LogHelper {
+public final class LogHelper {
+
+    private LogHelper(){
+        throw new UnsupportedOperationException("u can't instantiante me……");
+    }
+
+
     /**
      * 日志输出级别NONE
      */

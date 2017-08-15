@@ -42,10 +42,9 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.fragment_category_picker, container, false);
         mUnbinder = ButterKnife.bind(this, view);
 
-
-
         return view;
     }
+
 
     @NonNull
     @Override

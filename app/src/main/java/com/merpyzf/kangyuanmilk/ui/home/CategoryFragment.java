@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.home;
 
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -31,6 +32,8 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
     XRecyclerView recyclerView;
     @BindView(R.id.fab_top)
     FloatingActionButton fab_top;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
 
 
     private ICategoryContract.ICategoryPresenter mPresenter;
@@ -60,8 +63,15 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
 
         mLayoutManager = new MyStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
+        //禁用默认的刷新
+        recyclerView.setPullRefreshEnabled(false);
         mDecoration = new ItemMarginDecoration(3, 1);
         recyclerView.addItemDecoration(mDecoration);
+
+        swipeRefresh.setColorSchemeColors(new int[]{getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.pink_a100)});
+        swipeRefresh.setEnabled(true);
+
 
 
     }
@@ -91,6 +101,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
 
     @Override
     protected void initData() {
+
 
         mPresenter = new CategoryPresenter();
         mPresenter.attachView(this);
@@ -159,18 +170,13 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
 
     /**
      * 当前选中的分类id
+     *
      * @param categoryId
      */
-    public void currentCategory(int categoryId){
-
+    public void currentCategory(int categoryId) {
 
 
     }
-
-
-
-
-
 
 
     /**
@@ -205,10 +211,38 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
 
     }
 
+    /**
+     * 重置swipeRefresh刷新,解决因为swipeRefresh处于显示状态下无法detachView的问题
+     */
+    public void resetRefresh() {
+
+        if (swipeRefresh != null) {
+
+            if (swipeRefresh.isEnabled()) {
+
+
+                if (swipeRefresh.isRefreshing()) {
+
+                    swipeRefresh.setRefreshing(false);
+                    swipeRefresh.setEnabled(false);
+                }
+
+            } else {
+
+                swipeRefresh.setEnabled(true);
+            }
+        }
+
+
+    }
+
+
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
         recyclerView.removeItemDecoration(mDecoration);
         super.onDestroyView();
     }
+
+
 }

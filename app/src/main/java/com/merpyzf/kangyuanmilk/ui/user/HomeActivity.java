@@ -336,10 +336,6 @@ public class HomeActivity extends BaseActivity
             //商品分类
             case R.id.action_home_category:
 
-
-
-
-
                 CategoryPickerFragment categoryPickerFragment = new CategoryPickerFragment();
 
                 categoryPickerFragment.show(getSupportFragmentManager());

@@ -42,6 +42,7 @@ public class StudyRecycler1ViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_study_recycler_1view);
         unbinder = ButterKnife.bind(this);
@@ -65,8 +66,12 @@ public class StudyRecycler1ViewActivity extends AppCompatActivity {
                 mDatas.add(user);
                 mAdapter.notifyItemChanged(mDatas.size()-1);
 
+
+
             }
         });
+
+
 
 
         SelctionDecoration.groupInfoCallback callback = new SelctionDecoration.groupInfoCallback() {

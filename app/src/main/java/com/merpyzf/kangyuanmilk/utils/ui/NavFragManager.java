@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
 
+import com.merpyzf.kangyuanmilk.ui.home.CategoryFragment;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 /**
@@ -115,35 +116,49 @@ public class NavFragManager {
             if (oldTab.fragment != null) {
 
                 mFragManager.beginTransaction().detach(oldTab.fragment).commit();
+                //解决swipeLayout处于可见状态下,fragment中的View无法detach的问题
+                resetCategoryRefresh(oldTab.fragment);
 
             }
         }
 
-       if(newTab.fragment==null){
+        if (newTab.fragment == null) {
 
-            Fragment fragment = Fragment.instantiate(context,newTab.clazz.getName());
+            Fragment fragment = Fragment.instantiate(context, newTab.clazz.getName());
             newTab.fragment = fragment;
-           mFragManager.beginTransaction().add(container,fragment).commit();
+            mFragManager.beginTransaction().add(container, fragment).commit();
 
 
-       }else {
+        } else {
 
-           mFragManager.beginTransaction().attach(newTab.fragment).commit();
+            mFragManager.beginTransaction().attach(newTab.fragment).commit();
 
-       }
+        }
 
 
+    }
+
+    private void resetCategoryRefresh(Fragment fragment) {
+
+        if (fragment instanceof CategoryFragment) {
+
+            LogHelper.i("yes");
+
+            ((CategoryFragment) fragment).resetRefresh();
+
+
+        }
 
     }
 
     /**
      * 获取当前所在的Fragment
+     *
      * @return 返回当前的fragment
      */
-    public Fragment getCurrentTab(){
+    public Fragment getCurrentTab() {
         return mCurrent.fragment;
     }
-
 
 
     public static class Tab {
@@ -152,7 +167,7 @@ public class NavFragManager {
         private Class clazz;
         public Fragment fragment;
 
-        public Tab( Class clazz,int navMenuId) {
+        public Tab(Class clazz, int navMenuId) {
             this.navMenuId = navMenuId;
             this.clazz = clazz;
         }

@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.common;
+package com.merpyzf.kangyuanmilk.common.widget;
 
 
 import android.animation.Animator;
@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnticipateOvershootInterpolator;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;

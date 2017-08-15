@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.merpyzf.kangyuanmilk.R;
-import com.merpyzf.kangyuanmilk.common.AddressPickerFragment;
+import com.merpyzf.kangyuanmilk.common.widget.AddressPickerFragment;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;

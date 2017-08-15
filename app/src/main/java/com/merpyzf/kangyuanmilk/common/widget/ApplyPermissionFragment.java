@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.common;
+package com.merpyzf.kangyuanmilk.common.widget;
 
 import android.Manifest;
 import android.app.Activity;

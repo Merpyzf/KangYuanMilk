@@ -1,192 +1,206 @@
 package com.merpyzf.kangyuanmilk.common;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.trello.rxlifecycle2.components.support.RxFragment;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Fragment的基类(懒加载)
- * Created by wangke on 17-6-19.
+ * Created by wangke on 17-8-15.
  */
 
-public abstract class BaseLazyFragment extends Fragment {
+public abstract class BaseLazyFragment extends RxFragment {
 
-    protected View mRoot = null; //缓存Fragment中的view
-    protected Activity mActivity = null;
-
-    /**
-     * 判断Fragment的布局是否已经加载
-     */
-    protected  boolean isPrepare = false;
-
-    /**
-     * 是否显示布局
-     */
-    protected boolean isVisible = false;
+    private String TAG;
+    //标记当前Fragment的可见状态
+    private boolean isFragmentVisible;
+    private boolean isFirstVisible;
+    //对Fragment中加载的View进行缓存
+    private View mRootView;
+    private Unbinder mUnbinder;
 
 
-    /**
-     * 是否第一次加载
-     */
-    protected  boolean isFirst = false;
+    public BaseLazyFragment(String TAG) {
+        this.TAG = TAG;
+    }
 
 
     /**
      * 当Fragment添加到Activity的时候最先调用此方法
+     *
      * @param context 上下文对象
      */
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
         //获取Fragment之间传递过来的参数
         initArgs(getArguments());
-        mActivity = (Activity) context;
 
-        Log.i("wk","==>onAttach");
+
+    }
+
+    /**
+     * 获取Fragment中传递过来的参数，选择重写
+     *
+     * @param arguments
+     */
+    protected void initArgs(Bundle arguments) {
+
 
     }
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+
+        LogHelper.i("wwk", TAG + " ===>onCreate");
+        super.onCreate(savedInstanceState);
+        initVariable();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-            //Fragment之间切换时每次都会调用onCreateView方法，导致每次Fragment的布局都重绘，无法保持Fragment原有状态
-        if(mRoot == null) {
-            View root = inflater.inflate(getContentLayoutId(), container, false);
-            mRoot = root;
 
-            //布局已经加载
-            isPrepare = true;
-            //第一次加载
-            isFirst = true;
-            /**
-             * 初始化ui
-             */
-            initWidget(root);
+        View view = inflater.inflate(getContentLayoutId(), container, false);
 
-        }else {
+        mUnbinder = ButterKnife.bind(this, view);
+        initWidget(mRootView);
+        initEvent();
 
-            if(mRoot.getParent()!=null){
-
-                //把当前的布局从父View中进行移除,否则会发生这个rootView已经有了一个父View的错误
-                ((ViewGroup)mRoot.getParent()).removeAllViews();
-
-            }
-        }
-
-        Log.i("wk","==>onCreateView");
-
-        return mRoot;
+        return view;
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initData();
+        LogHelper.i("wwk", TAG + " ===>onViewCreated");
 
-        Log.i("wk","==>onViewCreated");
+        if (mRootView == null) {
+            mRootView = view;
+            if (getUserVisibleHint()) {
+                if (isFirstVisible) {
+                    //处于可见状态并且Fragment是第一次开启
+                    onFragmentFirstVisible();
+                    isFirstVisible = false;
+                }
+
+                onFragmentVisibleChange(true);
+                isFragmentVisible = true;
+            }
+        }
+
+        super.onViewCreated(mRootView, savedInstanceState);
+    }
+
+    /**
+     * 初始化控件事件，选择重写
+     */
+    private void initEvent() {
 
     }
 
-
-
-    protected abstract int getContentLayoutId();
-
     /**
-     * 初始化控件
+     * 初始化组件
+     *
      * @param view
      */
-    protected void initWidget(View view){
-
-        //进行ButterKnife的绑定
-
-
-    }
-
-    /**
-     * 初始化数据
-     */
-    protected  abstract void initData();
-
-    /**
-     * 初始化参数(获取传递过来的参数)
-     * @param bundle
-     */
-    protected void initArgs(Bundle bundle){
-
-    }
+    protected abstract void initWidget(View view);
 
 
     /**
-     * fragment处理返回键
+     * 当Fragment第一次创建的时候调用,如果不可见则isVisible的参数值为false
+     * 当Fragment对于用户可见时调用,此时的isVisibleToUser参数值为true
+     * 当Fragment当前的状态由可见变为不可见时调用,此时的isVisibleToUser参数为false
      *
-     * @return true : 表示fragment自己来处理当前的返回事件
-     *         false : 表示将frgment返回的逻辑交给activity处理
+     * @param isVisibleToUser true : 可见
+     *                        false : 不可见
      */
-    protected boolean onBackPressed(){
-
-        return false;
-
-    }
-
-
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
+        LogHelper.i("tag", TAG + " ==> setUserVisibleHint ");
         super.setUserVisibleHint(isVisibleToUser);
-
-        if(getUserVisibleHint()){
-
-            isVisible = true;
-            onVisible();
-
-        }else {
-
-            isVisible = false;
-
+        //setUserVisibleHint()的调用在Fragment的声明周期外调用,需要保证rootView不为空的时候调用 onFragmentVisibleChange方法
+        if (mRootView == null) {
+            return;
         }
 
-
-
-
-    }
-
-    /**
-     * 当前的Fragment处于可见状态
-     */
-    protected void onVisible(){
-
-        lazy();
-    }
-
-    /**
-     * 是否要进行懒加载的判断
-     */
-    protected  void lazy(){
-
-        //当页面已经加载，并且用户已经滑动到要查看的页面,才进行数据的加载
-        if(isPrepare && isVisible() && isFirst){
-
-            lazyLoadData();
-
-            isFirst = false;
+        if (isFirstVisible && isVisibleToUser) {
+            //当Fragment第一次可见的时候调用
+            onFragmentFirstVisible();
+            isFirstVisible = false;
         }
 
+        if (isVisibleToUser) {
+            //
+            onFragmentVisibleChange(true);
+            isFragmentVisible = true;
+            return;
+        }
+
+        if (isFragmentVisible) {
+            //由 可见 -> 不可见
+            isFragmentVisible = false;
+            onFragmentVisibleChange(false);
+        }
+    }
+
+
+    /**
+     * 获取填充Fragment的View的id
+     *
+     * @return
+     */
+    protected abstract int getContentLayoutId();
+
+
+    /**
+     * 当Fragment的状态发生变化的时候调用,用于进行数据的刷新
+     *
+     * @param isVisible true  不可见 -> 可见
+     *                  false 可见  -> 不可见
+     */
+    protected abstract void onFragmentVisibleChange(boolean isVisible);
+
+    /**
+     * 当Fragment第一次被开启的时候调用,用于请求数据
+     */
+    protected abstract void onFragmentFirstVisible();
+
+    /**
+     * 获取当前Fragment的可见状态
+     *
+     * @return
+     */
+    protected boolean isFragmentVisible() {
+        return isFragmentVisible;
     }
 
     /**
-     * 需要进行懒加载的数据,在这个方法中初始化
+     * 给变量赋初始值
      */
-    protected abstract void lazyLoadData();
+    private void initVariable() {
+        isFirstVisible = true;
+        isFragmentVisible = false;
+        mRootView = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        initVariable();
+        mUnbinder.unbind();
+        super.onDestroy();
+    }
 
 
 }

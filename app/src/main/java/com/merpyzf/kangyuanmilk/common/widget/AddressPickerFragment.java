@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.common;
+package com.merpyzf.kangyuanmilk.common.widget;
 
 
 import android.app.Dialog;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.merpyzf.kangyuanmilk.R;
-import com.merpyzf.kangyuanmilk.common.widget.AddressSelectorView;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;
 
 import butterknife.BindView;

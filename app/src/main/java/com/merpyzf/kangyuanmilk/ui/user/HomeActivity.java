@@ -26,7 +26,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
-import com.merpyzf.kangyuanmilk.common.ApplyPermissionFragment;
+import com.merpyzf.kangyuanmilk.common.widget.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.ui.home.CategoryPickerFragment;
 import com.merpyzf.kangyuanmilk.common.data.Common;
@@ -39,6 +39,7 @@ import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.home.IndentFragment;
 import com.merpyzf.kangyuanmilk.ui.home.SearchActivity;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
+import com.merpyzf.kangyuanmilk.ui.order.OrderActivity;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.HomePresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
@@ -80,7 +81,7 @@ public class HomeActivity extends BaseActivity
     private AppBarState mCurrentAppBarState = AppBarState.IDLE;
 
 
-    private enum CurrentPage{
+    private enum CurrentPage {
         HOME,
         GOODS,
         SHOPPING_CART
@@ -184,7 +185,10 @@ public class HomeActivity extends BaseActivity
         //导航抽屉菜单的点击事件
         switch (item.getItemId()) {
 
+            //订单
             case R.id.nav_indent:
+
+                OrderActivity.showAction(this);
 
                 break;
 
@@ -299,17 +303,17 @@ public class HomeActivity extends BaseActivity
 
 
         //主页
-        if(mCurrentPage == CurrentPage.HOME){
+        if (mCurrentPage == CurrentPage.HOME) {
 
             menu.findItem(R.id.action_home_category).setVisible(false);
             menu.findItem(R.id.action_home_remove).setVisible(false);
             //商品
-        }else if(mCurrentPage == CurrentPage.GOODS){
+        } else if (mCurrentPage == CurrentPage.GOODS) {
 
 
             menu.findItem(R.id.action_home_category).setVisible(true);
             menu.findItem(R.id.action_home_remove).setVisible(false);
-        }else {
+        } else {
 
             menu.findItem(R.id.action_home_category).setVisible(false);
             menu.findItem(R.id.action_home_remove).setVisible(true);
@@ -361,6 +365,7 @@ public class HomeActivity extends BaseActivity
 
         return super.onOptionsItemSelected(item);
     }
+
     /**
      * 设置导航抽屉头部的背景图片
      *

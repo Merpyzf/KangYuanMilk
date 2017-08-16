@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.home.contract;
 
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
-import com.merpyzf.kangyuanmilk.ui.home.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 
 /**

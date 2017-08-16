@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.home.presenter;
 
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
-import com.merpyzf.kangyuanmilk.ui.home.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 import com.merpyzf.kangyuanmilk.ui.home.contract.ICategoryContract;
 import com.merpyzf.kangyuanmilk.ui.home.model.CategoryModelImpl;

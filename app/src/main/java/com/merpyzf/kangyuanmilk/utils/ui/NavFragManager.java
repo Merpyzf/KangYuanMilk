@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
 
-import com.merpyzf.kangyuanmilk.ui.home.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 /**

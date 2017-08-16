@@ -72,9 +72,7 @@ public abstract class BaseLazyFragment extends RxFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         View view = inflater.inflate(getContentLayoutId(), container, false);
-
         mUnbinder = ButterKnife.bind(this, view);
         initWidget(mRootView);
         initEvent();
@@ -100,6 +98,7 @@ public abstract class BaseLazyFragment extends RxFragment {
             }
         }
 
+        //直接使用缓存的mRootView
         super.onViewCreated(mRootView, savedInstanceState);
     }
 
@@ -135,19 +134,21 @@ public abstract class BaseLazyFragment extends RxFragment {
             return;
         }
 
+        //第一次被开启,并且对用户可见(这个if语句中的判断一般不会被执行到,setUserVisibleHint方法的调用时mRootView还没有被缓存)
         if (isFirstVisible && isVisibleToUser) {
             //当Fragment第一次可见的时候调用
             onFragmentFirstVisible();
             isFirstVisible = false;
         }
 
+        //Fragment对于用户可见(已经不是第一次开启)
         if (isVisibleToUser) {
-            //
             onFragmentVisibleChange(true);
             isFragmentVisible = true;
             return;
         }
 
+        //能执行到这里表明 Fragment对于用户已经处于不可见的状态
         if (isFragmentVisible) {
             //由 可见 -> 不可见
             isFragmentVisible = false;
@@ -190,8 +191,11 @@ public abstract class BaseLazyFragment extends RxFragment {
      * 给变量赋初始值
      */
     private void initVariable() {
+        //标记是否是第一次开启当前Fragment
         isFirstVisible = true;
+        //标记Fragment对于用户是否可见
         isFragmentVisible = false;
+        //缓存Fragment创建出来的View
         mRootView = null;
     }
 

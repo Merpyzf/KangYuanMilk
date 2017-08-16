@@ -1,5 +1,9 @@
-package com.merpyzf.kangyuanmilk.ui.welcom;
+package com.merpyzf.kangyuanmilk.ui.home.view;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -21,19 +25,31 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class SplashActivity extends BaseActivity {
+public class AboutActivity extends BaseActivity {
 
     @BindView(R.id.iv_splash)
     ImageView iv_splash;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_splash;
+        return R.layout.activity_about;
+    }
+
+
+    public static void showAction(Context context) {
+
+        context.startActivity(new Intent(context, AboutActivity.class));
+
     }
 
     @Override
     public void initWidget() {
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("关于");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         GlideImageLoader.showImage(iv_splash, R.drawable.ic_default, null);
 
@@ -94,7 +110,22 @@ public class SplashActivity extends BaseActivity {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(iv_splash);
 
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+
+                onBackPressed();
+
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -106,4 +137,6 @@ public class SplashActivity extends BaseActivity {
     protected void initData() {
 
     }
+
+
 }

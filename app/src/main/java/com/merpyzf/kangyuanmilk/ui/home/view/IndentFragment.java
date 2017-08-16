@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.ui.home;
+package com.merpyzf.kangyuanmilk.ui.home.view;
 
 
 import android.view.View;

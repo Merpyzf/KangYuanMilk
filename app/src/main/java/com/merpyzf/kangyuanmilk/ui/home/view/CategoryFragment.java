@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.ui.home;
+package com.merpyzf.kangyuanmilk.ui.home.view;
 
 
 import android.support.design.widget.BottomSheetBehavior;
@@ -71,7 +71,6 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
         swipeRefresh.setColorSchemeColors(new int[]{getResources().getColor(R.color.colorAccent),
                 getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.pink_a100)});
         swipeRefresh.setEnabled(true);
-
 
 
     }
@@ -168,16 +167,6 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
     }
 
 
-    /**
-     * 当前选中的分类id
-     *
-     * @param categoryId
-     */
-    public void currentCategory(int categoryId) {
-
-
-    }
-
 
     /**
      * 将RecyclerView中的item移动到指定的位置
@@ -233,6 +222,24 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
             }
         }
 
+
+    }
+
+
+    /**
+     * 当前选中的CategoryId由最外面的HomeActivity进行调用
+     *
+     * @param id 分类id
+     */
+    public void currentCategoryId(int id) {
+
+        if (id == 0) {
+
+            swipeRefresh.setRefreshing(true);
+        } else {
+
+            swipeRefresh.setRefreshing(false);
+        }
 
     }
 

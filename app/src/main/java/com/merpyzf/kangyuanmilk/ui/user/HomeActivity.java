@@ -9,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,16 +29,17 @@ import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.widget.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.ui.home.CategoryPickerFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.AboutActivity;
+import com.merpyzf.kangyuanmilk.ui.home.view.CategoryPickerFragment;
 import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.ui.base.User;
-import com.merpyzf.kangyuanmilk.ui.home.CategoryFragment;
-import com.merpyzf.kangyuanmilk.ui.home.HomeFragment;
-import com.merpyzf.kangyuanmilk.ui.home.IndentFragment;
-import com.merpyzf.kangyuanmilk.ui.home.SearchActivity;
+import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.HomeFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.IndentFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.SearchActivity;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.order.OrderActivity;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
@@ -246,6 +248,9 @@ public class HomeActivity extends BaseActivity
 
                 break;
             case R.id.nav_about:
+
+                AboutActivity.showAction(this);
+
                 break;
 
 
@@ -343,6 +348,18 @@ public class HomeActivity extends BaseActivity
                 CategoryPickerFragment categoryPickerFragment = new CategoryPickerFragment();
 
                 categoryPickerFragment.show(getSupportFragmentManager());
+
+                categoryPickerFragment.setmListener(id -> {
+
+                    Fragment tab = mNavFragManager.getCurrentTab();
+
+                    if(tab instanceof  CategoryFragment){
+
+                        ((CategoryFragment)tab).currentCategoryId(id);
+
+                    }
+
+                });
 
 
                 return true;

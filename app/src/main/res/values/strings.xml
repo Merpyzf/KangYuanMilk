@@ -119,8 +119,37 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
+    <string name="use_open_source_text">
+
+         "\t\t mob短信验证平台\n \n\t\t七牛云对象存储\n
+    compile files('libs/ormlite-android-5.0.jar')\n
+    compile files('libs/ormlite-core-5.0.jar')\n
+    compile 'com.jakewharton:butterknife:8.7.0'\n
+    compile 'com.ldoublem.loadingview:loadingviewlib:1.0'\n
+    compile 'net.qiujuer.genius:ui:2.0.0'\n
+    compile 'net.qiujuer.genius:res:2.0.0'\n
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'\n
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'\n
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'\n
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'\n
+    compile 'com.jcodecraeer:xrecyclerview:1.3.2'\n
+    compile 'com.github.bumptech.glide:glide:3.7.0'\n
+    compile 'com.github.yalantis:ucrop:2.2.1-native'\n
+    compile 'pub.devrel:easypermissions:0.4.2'\n
+    compile 'de.hdodenhof:circleimageview:2.1.0'\n
+    compile 'com.simplecityapps:recyclerview-\n\n\t\t fastscroll:1.0.16'\n
+    compile 'com.youth.banner:banner:1.4.9'\n
+    compile 'com.yalantis:phoenix:1.2.3'\n "
+
+
+    </string>
+
     <string name="action_category">分类</string>
     <string name="action_remove">清空购物车</string>
+    <string name="author_name_text">春水碧于天</string>
+    <string name="url_github_text">https://github.com/Merpyzf/KangYuanMilk</string>
+    <string name="url_csdn_text">http://my.csdn.net/qq_19560943</string>
 
 
 </resources>

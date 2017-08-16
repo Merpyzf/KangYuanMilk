@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:focusableInTouchMode="true"
     android:focusable="true"
-    tools:context="com.merpyzf.kangyuanmilk.ui.home.HomeFragment">
+    tools:context="com.merpyzf.kangyuanmilk.ui.home.view.HomeFragment">
 
 
     <com.yalantis.phoenix.PullToRefreshView

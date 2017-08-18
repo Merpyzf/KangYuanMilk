@@ -117,6 +117,11 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
         }
     }
 
+
+    public void setDatas(List<Data> mDatas) {
+        this.mDatas = mDatas;
+    }
+
     /**
      * 获取item的总数
      *

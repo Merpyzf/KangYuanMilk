@@ -73,6 +73,11 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
         swipeRefresh.setEnabled(true);
 
 
+
+
+
+
+
     }
 
     @Override

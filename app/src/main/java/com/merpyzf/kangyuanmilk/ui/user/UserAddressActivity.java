@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.AdapterDiffCallback;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
@@ -31,6 +33,7 @@ import net.qiujuer.genius.res.Resource;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
 
 /**
  * 管理用户收货地址 2017-8-7
@@ -51,6 +54,8 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     TipView tipView;
     @BindView(R.id.ll_container)
     LinearLayout ll_container;
+
+    private List<Address> mOldList = null;
     private IUserAddressContract.IUserAddressPresenter mPresenter = null;
     private UserAddressAdapter mAdapter = null;
 
@@ -84,7 +89,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     protected void initData() {
         mPresenter = new UserAddressPresenterImpl();
         mPresenter.attachView(this);
-        mPresenter.getUserAds(this);
+        mPresenter.getUserAds(this, false);
 
         UserInfoSubject.getInstance().attach(UserAddressActivity.class.getName(), this);
 
@@ -100,7 +105,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
             public void onRefresh() {
 
                 LogHelper.i("刷新中……");
-                mPresenter.getUserAds(UserAddressActivity.this);
+                mPresenter.getUserAds(UserAddressActivity.this, true);
 
 
             }
@@ -165,14 +170,32 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
      */
     @Override
     public void showUserAddress(List<Address> addressList) {
-        tipView.reset();
-        //刷新完毕
-        refresh_layout.setRefreshing(false);
-        mAdapter = new UserAddressAdapter(addressList, this, recyclerView);
+
+        Observable.just(addressList)
+                .filter(addresses -> {
+
+                    tipView.reset();
+                    mAdapter = new UserAddressAdapter(addresses, UserAddressActivity.this, recyclerView);
+                    recyclerView.setAdapter(mAdapter);
+
+                    return mOldList != null;
+                })
+                .subscribe(addresses -> {
+
+                    AdapterDiffCallback<Address> diffCallback = new AdapterDiffCallback<>(mOldList, addresses);
+
+                    //如果List的集合的数据量较大的时候，需要放入线程中进行计算,然后在主线程中进行UI的更新
+                    DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+                    diffResult.dispatchUpdatesTo(mAdapter);
+                    mAdapter.setDatas(addresses);
+                    //刷新完毕
+                    refresh_layout.setRefreshing(false);
+
+
+                });
+
         mAdapter.setmOnItemWidgetClickListener(this);
-
-        recyclerView.setAdapter(mAdapter);
-
+        mOldList = addressList;
 
 
     }
@@ -260,16 +283,13 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
     }
 
-
     @Override
     public void update() {
 
         if (mPresenter != null) {
-            tipView.reset();
-            mPresenter.getUserAds(this);
+            mPresenter.getUserAds(this, true);
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

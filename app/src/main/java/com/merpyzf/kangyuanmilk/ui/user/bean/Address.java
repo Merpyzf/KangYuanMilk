@@ -101,4 +101,22 @@ public class Address implements Serializable {
     public void setAddress_all(String address_all) {
         this.address_all = address_all;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (address_id != address.address_id) return false;
+        if (user_id != address.user_id) return false;
+        if (ads_id != address.ads_id) return false;
+        if (isDefault != address.isDefault) return false;
+        if (!address_all.equals(address.address_all)) return false;
+        if (!address_content.equals(address.address_content)) return false;
+        if (!consignee.equals(address.consignee)) return false;
+        return consignee_tel.equals(address.consignee_tel);
+    }
+
 }

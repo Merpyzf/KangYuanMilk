@@ -37,12 +37,15 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
      * 获取用户的所有地址
      */
     @Override
-    public void getUserAds(UserAddressActivity context) {
+    public void getUserAds(UserAddressActivity context, boolean isRefresh) {
 
         LogHelper.i("执行了");
 
-        mMvpView.showLoadingDialog();
+        if (!isRefresh) {
 
+            mMvpView.showLoadingDialog();
+
+        }
         mModel.getUserAddress(UserDao.getInstance().getUserInfo())
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Observer<UserAddressBean>() {

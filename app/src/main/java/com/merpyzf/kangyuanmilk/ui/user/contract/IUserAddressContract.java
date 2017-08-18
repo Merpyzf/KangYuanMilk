@@ -64,7 +64,7 @@ public interface IUserAddressContract {
         /**
          * 获取用户的所有地址信息
          */
-        void getUserAds(UserAddressActivity context);
+        void getUserAds(UserAddressActivity context,boolean isRefresh);
 
         /**
          * 将地址设置成默认地址

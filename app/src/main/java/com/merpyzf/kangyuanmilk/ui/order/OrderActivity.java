@@ -26,15 +26,15 @@ import butterknife.BindView;
 public class OrderActivity extends BaseActivity {
 
     @BindView(R.id.toolBar)
-    Toolbar toolBar;
+    Toolbar mToolBar;
     @BindView(R.id.tabLayout)
-    TabLayout tabLayout;
+    TabLayout mTabLayout;
     @BindView(R.id.coordinator_Layout)
-    CoordinatorLayout coordinatorLayout;
+    CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.viewPager)
-    ViewPager viewPager;
-    String[] titles = new String[]{"配送中", "待付款", "已完成", "已取消"};
-    private List<Fragment> fragmentList = new ArrayList<>();
+    ViewPager mViewPager;
+    String[] mTitles = new String[]{"配送中", "待付款", "已完成", "已取消"};
+    private List<Fragment> mFragmentList = new ArrayList<>();
 
 
     public static void showAction(Context context) {
@@ -50,9 +50,9 @@ public class OrderActivity extends BaseActivity {
 
     @Override
     public void initWidget() {
-        tabLayout.setupWithViewPager(viewPager);
-        setSupportActionBar(toolBar);
-        getSupportActionBar().setTitle("我的订单");
+        mTabLayout.setupWithViewPager(mViewPager);
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setTitle(R.string.title_order_activity_text);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -60,13 +60,13 @@ public class OrderActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-        for (int i = 0; i < titles.length; i++) {
+        for (int i = 0; i < mTitles.length; i++) {
 
-            fragmentList.add(new OrderFragment(titles[i]));
+            mFragmentList.add(new OrderFragment(mTitles[i]));
 
         }
 
-        viewPager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
 
     }
 
@@ -79,19 +79,19 @@ public class OrderActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return fragmentList.get(position);
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            return fragmentList.size();
+            return mFragmentList.size();
         }
 
 
         @Override
         public CharSequence getPageTitle(int position) {
 
-            return titles[position];
+            return mTitles[position];
         }
 
 

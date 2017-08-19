@@ -18,6 +18,8 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
+ * 热销产品的适配器
+ * <p>
  * Created by Administrator on 2017-08-11.
  */
 
@@ -65,7 +67,7 @@ public class HotSellAdapter extends RecyclerAdapter<Response.DataInfo> {
 
             tv_product_name.setText(dataInfo.getTitle());
             tv_spec.setText(dataInfo.getSpec());
-            tv_price.setText("￥ "+dataInfo.getPrice());
+            tv_price.setText("￥ " + dataInfo.getPrice());
         }
     }
 

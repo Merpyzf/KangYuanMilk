@@ -1,7 +1,8 @@
 package com.merpyzf.kangyuanmilk.ui.home.bean;
 
 /**
- * Created by Administrator on 2017-08-16.
+ * 商品分类
+ * Created by wangke on 2017-08-16.
  */
 
 public class Category {

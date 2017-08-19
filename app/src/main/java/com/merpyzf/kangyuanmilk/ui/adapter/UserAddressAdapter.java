@@ -44,21 +44,21 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
 
 
         @BindView(R.id.tv_name)
-        TextView tv_name;
+        TextView mTvName;
         @BindView(R.id.tv_phone)
-        TextView tv_phone;
+        TextView mTvPhone;
         @BindView(R.id.tv_address)
-        TextView tv_address;
+        TextView mTvAddress;
         @BindView(R.id.tv_edit)
-        TextView tv_edit;
+        TextView mTvEdit;
         @BindView(R.id.tv_remove)
-        TextView tv_remove;
+        TextView mTvRemove;
         @BindView(R.id.checkbox)
-        CheckBox checkBox;
+        CheckBox mCheckBox;
         @BindView(R.id.tv_cb)
-        TextView tv_cb;
-        @BindView(R.id.ll_cb)
-        LinearLayout ll_cb;
+        TextView mTvCb;
+        @BindView(R.id.linearlayout_cb)
+        LinearLayout mLinearlayoutCb;
 
 
         public ViewHolder(View itemView) {
@@ -69,21 +69,21 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
         @Override
         protected void onBindWidget(Address address) {
 
-            tv_name.setText(address.getConsignee());
-            tv_phone.setText(address.getConsignee_tel());
-            tv_address.setText(address.getAddress_all() + " " + address.getAddress_content());
-            checkBox.setChecked(address.isDefault());
-            if (checkBox.isChecked()) {
-                ll_cb.setClickable(false);
-                tv_cb.setText("默认地址");
+            mTvName.setText(address.getConsignee());
+            mTvPhone.setText(address.getConsignee_tel());
+            mTvAddress.setText(address.getAddress_all() + " " + address.getAddress_content());
+            mCheckBox.setChecked(address.isDefault());
+            if (mCheckBox.isChecked()) {
+                mLinearlayoutCb.setClickable(false);
+                mTvCb.setText(R.string.tv_cb_text_checked);
             } else {
-                checkBox.setEnabled(true);
-                tv_cb.setText("设置地址");
-                ll_cb.setOnClickListener(this);
+                mCheckBox.setEnabled(true);
+                mTvCb.setText(R.string.tv_cb_text);
+                mLinearlayoutCb.setOnClickListener(this);
 
             }
-            tv_edit.setOnClickListener(this);
-            tv_remove.setOnClickListener(this);
+            mTvEdit.setOnClickListener(this);
+            mTvRemove.setOnClickListener(this);
         }
 
         @Override
@@ -111,7 +111,7 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
                     break;
 
 
-                case R.id.ll_cb:
+                case R.id.linearlayout_cb:
 
 
                     for (int i = 0; i < mDatas.size(); i++) {

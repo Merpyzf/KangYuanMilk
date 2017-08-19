@@ -21,7 +21,6 @@ import android.view.animation.AnticipateOvershootInterpolator;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
-import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;
 import com.yalantis.ucrop.UCrop;
@@ -41,12 +40,11 @@ import butterknife.Unbinder;
 public class GalleryFragment extends BottomSheetDialogFragment implements GalleryView.ImageSelectedChangedListener {
 
     @BindView(R.id.galleryView)
-    GalleryView galleryView;
+    GalleryView mGalleryView = null;
     @BindView(R.id.fab_croup)
-    FloatingActionButton fab_croup;
-
-    private Unbinder unbinder;
-    private Context mContext;
+    FloatingActionButton mFabCroup;
+    private Unbinder mUnbinder = null;
+    private Context mContext = null;
 
 
     @Override
@@ -54,14 +52,14 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         mContext = getContext();
         LoaderManager loaderManager = getActivity().getLoaderManager();
         //需要从外部传入一个loaderManager对象进去，用于从数据库中读取图片,注意使用完之后一定要进行销毁
-        galleryView.init(getContext(), loaderManager);
-        galleryView.setMaxSelected(1);
+        mGalleryView.init(getContext(), loaderManager);
+        mGalleryView.setMaxSelected(1);
         //设置选择图片的监听
-        galleryView.setOnImageSelectedChangedListener(this);
+        mGalleryView.setOnImageSelectedChangedListener(this);
         return view;
     }
 
@@ -86,18 +84,23 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
         super.onActivityResult(requestCode, resultCode, data);
 
         //刷新GalleryView将拍摄的图片添加进去
-        galleryView.updatePhoto();
+        mGalleryView.updatePhoto();
 
     }
 
+    /**
+     * 选择图片时调用
+     * @param imageList 存储图片文件路径的几集合
+     * @param count 图片的数量
+     */
     @Override
     public void onSelectedChange(final List<GalleryView.Image> imageList, int count) {
 
         if (count > 0) {
             //显示fab确定选择按钮
-            showFab(fab_croup);
+            showFab(mFabCroup);
             //当点击Fab浮动按钮的时候进行图片的剪切
-            fab_croup.setOnClickListener((view) -> {
+            mFabCroup.setOnClickListener((view) -> {
 
                         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
@@ -131,20 +134,21 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
                                     .start(getActivity());
 
                         } else {
-                            App.showToast("没有找到存储设备,请检查");
+                            App.showToast(getString(R.string.toast_not_found_storage));
 
                         }
                     }
             );
         } else {
             //隐藏
-            hideFab(fab_croup);
+            hideFab(mFabCroup);
             LogHelper.i("wk", "隐藏");
         }
     }
 
     /**
      * 隐藏Fab浮动按钮
+     *
      * @param view fab浮动按钮
      */
     private void hideFab(View view) {
@@ -160,7 +164,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
             @Override
             public void onAnimationEnd(Animator animator) {
 
-                fab_croup.setVisibility(View.INVISIBLE);
+                mFabCroup.setVisibility(View.INVISIBLE);
 
             }
 
@@ -180,6 +184,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
 
     /**
      * 显示浮动按钮
+     *
      * @param view fab浮动按钮
      */
     private void showFab(View view) {
@@ -190,7 +195,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
             @Override
             public void onAnimationStart(Animator animator) {
 
-                fab_croup.setVisibility(View.VISIBLE);
+                mFabCroup.setVisibility(View.VISIBLE);
 
             }
 
@@ -225,9 +230,9 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     public void onDestroyView() {
 
         //销毁LoadManager
-        galleryView.destory();
+        mGalleryView.destory();
         //取消绑定
-        unbinder.unbind();
+        mUnbinder.unbind();
         super.onDestroyView();
 
     }

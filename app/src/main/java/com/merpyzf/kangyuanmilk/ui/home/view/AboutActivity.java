@@ -16,7 +16,6 @@ import com.bumptech.glide.request.target.Target;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
-import com.merpyzf.kangyuanmilk.utils.image.GlideImageLoader;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,10 +26,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AboutActivity extends BaseActivity {
 
-    @BindView(R.id.iv_splash)
-    ImageView iv_splash;
+    @BindView(R.id.iv_milkcow)
+    ImageView mIvMilkCow;
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
 
     @Override
     public int getLayoutId() {
@@ -47,11 +46,10 @@ public class AboutActivity extends BaseActivity {
     @Override
     public void initWidget() {
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("关于");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.title_about_activity_text);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        GlideImageLoader.showImage(iv_splash, R.drawable.ic_default, null);
 
         //加载gif动画
         Glide.with(this)
@@ -108,7 +106,7 @@ public class AboutActivity extends BaseActivity {
                     }
                 })
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(iv_splash);
+                .into(mIvMilkCow);
 
     }
 

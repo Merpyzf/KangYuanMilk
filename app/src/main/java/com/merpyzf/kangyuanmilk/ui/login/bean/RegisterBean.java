@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.login.bean;
 
 /**
- * Created by Administrator on 2017-07-25.
+ * Created by wangke on 2017-07-25.
  */
 
 public class RegisterBean {

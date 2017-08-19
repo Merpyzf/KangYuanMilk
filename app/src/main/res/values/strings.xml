@@ -150,6 +150,10 @@
     <string name="author_name_text">春水碧于天</string>
     <string name="url_github_text">https://github.com/Merpyzf/KangYuanMilk</string>
     <string name="url_csdn_text">http://my.csdn.net/qq_19560943</string>
+    <string name="tv_town_text">请选择</string>
+    <string name="permission_storage">确定要授权读取sdk权限？</string>
+    <string name="toast_clear_choice_pic">清除所有已选择的图片</string>
+    <string name="title_home_activity_text">主页</string>
 
 
 </resources>

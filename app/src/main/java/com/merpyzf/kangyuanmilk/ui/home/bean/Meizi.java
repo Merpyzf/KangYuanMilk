@@ -3,7 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.home.bean;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017-08-14.
+ * Created by wangke on 2017-08-14.
  */
 
 public class Meizi {

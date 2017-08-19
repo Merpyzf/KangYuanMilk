@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
+import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.user.UserAddressActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
@@ -20,7 +21,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
- * Created by Administrator on 2017-08-08.
+ * Created by wangke on 2017-08-08.
  */
 
 public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract.IUserAddressView> implements IUserAddressContract.IUserAddressPresenter {
@@ -77,12 +78,12 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
 
                                     } else {
 
-                                        mMvpView.showEmptyTip("还没有收货地址呢,快来创建一个吧!");
+                                        mMvpView.showEmptyTip(context.getString(R.string.user_address_empty));
 
                                     }
                                 } else {
 
-                                    mMvpView.showErrorMsg("sorry!服务器出错啦!");
+                                    mMvpView.showErrorMsg(context.getString(R.string.server_error));
 
                                 }
 
@@ -132,14 +133,15 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
 
                                 if (messageBean.getResponse().isResult()) {
 
-                                    mMvpView.showSuccess("设置默认地址成功");
+                                    mMvpView.showSuccess(context.getString(R.string.user_address_setdefault_success));
                                     mMvpView.setAdsDefaultSuccess(address);
 
 
                                 } else {
 
 
-                                    mMvpView.showErrorMsg("设置默认地址失败");
+                                    mMvpView.showErrorMsg(context.getString(R.string.user_address_setdefault_failed));
+
 
                                 }
 
@@ -187,13 +189,13 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
 
                                 if (messageBean.getResponse().isResult()) {
 
-                                    mMvpView.showSuccess("删除成功");
+                                    mMvpView.showSuccess(context.getString(R.string.user_address_delete_success));
                                     mMvpView.removeAdsSuccess(address);
 
 
                                 } else {
 
-                                    mMvpView.showErrorMsg("删除失败");
+                                    mMvpView.showErrorMsg(context.getString(R.string.user_address_delete_failed));
                                 }
 
                             }

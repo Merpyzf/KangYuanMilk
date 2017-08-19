@@ -41,7 +41,7 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
 
     private OnCategoryCheckedCListener mListener = null;
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
 
     public void show(FragmentManager fragmentManager) {
 
@@ -61,7 +61,7 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
 
-        recyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         mPresenter.getGoodsCategory();
 
@@ -95,9 +95,9 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
     @Override
     public void showGoodsCategory(List<Category> categoryList) {
 
-        CategoryPickerAdapter adapter = new CategoryPickerAdapter(categoryList, getContext(), recyclerView);
+        CategoryPickerAdapter adapter = new CategoryPickerAdapter(categoryList, getContext(), mRecyclerView);
 
-        recyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter);
 
         if (adapter != null) {
 

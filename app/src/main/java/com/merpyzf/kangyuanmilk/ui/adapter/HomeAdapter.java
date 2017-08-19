@@ -26,6 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
+ * 主页显示的RecyclerView的适配器
+ * <p>
  * Created by wangke on 2017-08-10.
  */
 

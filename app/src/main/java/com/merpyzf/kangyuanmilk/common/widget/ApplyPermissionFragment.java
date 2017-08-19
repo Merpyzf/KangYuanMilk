@@ -36,6 +36,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class ApplyPermissionFragment extends BottomSheetDialogFragment implements EasyPermissions.PermissionCallbacks {
 
     private static final int RC_CAMERA_AND_LOCATION = 1;
+    private onApplyPermissionCompleted mOnApplyPermissionCompleted;
     private Activity mActivity = null;
     private Unbinder unbinder;
 
@@ -54,8 +55,7 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
     private List<String[]> mPermsList = new ArrayList<>();
     private List<ImageView> mImageViewList = new ArrayList<>();
 
-    private String[] tips = new String[]{"确定要授权拍照权限吗？", "确定要授权读取sdk权限？", "确定要授权读取短信权限？", "确定要授权获取网络状态权限？"};
-
+    private String[] tips = null;
 
     /**
      * 调用检查是否已授予了所有的权限,如果没有则显示进行权限授予
@@ -64,6 +64,7 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
         if (!checkHaveAllPermis(context)) {
 
+            tips = context.getResources().getStringArray(R.array.apply_permissions);
             show(fragmentManager, "tag");
 
         }
@@ -186,7 +187,14 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
         if (checkHaveAllPermis(mActivity)) {
             dismiss();
-            // TODO: 2017-07-21 通知外界权限已经全部获取到了，可以跳转到主界面
+
+            //当权限全部授予之后通知外界
+            if (mOnApplyPermissionCompleted != null) {
+
+                mOnApplyPermissionCompleted.onCompleted();
+
+            }
+
 
         }
 
@@ -269,6 +277,22 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
     }
 
+
+    /**
+     * 监听权限申请是否完成
+     */
+    public interface onApplyPermissionCompleted {
+        /**
+         * 权限申请完成后的回调
+         */
+        void onCompleted();
+    }
+
+    public void setmOnApplyPermissionCompleted(onApplyPermissionCompleted mOnApplyPermissionCompleted) {
+        this.mOnApplyPermissionCompleted = mOnApplyPermissionCompleted;
+    }
+
+
     /**
      * 当前Fragment销毁时进行资源的释放
      */
@@ -278,4 +302,5 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
         unbinder.unbind();
         super.onDestroy();
     }
+
 }

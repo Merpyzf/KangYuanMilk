@@ -20,6 +20,8 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
+ * 搜索历史的适配器
+ * <p>
  * Created by wangke on 2017-08-01.
  */
 
@@ -29,7 +31,7 @@ public class SearchHistoryAdapter extends RecyclerAdapter {
     private static final int VIEW_CLEAR = 0x00002;
     private ISearchContract.ISearchPresenter mPresenter;
 
-    public SearchHistoryAdapter(ISearchContract.ISearchPresenter presenter,List<SearchBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
+    public SearchHistoryAdapter(ISearchContract.ISearchPresenter presenter, List<SearchBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
         mPresenter = presenter;
 
@@ -104,12 +106,12 @@ public class SearchHistoryAdapter extends RecyclerAdapter {
                 //删除数据库中的这一条数据
                 mPresenter.delSearchHistoryData(searchBean);
 
-                if(mDatas.size() == 1){
+                if (mDatas.size() == 1) {
                     mDatas.clear();
 
                 }
                 notifyDataSetChanged();
-                LogHelper.i("当前点击==>"+searchBean.getSearchInfo());
+                LogHelper.i("当前点击==>" + searchBean.getSearchInfo());
 
             });
 

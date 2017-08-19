@@ -228,7 +228,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                 tv_province.setText(address.getName());
                 //当前点击的item所选择的地址将作为下一个tab的tag值
                 tv_city.setTag(address.getId());
-                tv_city.setText("请选择");
+                tv_city.setText(R.string.tv_city_text);
                 //默认不可见
                 tv_city.setVisibility(VISIBLE);
                 startIndicatorAnimator(tv_city);
@@ -280,7 +280,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                 }
 
                 //city后面还有的情况
-                tv_country.setText("请选择");
+                tv_country.setText(R.string.tv_country_text);
                 tv_country.setVisibility(VISIBLE);
                 startIndicatorAnimator(tv_country);
 
@@ -317,7 +317,7 @@ public class AddressSelectorView extends LinearLayout implements View.OnClickLis
                     return;
                 }
 
-                tv_town.setText("请选择");
+                tv_town.setText(R.string.tv_town_text);
                 tv_town.setVisibility(VISIBLE);
                 startIndicatorAnimator(tv_town);
 

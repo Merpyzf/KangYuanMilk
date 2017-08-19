@@ -4,12 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsMessage;
-import android.util.Log;
 import android.widget.EditText;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * 通过广播获取短信内容,并解析出短信中包含的验证码
+ * @author wangke
+ */
 public class SMSReceiver extends BroadcastReceiver {
 
     private EditText editText = null;
@@ -38,7 +42,6 @@ public class SMSReceiver extends BroadcastReceiver {
                 String msgBody = msg.getDisplayMessageBody();
                 //获取发信人的电话号码
                 String originatingAddress = msg.getOriginatingAddress();
-                Log.i("wk", "短信内容==>" + msgBody + " 来自==>" + originatingAddress);
 
                 Pattern pattern = Pattern.compile("(\\d+)");
                 Matcher matcher = pattern.matcher(msgBody);

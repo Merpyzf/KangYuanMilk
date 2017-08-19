@@ -29,11 +29,11 @@ import butterknife.BindView;
  */
 public class CategoryFragment extends BaseFragment implements ICategoryContract.ICategoryView, View.OnClickListener {
     @BindView(R.id.recyclerView)
-    XRecyclerView recyclerView;
+    XRecyclerView mRecyclerView;
     @BindView(R.id.fab_top)
-    FloatingActionButton fab_top;
+    FloatingActionButton mFabMoveTop;
     @BindView(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefresh;
+    SwipeRefreshLayout mSwipeRefresh;
 
 
     private ICategoryContract.ICategoryPresenter mPresenter;
@@ -62,15 +62,15 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         mLayoutManager = new MyStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         //禁用默认的刷新
-        recyclerView.setPullRefreshEnabled(false);
+        mRecyclerView.setPullRefreshEnabled(false);
         mDecoration = new ItemMarginDecoration(3, 1);
-        recyclerView.addItemDecoration(mDecoration);
+        mRecyclerView.addItemDecoration(mDecoration);
 
-        swipeRefresh.setColorSchemeColors(new int[]{getResources().getColor(R.color.colorAccent),
+        mSwipeRefresh.setColorSchemeColors(new int[]{getResources().getColor(R.color.colorAccent),
                 getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.pink_a100)});
-        swipeRefresh.setEnabled(true);
+        mSwipeRefresh.setEnabled(true);
 
 
 
@@ -84,9 +84,9 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
     protected void initEvent() {
 
 
-        fab_top.setOnClickListener(this);
+        mFabMoveTop.setOnClickListener(this);
 
-        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
 
@@ -138,9 +138,9 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
 
             if (isFirst) {
 
-                mAdapter = new CategoryAdapter(meizi.getResults(), getActivity(), recyclerView);
+                mAdapter = new CategoryAdapter(meizi.getResults(), getActivity(), mRecyclerView);
 
-                recyclerView.setAdapter(mAdapter);
+                mRecyclerView.setAdapter(mAdapter);
 
                 mAdapter.notifyDataSetChanged();
 
@@ -148,7 +148,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
             }
         } else {
 
-            recyclerView.loadMoreComplete();
+            mRecyclerView.loadMoreComplete();
             mAdapter.addDatas(meizi.getResults());
         }
 
@@ -164,7 +164,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
             case R.id.fab_top:
 
 
-                recyclerView.smoothScrollToPosition(0);
+                mRecyclerView.smoothScrollToPosition(0);
 
                 break;
         }
@@ -210,20 +210,20 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
      */
     public void resetRefresh() {
 
-        if (swipeRefresh != null) {
+        if (mSwipeRefresh != null) {
 
-            if (swipeRefresh.isEnabled()) {
+            if (mSwipeRefresh.isEnabled()) {
 
 
-                if (swipeRefresh.isRefreshing()) {
+                if (mSwipeRefresh.isRefreshing()) {
 
-                    swipeRefresh.setRefreshing(false);
-                    swipeRefresh.setEnabled(false);
+                    mSwipeRefresh.setRefreshing(false);
+                    mSwipeRefresh.setEnabled(false);
                 }
 
             } else {
 
-                swipeRefresh.setEnabled(true);
+                mSwipeRefresh.setEnabled(true);
             }
         }
 
@@ -240,10 +240,10 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
 
         if (id == 0) {
 
-            swipeRefresh.setRefreshing(true);
+            mSwipeRefresh.setRefreshing(true);
         } else {
 
-            swipeRefresh.setRefreshing(false);
+            mSwipeRefresh.setRefreshing(false);
         }
 
     }
@@ -252,7 +252,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryContract.
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
-        recyclerView.removeItemDecoration(mDecoration);
+        mRecyclerView.removeItemDecoration(mDecoration);
         super.onDestroyView();
     }
 

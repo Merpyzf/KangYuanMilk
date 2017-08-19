@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
+import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.user.ModifyAddressActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
@@ -50,12 +51,12 @@ public class ModifyAddressPresenterImpl extends BasePresenter<IModifyAddressCont
                                 if (messageBean.getResponse().isResult()) {
 
 
-                                    mMvpView.saveSuccess("添加成功");
+                                    mMvpView.saveSuccess(context.getString(R.string.address_add_success));
 
 
                                 } else {
 
-                                    mMvpView.showErrorMsg("添加失败");
+                                    mMvpView.showErrorMsg(context.getString(R.string.address_add_failed));
                                     mMvpView.cancelLoadingDialog();
                                 }
 
@@ -101,13 +102,13 @@ public class ModifyAddressPresenterImpl extends BasePresenter<IModifyAddressCont
 
                                 if (messageBean.getResponse().isResult()) {
 
-                                    mMvpView.saveSuccess("修改成功");
+                                    mMvpView.saveSuccess(context.getString(R.string.address_modify_success));
 
 
 
                                 } else {
 
-                                    mMvpView.showErrorMsg("修改失败");
+                                    mMvpView.showErrorMsg(context.getString(R.string.address_modify_failed));
 
                                 }
 

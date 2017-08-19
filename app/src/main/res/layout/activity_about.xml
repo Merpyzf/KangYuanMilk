@@ -171,7 +171,7 @@
         </android.support.v4.widget.NestedScrollView>
 
         <ImageView
-            android:id="@+id/iv_splash"
+            android:id="@+id/iv_milkcow"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_centerInParent="true"

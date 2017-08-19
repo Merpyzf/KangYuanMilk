@@ -16,7 +16,7 @@ import com.merpyzf.kangyuanmilk.common.widget.AddressPickerFragment;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IModifyInfoContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.ModifyInfoPresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.RegexHelper;

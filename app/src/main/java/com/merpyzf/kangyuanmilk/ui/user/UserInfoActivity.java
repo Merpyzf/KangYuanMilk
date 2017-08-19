@@ -30,7 +30,7 @@ import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IUserInfoContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.UserInfoPresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
@@ -48,28 +48,28 @@ import butterknife.BindView;
 public class UserInfoActivity extends BaseActivity implements IUserInfoContract.IUserInfoView, View.OnClickListener, Observer {
 
     @BindView(R.id.toolbar_user)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @BindView(R.id.appbar)
-    AppBarLayout appbar;
+    AppBarLayout mAppbar;
     @BindView(R.id.civ_avater)
-    AvaterView civ_avater;
+    AvaterView mCivAvater;
     @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout collapsing_toolbar;
+    CollapsingToolbarLayout mCollToolbar;
 
     @BindView(R.id.tv_gender)
-    TextView tv_gender;
+    TextView mTvGender;
     @BindView(R.id.tv_tel)
-    TextView tv_tel;
+    TextView mTvTel;
     @BindView(R.id.tv_defalut_address)
-    TextView tv_default_address;
+    TextView mTvDefaultAddress;
     @BindView(R.id.tv_identity)
-    TextView tv_identity;
+    TextView mTvIdentity;
     @BindView(R.id.tv_reg_date)
-    TextView tv_reg_date;
+    TextView mTvRegDate;
     @BindView(R.id.tv_edit)
-    TextView tv_edit;
+    TextView mTvEdit;
     @BindView(R.id.cardView)
-    CardView cardView;
+    CardView mCardView;
 
 
     private MaterialDialog mMaterialDialog;
@@ -85,7 +85,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     @Override
     public void initWidget() {
         //设置为ActionBar
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
 
         ActionBar supportActionBar = getSupportActionBar();
 
@@ -94,7 +94,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
         //appbar默认为展开状态
-        appbar.setExpanded(true);
+        mAppbar.setExpanded(true);
         //展示用户信息
         showUserInfo(UserDao.getInstance().getUserInfo());
     }
@@ -104,9 +104,9 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
         //根据手指的滑动设置头像的动画
         initAvaterAnim();
         //设置toolbar返回按钮的事件
-        toolbar.setNavigationOnClickListener(view -> onBackPressed());
-        civ_avater.setOnClickListener(this);
-        tv_edit.setOnClickListener(this);
+        mToolbar.setNavigationOnClickListener(view -> onBackPressed());
+        mCivAvater.setOnClickListener(this);
+        mTvEdit.setOnClickListener(this);
 
         showEnterAnimation();
 
@@ -156,7 +156,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
                         if (avaterPath != null) {
 
                             Bitmap bitmap = BitmapFactory.decodeFile(avaterPath);
-                            civ_avater.setImageBitmap(bitmap);
+                            mCivAvater.setImageBitmap(bitmap);
                             LogHelper.i("要进行上传的图片: " + resultUri.getPath());
                             //上传头像
                             mPresenter.upLoadAvater(this, resultUri.getPath());
@@ -240,7 +240,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     public void currentUpLoadImageProgress(float progress) {
 
         //设置当前上传图片的进度
-        civ_avater.setUpLoadProgress(progress);
+        mCivAvater.setUpLoadProgress(progress);
 
     }
 
@@ -252,7 +252,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
 
         App.showToast("头像上传失败");
         //上传失败
-        civ_avater.upLoadFailed();
+        mCivAvater.upLoadFailed();
 
     }
 
@@ -262,7 +262,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     @Override
     public void upLoadSuccess(String key) {
 
-        App.showToast("上传成功");
+        App.showToast(getString(R.string.upload_success));
         //通知所有的观察者进行更新用户信息
         UserInfoSubject.getInstance().notifyChange();
 
@@ -281,12 +281,12 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
 
         showAvaterImg(user.getUser_head());
         //设置用户名
-        collapsing_toolbar.setTitle(user.getUser_name());
-        tv_gender.setText(user.isUser_sex() ? "男" : "女");
-        tv_default_address.setText(user.getAddress_content());
-        tv_identity.setText(user.getUser_idcard());
-        tv_reg_date.setText(TimeHelper.getDateTime(Long.valueOf(user.getUser_registerdate())));
-        tv_tel.setText(user.getUser_tel());
+        mCollToolbar.setTitle(user.getUser_name());
+        mTvGender.setText(user.isUser_sex() ? "男" : "女");
+        mTvDefaultAddress.setText(user.getAddress_content());
+        mTvIdentity.setText(user.getUser_idcard());
+        mTvRegDate.setText(TimeHelper.getDateTime(Long.valueOf(user.getUser_registerdate())));
+        mTvTel.setText(user.getUser_tel());
 
         LogHelper.i(user.toString());
 
@@ -331,7 +331,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
         //显示头像
         showAvaterImg(userInfo.getUser_head());
         //更新用户i
-        collapsing_toolbar.setTitle(userInfo.getUser_name());
+        mCollToolbar.setTitle(userInfo.getUser_name());
         //更新用户信息
         showUserInfo(UserDao.getInstance().getUserInfo());
 
@@ -351,11 +351,11 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
                 .placeholder(R.drawable.ic_avater_default)
                 .centerCrop()
                 .dontAnimate()
-                .into(new ViewTarget<View, Bitmap>(civ_avater) {
+                .into(new ViewTarget<View, Bitmap>(mCivAvater) {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
-                        civ_avater.setImageBitmap(resource);
+                        mCivAvater.setImageBitmap(resource);
 
                     }
                 });
@@ -390,13 +390,13 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
     @Override
     public void initAvaterAnim() {
 
-        appbar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+        mAppbar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             //展开状态
             if (verticalOffset == 0) {
-                civ_avater.setVisibility(View.VISIBLE);
-                civ_avater.setScaleX(1);
-                civ_avater.setScaleY(1);
-                civ_avater.setAlpha(1);
+                mCivAvater.setVisibility(View.VISIBLE);
+                mCivAvater.setScaleX(1);
+                mCivAvater.setScaleY(1);
+                mCivAvater.setAlpha(1);
             } else {
 
                 final int totalHeight = appBarLayout.getTotalScrollRange();
@@ -404,10 +404,10 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
 
                 //关闭状态
                 if (verticalOffset >= totalHeight) {
-                    civ_avater.setVisibility(View.INVISIBLE);
-                    civ_avater.setScaleX(0);
-                    civ_avater.setScaleY(0);
-                    civ_avater.setAlpha(0);
+                    mCivAvater.setVisibility(View.INVISIBLE);
+                    mCivAvater.setScaleX(0);
+                    mCivAvater.setScaleY(0);
+                    mCivAvater.setAlpha(0);
 
                 } else {
                     //中间的过渡状态
@@ -415,11 +415,11 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
 
                     LogHelper.i("progress=>>" + progress);
 
-                    civ_avater.setScaleX(progress);
-                    civ_avater.setScaleY(progress);
-                    civ_avater.setAlpha(progress);
+                    mCivAvater.setScaleX(progress);
+                    mCivAvater.setScaleY(progress);
+                    mCivAvater.setAlpha(progress);
                     //处于过渡状态时为可见状态
-                    civ_avater.setVisibility(View.VISIBLE);
+                    mCivAvater.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -475,12 +475,12 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
             public void onTransitionEnd(Transition transition) {
 
                 Animator revealAnimator = ViewAnimationUtils.
-                        createCircularReveal(cardView, (int) cardView.getX(), (int) cardView.getY(),
-                                0f, (float) Math.hypot(cardView.getWidth(), cardView.getHeight()));
+                        createCircularReveal(mCardView, (int) mCardView.getX(), (int) mCardView.getY(),
+                                0f, (float) Math.hypot(mCardView.getWidth(), mCardView.getHeight()));
 
                 revealAnimator.setDuration(800);
 
-                cardView.setVisibility(View.VISIBLE);
+                mCardView.setVisibility(View.VISIBLE);
                 revealAnimator.start();
 
 

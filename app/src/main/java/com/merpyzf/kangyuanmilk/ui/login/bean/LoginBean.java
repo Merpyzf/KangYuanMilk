@@ -1,6 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.login.bean;
 
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 
 /**
  * Created by wk on 2017-07-24.

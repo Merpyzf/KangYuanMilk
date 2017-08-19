@@ -20,7 +20,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.contract.IRegisterContract;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.RegisterPresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.HashHelper;
@@ -38,39 +38,39 @@ import static com.merpyzf.kangyuanmilk.R.layout.activity_register;
 public class RegisterActivity extends BaseActivity implements View.OnClickListener, IRegisterContract.IRegisterView, View.OnFocusChangeListener {
 
     @BindView(R.id.cardview_input)
-    CardView cardView;
+    CardView mCardView;
 
     @BindView(R.id.fab_submit)
-    FloatingActionButton fab_submit;
+    FloatingActionButton mFabSubmit;
 
     @BindView(R.id.edt_username)
-    EditText edt_username;
+    EditText mEdtUsername;
 
     @BindView(R.id.edt_pwd)
-    EditText edt_pwd;
+    EditText mEdtPwd;
 
     @BindView(R.id.edt_repwd)
-    EditText edt_repwd;
+    EditText mEdtRepwd;
 
     @BindView(R.id.text_input_username)
-    TextInputLayout text_input_username;
+    TextInputLayout mTextInputUsername;
 
     @BindView(R.id.text_input_pwd)
-    TextInputLayout text_input_pwd;
+    TextInputLayout mTextInputPwd;
 
 
     private IRegisterContract.IRegisterPresenter mRegisterPresenter = null;
-    private String phoneNum = null;
+    private String mPhoneNum = null;
     private MaterialDialog mRegisterDialog;
-    private boolean isRepeat = false;
+    private boolean mIsRepeat = false;
 
 
     @Override
     protected boolean initArgs(Bundle bundle) {
 
-        phoneNum = bundle.getString("phoneNum");
+        mPhoneNum = bundle.getString("mPhoneNum");
 
-        LogHelper.i("phoneNum==> " + phoneNum);
+        LogHelper.i("mPhoneNum==> " + mPhoneNum);
 
         return true;
     }
@@ -84,7 +84,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initWidget() {
         showEnterAnimation();
-        edt_username.setOnFocusChangeListener(this);
+        mEdtUsername.setOnFocusChangeListener(this);
 
 
     }
@@ -92,7 +92,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initEvent() {
 
-        fab_submit.setOnClickListener(this);
+        mFabSubmit.setOnClickListener(this);
 
     }
 
@@ -145,7 +145,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(RegisterActivity.this, fab_submit, fab_submit.getTransitionName());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(RegisterActivity.this, mFabSubmit, mFabSubmit.getTransitionName());
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
 
             startActivity(intent, options.toBundle());
@@ -169,19 +169,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void userRepeat(boolean isRepeat) {
 
-        this.isRepeat = isRepeat;
+        this.mIsRepeat = isRepeat;
 
         LogHelper.i("userRepeat===>" + isRepeat);
 
         if (isRepeat) {
 
             App.showToast("用户名重复");
-            text_input_username.setError("用户名重复");
-            text_input_username.setErrorEnabled(true);
+            mTextInputUsername.setError("用户名重复");
+            mTextInputUsername.setErrorEnabled(true);
 
         } else {
 
-            text_input_username.setErrorEnabled(false);
+            mTextInputUsername.setErrorEnabled(false);
 
         }
 
@@ -194,38 +194,38 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.fab_submit:
 
-                if (TextUtils.isEmpty(edt_username.getText().toString().trim())) {
+                if (TextUtils.isEmpty(mEdtUsername.getText().toString().trim())) {
 
                     App.showToast("用户名不能为null");
 
                     return;
                 }
 
-                if (TextUtils.isEmpty(edt_pwd.getText().toString().trim())) {
+                if (TextUtils.isEmpty(mEdtPwd.getText().toString().trim())) {
                     App.showToast("密码输入不能为null");
 
                 } else {
 
                     //如果用户名不重复则进行注册
-                    if (!isRepeat) {
+                    if (!mIsRepeat) {
 
                         //检查两次密码输入是否一致
-                        if (edt_pwd.getText().toString().equals(edt_repwd.getText().toString())) {
+                        if (mEdtPwd.getText().toString().equals(mEdtRepwd.getText().toString())) {
 
-                            text_input_pwd.setErrorEnabled(false);
+                            mTextInputPwd.setErrorEnabled(false);
 
                             App.showToast("注册");
                             User user = new User();
-                            user.setUser_name(edt_username.getText().toString().trim());
+                            user.setUser_name(mEdtUsername.getText().toString().trim());
                             //MD5加密
-                            user.setUser_pwd(HashHelper.getMD5String(edt_pwd.getText().toString().trim()));
-                            user.setUser_tel(phoneNum);
+                            user.setUser_pwd(HashHelper.getMD5String(mEdtPwd.getText().toString().trim()));
+                            user.setUser_tel(mPhoneNum);
                             mRegisterPresenter.register(this, user);
 
                         } else {
 
-                            text_input_pwd.setErrorEnabled(true);
-                            text_input_pwd.setError("两次密码输入请保持一致");
+                            mTextInputPwd.setErrorEnabled(true);
+                            mTextInputPwd.setError("两次密码输入请保持一致");
 
                         }
 
@@ -259,7 +259,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onTransitionStart(Transition transition) {
 
-                cardView.setVisibility(View.INVISIBLE);
+                mCardView.setVisibility(View.INVISIBLE);
 
             }
 
@@ -294,7 +294,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      */
     public void animateRevealShow() {
 
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardView, cardView.getWidth() / 2, cardView.getHeight(), fab_submit.getWidth() / 2, cardView.getHeight());
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(mCardView, mCardView.getWidth() / 2, mCardView.getHeight(), mFabSubmit.getWidth() / 2, mCardView.getHeight());
         mAnimator.setDuration(500);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
@@ -305,7 +305,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onAnimationStart(Animator animation) {
-                cardView.setVisibility(View.VISIBLE);
+                mCardView.setVisibility(View.VISIBLE);
                 super.onAnimationStart(animation);
             }
         });

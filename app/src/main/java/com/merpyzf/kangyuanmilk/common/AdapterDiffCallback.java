@@ -5,9 +5,9 @@ import android.support.v7.util.DiffUtil;
 import java.util.List;
 
 /**
+ * 配合RecyclerView一起使用进行增量更新
+ *
  * Created by wangke on 2017-08-18.
- *
- *
  */
 
 public class AdapterDiffCallback<T> extends DiffUtil.Callback {

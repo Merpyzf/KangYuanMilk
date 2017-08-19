@@ -1,6 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.login.model;
 
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 

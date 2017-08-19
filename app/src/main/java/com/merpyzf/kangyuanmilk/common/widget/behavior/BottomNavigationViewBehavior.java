@@ -8,12 +8,14 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
+ * BottomNavigationView依赖AppBarLayout实现跟随依赖的View进行显示或者隐藏
+ * <p>
  * Created by wangke on 2017-08-10.
  */
 
 public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<View> {
 
-    
+
     public BottomNavigationViewBehavior() {
 
     }
@@ -32,15 +34,10 @@ public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<Vie
     }
 
     /**
-     *
-     *
-     *
      * @param parent
      * @param child
      * @param dependency
      * @return
-     *
-     *
      */
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
@@ -49,18 +46,15 @@ public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<Vie
     }
 
     /**
-     *
      * @param parent
      * @param child
      * @param dependency
      * @return
-     *
-     *
      */
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
         //得到依赖View的滑动距离
-        int top = ((AppBarLayout.Behavior)((CoordinatorLayout.LayoutParams)dependency.getLayoutParams()).getBehavior()).getTopAndBottomOffset();
+        int top = ((AppBarLayout.Behavior) ((CoordinatorLayout.LayoutParams) dependency.getLayoutParams()).getBehavior()).getTopAndBottomOffset();
         //因为BottomNavigation的滑动与ToolBar是反向的，所以取-top值
         ViewCompat.setTranslationY(child, -top);
         return false;

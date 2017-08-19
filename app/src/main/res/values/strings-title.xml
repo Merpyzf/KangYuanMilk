@@ -17,5 +17,12 @@
     <string name="progress_dialog_login">正在登录</string>
     <string name="progress_dialog_save">保存中</string>
     <string name="home_user_title">春水碧于天</string>
+    <string name="title_about_activity_text">关于</string>
+    <string name="title_order_activity_text">我的订单</string>
+    <string name="title_goods">商品</string>
+    <string name="title_shoppingcart">购物车</string>
+    <string name="title_modifyaddress_activity_text">添加收货物地址</string>
+    <string name="title_dialog_modifyaddress_save">保存中</string>
+    <string name="title_useraddress_activity_text">地址管理</string>
 
 </resources>

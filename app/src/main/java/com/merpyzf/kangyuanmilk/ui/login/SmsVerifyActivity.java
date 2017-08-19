@@ -39,32 +39,32 @@ import butterknife.BindView;
 public class SmsVerifyActivity extends BaseActivity implements View.OnClickListener, ISMSVerifyContract.ISMSVerifyView {
 
     @BindView(R.id.cardview_reg)
-    CardView cardview;
+    CardView mCardview;
     //返回上一个界面
     @BindView(R.id.fab_back)
-    FloatingActionButton fab_back;
+    FloatingActionButton mFabBack;
     //验证
     @BindView(R.id.btn_verify)
-    Button btn_verify;
+    Button mBtnVerify;
     //获取验证码
     @BindView(R.id.btn_get_code)
-    Button btn_get_code;
+    Button mBtnGetCode;
     //手机号输入框
     @BindView(R.id.edt_phone_num)
-    EditText edt_phone_num;
+    EditText mEdtPhoneNum;
     @BindView(R.id.edt_code)
-    EditText edt_code;
+    EditText mEdtCode;
 
     @BindView(R.id.text_input_phone)
-    TextInputLayout text_input_phone;
+    TextInputLayout mTextInputPhone;
 
     @BindView(R.id.text_input_code)
-    TextInputLayout text_input_code;
+    TextInputLayout mTextInputCode;
 
 
     private ISMSVerifyContract.ISMSVerifyPresenter mPresenter = null;
     private int mTime;
-    private Timer timer;
+    private Timer mTimer;
     private SMSReceiver mSmsReceiver;
 
     @Override
@@ -84,12 +84,12 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
 
         //解析短信中的验证码
         IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-        mSmsReceiver = new SMSReceiver(edt_code);
+        mSmsReceiver = new SMSReceiver(mEdtCode);
         registerReceiver(mSmsReceiver, filter);
 
-        fab_back.setOnClickListener(this);
-        btn_verify.setOnClickListener(this);
-        btn_get_code.setOnClickListener(this);
+        mFabBack.setOnClickListener(this);
+        mBtnVerify.setOnClickListener(this);
+        mBtnGetCode.setOnClickListener(this);
 
     }
 
@@ -113,16 +113,16 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
             //获取验证码
             case R.id.btn_get_code:
 
-                String phoneNum = edt_phone_num.getText().toString().trim();
+                String phoneNum = mEdtPhoneNum.getText().toString().trim();
                 //手机格式正确性的校验
                 if (RegexHelper.regexPhoneNum(phoneNum)) {
 
-                    text_input_phone.setErrorEnabled(false);
+                    mTextInputPhone.setErrorEnabled(false);
                     mPresenter.getVerificationCode("86", phoneNum);
 
                 } else {
 
-                    text_input_phone.setError("手机号格式错误");
+                    mTextInputPhone.setError("手机号格式错误");
 
                 }
                 break;
@@ -130,18 +130,18 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
             //进行验证
             case R.id.btn_verify:
 
-                String code = edt_code.getText().toString().trim();
+                String code = mEdtCode.getText().toString().trim();
 
                 if (code.length() == 4) {
 
                     //提交验证码进行验证
                     mPresenter.submitVerify(code);
 
-                    text_input_code.setErrorEnabled(false);
+                    mTextInputCode.setErrorEnabled(false);
 
                 } else {
 
-                    text_input_code.setError("验证码为4位数");
+                    mTextInputCode.setError("验证码为4位数");
 
                 }
                 break;
@@ -169,7 +169,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, fab_back, fab_back.getTransitionName());
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SmsVerifyActivity.this, mFabBack, mFabBack.getTransitionName());
                 Intent intent = new Intent(SmsVerifyActivity.this, RegisterActivity.class);
                 intent.putExtra("phoneNum", phoneNum);
                 startActivity(intent, options.toBundle());
@@ -206,8 +206,8 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
 
         mTime = 60;
         //开始倒计时
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
 
@@ -215,13 +215,13 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
 
                     mTime--;
                     String countDown = mTime + getString(R.string.sms_verify_activity_countdown);
-                    btn_get_code.setText(countDown);
-                    btn_get_code.setEnabled(false);
+                    mBtnGetCode.setText(countDown);
+                    mBtnGetCode.setEnabled(false);
                     if (mTime == 0) {
 
-                        btn_get_code.setEnabled(true);
-                        btn_get_code.setText(R.string.sms_verify_activity_getcode);
-                        timer.cancel();
+                        mBtnGetCode.setEnabled(true);
+                        mBtnGetCode.setText(R.string.sms_verify_activity_getcode);
+                        mTimer.cancel();
                     }
 
                 });
@@ -243,7 +243,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onTransitionStart(Transition transition) {
 
-                cardview.setVisibility(View.INVISIBLE);
+                mCardview.setVisibility(View.INVISIBLE);
 
             }
 
@@ -280,7 +280,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
      */
     public void animateRevealShow() {
 
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardview, cardview.getWidth() / 2, 0, fab_back.getWidth() / 2, cardview.getHeight());
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(mCardview, mCardview.getWidth() / 2, 0, mFabBack.getWidth() / 2, mCardview.getHeight());
         mAnimator.setDuration(500);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
@@ -291,7 +291,7 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onAnimationStart(Animator animation) {
-                cardview.setVisibility(View.VISIBLE);
+                mCardview.setVisibility(View.VISIBLE);
                 super.onAnimationStart(animation);
             }
         });
@@ -304,15 +304,15 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
     public void animateRevealClose() {
 
 
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardview, cardview.getWidth() / 2, 0, cardview.getHeight(), fab_back.getWidth() / 2);
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(mCardview, mCardview.getWidth() / 2, 0, mCardview.getHeight(), mFabBack.getWidth() / 2);
         mAnimator.setDuration(500);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                cardview.setVisibility(View.INVISIBLE);
+                mCardview.setVisibility(View.INVISIBLE);
                 super.onAnimationEnd(animation);
-                fab_back.setImageResource(R.drawable.ic_add);
+                mFabBack.setImageResource(R.drawable.ic_add);
                 SmsVerifyActivity.super.onBackPressed();
             }
 
@@ -358,8 +358,8 @@ public class SmsVerifyActivity extends BaseActivity implements View.OnClickListe
         mPresenter.detachView();
         unregisterReceiver(mSmsReceiver);
 
-        if (timer != null) {
-            timer.cancel();
+        if (mTimer != null) {
+            mTimer.cancel();
         }
 
         super.onDestroy();

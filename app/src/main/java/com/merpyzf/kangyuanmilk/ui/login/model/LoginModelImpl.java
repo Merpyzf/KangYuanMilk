@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.login.model;
 
 import com.merpyzf.kangyuanmilk.common.api.KangYuanApi;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
 

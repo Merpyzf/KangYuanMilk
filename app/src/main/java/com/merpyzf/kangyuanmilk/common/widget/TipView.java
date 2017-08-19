@@ -103,17 +103,6 @@ public class TipView extends RelativeLayout implements ITipView {
 
     }
 
-    /**
-     * 重置
-     */
-    @Override
-    public void reset() {
-
-        setVisibility(INVISIBLE);
-        mBindView.setVisibility(VISIBLE);
-
-    }
-
 
     /**
      * 移除非tip提示的view
@@ -132,6 +121,16 @@ public class TipView extends RelativeLayout implements ITipView {
         }
     }
 
+    /**
+     * 重置
+     */
+    @Override
+    public void reset() {
+
+        setVisibility(INVISIBLE);
+        mBindView.setVisibility(VISIBLE);
+
+    }
 
     @Override
     public void bindView(View view) {

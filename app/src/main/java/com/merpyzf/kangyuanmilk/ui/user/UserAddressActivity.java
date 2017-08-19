@@ -43,17 +43,17 @@ import io.reactivex.Observable;
 public class UserAddressActivity extends BaseActivity implements IUserAddressContract.IUserAddressView, IUserAddressCallBack.onItemWidgetClickListener, Observer {
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     @BindView(R.id.refreshLayout)
-    SwipeRefreshLayout refresh_layout;
+    SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.tv_add_address)
-    TextView tv_add_address;
+    TextView mTvAddAddress;
     @BindView(R.id.tipView)
-    TipView tipView;
+    TipView mTipView;
     @BindView(R.id.ll_container)
-    LinearLayout ll_container;
+    LinearLayout mLlContainer;
 
     private List<Address> mOldList = null;
     private IUserAddressContract.IUserAddressPresenter mPresenter = null;
@@ -72,15 +72,15 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
     @Override
     public void initWidget() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new ItemMarginDecoration());
-        tipView.bindView(ll_container);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new ItemMarginDecoration());
+        mTipView.bindView(mLlContainer);
         //设置RecyclerView中item中widget点击事件的监听回调
-        tv_add_address.setOnClickListener(view -> ModifyAddressActivity.showAction(this, new Bundle()));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("地址管理");
+        mTvAddAddress.setOnClickListener(view -> ModifyAddressActivity.showAction(this, new Bundle()));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.title_useraddress_activity_text);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        refresh_layout.setColorSchemeColors(new int[]{Resource.Color.GREEN, Resource.Color.PINK});
+        mRefreshLayout.setColorSchemeColors(new int[]{Resource.Color.GREEN, Resource.Color.PINK});
 
 
     }
@@ -100,7 +100,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     public void initEvent() {
         super.initEvent();
 
-        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
@@ -121,7 +121,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     @Override
     public void showNetErrorTip(String msg) {
 
-        tipView.setErrorTip(msg);
+        mTipView.setErrorTip(msg);
 
     }
 
@@ -145,7 +145,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     public void showErrorMsg(String errorMsg) {
 
         App.showToast(errorMsg);
-        tipView.setErrorTip(errorMsg);
+        mTipView.setErrorTip(errorMsg);
 
     }
 
@@ -159,7 +159,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     public void showEmptyTip(String msg) {
 
 
-        tipView.setEmptyTip(msg);
+        mTipView.setEmptyTip(msg);
 
     }
 
@@ -174,9 +174,9 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
         Observable.just(addressList)
                 .filter(addresses -> {
 
-                    tipView.reset();
-                    mAdapter = new UserAddressAdapter(addresses, UserAddressActivity.this, recyclerView);
-                    recyclerView.setAdapter(mAdapter);
+                    mTipView.reset();
+                    mAdapter = new UserAddressAdapter(addresses, UserAddressActivity.this, mRecyclerView);
+                    mRecyclerView.setAdapter(mAdapter);
 
                     return mOldList != null;
                 })
@@ -189,7 +189,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
                     diffResult.dispatchUpdatesTo(mAdapter);
                     mAdapter.setDatas(addresses);
                     //刷新完毕
-                    refresh_layout.setRefreshing(false);
+                    mRefreshLayout.setRefreshing(false);
 
 
                 });
@@ -215,7 +215,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
     @Override
     public void showLoadingDialog() {
 
-        tipView.setLoading();
+        mTipView.setLoading();
 
     }
 
@@ -279,7 +279,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
 
         int itemCount = mAdapter.getItemCount();
 
-        if (itemCount == 0) showEmptyTip("还没有收货地址呢,快来创建一个吧!");
+        if (itemCount == 0) showEmptyTip(getString(R.string.user_address_empty));
 
     }
 

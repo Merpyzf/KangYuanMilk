@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.ui.base;
+package com.merpyzf.kangyuanmilk.ui.user.bean;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

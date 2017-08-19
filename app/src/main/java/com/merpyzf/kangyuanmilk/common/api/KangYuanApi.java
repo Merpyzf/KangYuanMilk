@@ -1,6 +1,6 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
@@ -104,7 +104,7 @@ public interface KangYuanApi {
     Observable<MessageBean> updateAddress(@Body Address address);
 
 
-    @GET("http://gank.io/api/data/福利/9/{page}")
+    @GET("http://gank.io/api/data/福利/10/{page}")
     Observable<Meizi> getMeizi(@Path("page")String page);
 
 

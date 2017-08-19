@@ -26,7 +26,7 @@ public class HomeFragment extends BaseFragment {
 
     private List<String> mDatas = new ArrayList<>();
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
 
     @Override
@@ -38,7 +38,7 @@ public class HomeFragment extends BaseFragment {
     protected void initWidget(View rootview) {
 
         mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
 
 
@@ -200,7 +200,7 @@ public class HomeFragment extends BaseFragment {
 
         response.setData(dataList);
 
-        recyclerView.setAdapter(new HomeAdapter(response.getData(), getContext(), recyclerView));
+        mRecyclerView.setAdapter(new HomeAdapter(response.getData(), getContext(), mRecyclerView));
         mLayoutManager.scrollToPosition(0);
 
         Gson gson = new Gson();

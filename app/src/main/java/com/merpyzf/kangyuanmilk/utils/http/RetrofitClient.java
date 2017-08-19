@@ -40,7 +40,6 @@ public class RetrofitClient {
 
         OkHttpClient okHttpClient = bulider.build();
 
-
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
 
         Retrofit retrofit = retrofitBuilder.baseUrl(KangYuanApi.BASE_URL)

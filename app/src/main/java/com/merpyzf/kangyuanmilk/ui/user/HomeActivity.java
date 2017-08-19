@@ -35,7 +35,7 @@ import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.IndentFragment;
@@ -61,23 +61,23 @@ public class HomeActivity extends BaseActivity
         , Observer {
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @BindView(R.id.nav_view)
-    NavigationView navigationView;
+    NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
+    DrawerLayout mDrawerLayout;
     @BindView(R.id.bottom_nav_view)
-    BottomNavigationView bottom_nav_view;
+    BottomNavigationView mBottomNavView;
     @BindView(R.id.appbar)
-    AppBarLayout appbar;
+    AppBarLayout mAppbar;
     @BindView(R.id.coordLayout)
-    CoordinatorLayout coordinatorLayout;
+    CoordinatorLayout mCoordinatorLayout;
     //默认为主页
     private CurrentPage mCurrentPage = CurrentPage.HOME;
 
-    AvaterView civ_avater;
-    TextView tv_username;
-    RelativeLayout rl_nav_header;
+    AvaterView mCivAvater;
+    TextView mTvUsername;
+    RelativeLayout mRlNavHeader;
     private HomePresenterImpl mPresenter;
     private NavFragManager mNavFragManager = null;
     private AppBarState mCurrentAppBarState = AppBarState.IDLE;
@@ -102,29 +102,32 @@ public class HomeActivity extends BaseActivity
         //进入时首先进行权限判断
         ApplyPermissionFragment applyPermissionFragment = new ApplyPermissionFragment();
         applyPermissionFragment.haveAll(getSupportFragmentManager(), this);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
 
         //从 navigationView中获取控件的引用时候,需要通过getHeaderView拿到HeaderView布局的引用，这样才能继续下面的工作
-        View view = navigationView.getHeaderView(0);
-        rl_nav_header = view.findViewById(R.id.rl_nav_header);
-        civ_avater = view.findViewById(R.id.iv_avater);
-        tv_username = view.findViewById(R.id.tv_username);
+        View view = mNavigationView.getHeaderView(0);
+        mRlNavHeader = view.findViewById(R.id.rl_nav_header);
+        mCivAvater = view.findViewById(R.id.iv_avater);
+        mTvUsername = view.findViewById(R.id.tv_username);
 
         //设置抽屉菜单头部背景
-        setNavHeaderBg(rl_nav_header);
+        setNavHeaderBg(mRlNavHeader);
         //将抽屉菜单和ToolBar关联在一起
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        toolbar.post(() -> toolbar.setTitle("主页"));
+        mToolbar.post(() -> mToolbar.setTitle(R.string.title_home_activity_text));
 
         getMaxMemoryInfo();
 
 
     }
 
+    /**
+     * 获取当前设备一个app系统所分配的内存信息
+     */
     private void getMaxMemoryInfo() {
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
@@ -137,15 +140,15 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void initEvent() {
-        navigationView.setNavigationItemSelectedListener(this);
-        bottom_nav_view.setOnNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mBottomNavView.setOnNavigationItemSelectedListener(this);
 
         /**
          * 监听AppBarLayout的当前状态: 隐藏/展开/变化中
          */
-        appbar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+        mAppbar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
 
-            int height = toolbar.getHeight();
+            int height = mToolbar.getHeight();
 
             if (verticalOffset == 0) {
                 mCurrentAppBarState = AppBarState.EXPAND;
@@ -257,9 +260,9 @@ public class HomeActivity extends BaseActivity
             //底部导航菜单的事件监听
             case R.id.action_home:
 
-                toolbar.setTitle("主页");
+                mToolbar.setTitle(R.string.title_activity_home);
                 mNavFragManager.performClickNavMenu(item.getItemId());
-                coordinatorLayout.setEnabled(true);
+                mCoordinatorLayout.setEnabled(true);
 
                 mCurrentPage = CurrentPage.HOME;
                 //刷新menu中的item
@@ -268,18 +271,18 @@ public class HomeActivity extends BaseActivity
 
             case R.id.action_goods:
 
-                toolbar.setTitle("商品");
+                mToolbar.setTitle(R.string.title_goods);
                 mNavFragManager.performClickNavMenu(item.getItemId());
-                coordinatorLayout.setEnabled(false);
+                mCoordinatorLayout.setEnabled(false);
 
                 mCurrentPage = CurrentPage.GOODS;
                 invalidateOptionsMenu();
                 break;
             case R.id.action_shopping_cart:
 
-                toolbar.setTitle("购物车");
+                mToolbar.setTitle(R.string.title_shoppingcart);
                 mNavFragManager.performClickNavMenu(item.getItemId());
-                coordinatorLayout.setEnabled(false);
+                mCoordinatorLayout.setEnabled(false);
 
                 mCurrentPage = CurrentPage.SHOPPING_CART;
                 invalidateOptionsMenu();
@@ -289,7 +292,7 @@ public class HomeActivity extends BaseActivity
 
                 break;
         }
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
 
 
         return true;
@@ -353,9 +356,9 @@ public class HomeActivity extends BaseActivity
 
                     Fragment tab = mNavFragManager.getCurrentTab();
 
-                    if(tab instanceof  CategoryFragment){
+                    if (tab instanceof CategoryFragment) {
 
-                        ((CategoryFragment)tab).currentCategoryId(id);
+                        ((CategoryFragment) tab).currentCategoryId(id);
 
                     }
 
@@ -414,7 +417,7 @@ public class HomeActivity extends BaseActivity
     public void currentStatus(boolean isLogin) {
 
         //不同的登录状态对应头像不同的点击事件
-        civ_avater.setOnClickListener(view -> {
+        mCivAvater.setOnClickListener(view -> {
             if (!isLogin) {
                 //未登录状态
                 startActivity(new Intent(this, LoginActivity.class));
@@ -424,7 +427,7 @@ public class HomeActivity extends BaseActivity
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                     //共享元素动画
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomeActivity.this, civ_avater, civ_avater.getTransitionName());
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomeActivity.this, mCivAvater, mCivAvater.getTransitionName());
                     startActivity(new Intent(HomeActivity.this, UserInfoActivity.class), options.toBundle());
 
                 } else {
@@ -441,13 +444,13 @@ public class HomeActivity extends BaseActivity
         User user = userDao.getUserInfo();
         if (user == null) {
             //未登录状态
-            tv_username.setText("点击头像进行登录");
-            civ_avater.setImageResource(R.drawable.ic_avater_default);
+            mTvUsername.setText("点击头像进行登录");
+            mCivAvater.setImageResource(R.drawable.ic_avater_default);
 
         } else {
 
             loadAvater(user.getUser_head());
-            tv_username.setText(user.getUser_name());
+            mTvUsername.setText(user.getUser_name());
 
         }
 
@@ -477,7 +480,7 @@ public class HomeActivity extends BaseActivity
         UserDao userDao = UserDao.getInstance();
         User user = userDao.getUserInfo();
         loadAvater(user.getUser_head());
-        tv_username.setText(user.getUser_name());
+        mTvUsername.setText(user.getUser_name());
     }
 
     /**
@@ -492,11 +495,11 @@ public class HomeActivity extends BaseActivity
                 .placeholder(R.drawable.ic_avater_default)
                 .centerCrop()
                 .dontAnimate()
-                .into(new ViewTarget<View, GlideDrawable>(civ_avater) {
+                .into(new ViewTarget<View, GlideDrawable>(mCivAvater) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
 
-                        civ_avater.setImageDrawable(resource.getCurrent());
+                        mCivAvater.setImageDrawable(resource.getCurrent());
 
                     }
                 });
@@ -516,13 +519,13 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         //根据DrawerLayout的当前状态选择是开启还是关闭
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
 
 
         } else if (mCurrentAppBarState == AppBarState.COLLAPSED) {
 
-            appbar.setExpanded(true, true);
+            mAppbar.setExpanded(true, true);
 
         } else {
             super.onBackPressed();

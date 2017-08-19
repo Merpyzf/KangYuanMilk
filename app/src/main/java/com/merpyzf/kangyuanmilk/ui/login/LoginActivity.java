@@ -2,7 +2,6 @@ package com.merpyzf.kangyuanmilk.ui.login;
 
 import android.animation.Animator;
 import android.app.ActivityOptions;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -26,7 +25,7 @@ import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.LoginPresenterImpl;
 import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
@@ -43,31 +42,31 @@ import static com.merpyzf.kangyuanmilk.R.layout.activity_login;
 public class LoginActivity extends BaseActivity implements View.OnClickListener, ILoginContract.ILoginView {
 
     @BindView(R.id.iv_header)
-    CircleImageView iv_header;
+    CircleImageView mIvHeader;
 
     @BindView(R.id.cardView)
-    CardView cardView;
+    CardView mCardView;
     //短信页面页面跳转的fab
     @BindView(R.id.fab_next)
-    FloatingActionButton fab_next;
+    FloatingActionButton mFabNext;
     //登录
     @BindView(R.id.btn_login)
-    Button btn_login;
+    Button mBtnLogin;
     //用户名
     @BindView(R.id.edt_username)
-    EditText edt_username;
+    EditText mEdtUsername;
     //密码
     @BindView(R.id.edt_pwd)
-    EditText edt_pwd;
+    EditText mEdtPwd;
     //找回密码
     @BindView(R.id.tv_find_pwd)
-    TextView tv_find_pwd;
+    TextView mTvFindPwd;
 
     @BindView(R.id.rl_login_bg)
-    RelativeLayout rl_login_bg;
+    RelativeLayout mRlLoginBg;
 
     //标记遮罩动画是否已经执行
-    private Boolean isExecute = true;
+    private Boolean mIsExecute = true;
     private ILoginContract.ILoginPresenter mPresenter = null;
     //用于提示当前状态的dialog
     protected MaterialDialog mLoginDialog;
@@ -81,9 +80,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         //刚进入界面的时候开启圆形遮罩动画
-        if (isExecute) {
+        if (mIsExecute) {
             revealCircularAnim();
-            isExecute = false;
+            mIsExecute = false;
         }
     }
 
@@ -100,10 +99,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void initEvent() {
-        fab_next.setOnClickListener(this);
-        btn_login.setOnClickListener(this);
+        mFabNext.setOnClickListener(this);
+        mBtnLogin.setOnClickListener(this);
 
-        edt_username.setOnFocusChangeListener((view, b) -> {
+        mEdtUsername.setOnFocusChangeListener((view, b) -> {
             String userName = ((EditText) view).getText().toString().trim();
             //用户名长度大于0 并且失去焦点
             if (userName.length() > 0 && !b) {
@@ -134,13 +133,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                     //共享元素动画
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, fab_next, fab_next.getTransitionName());
-                    fab_next.setVisibility(View.INVISIBLE);
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, mFabNext, mFabNext.getTransitionName());
+                    mFabNext.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(LoginActivity.this, SmsVerifyActivity.class), options.toBundle());
 
                 } else {
 
-                    fab_next.setVisibility(View.INVISIBLE);
+                    mFabNext.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(LoginActivity.this, SmsVerifyActivity.class));
                 }
 
@@ -149,8 +148,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             //登录
             case R.id.btn_login:
 
-                String user_name = edt_username.getText().toString().trim();
-                String pwd = edt_pwd.getText().toString().trim();
+                String user_name = mEdtUsername.getText().toString().trim();
+                String pwd = mEdtPwd.getText().toString().trim();
 
                 if (!user_name.equals("") && !pwd.equals("")) {
                     // TODO: 2017-08-04  用户名或密码长度的校验
@@ -182,7 +181,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      */
     private void revealCircularAnim() {
 
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(cardView, cardView.getWidth() / 2, 0, 40, cardView.getWidth());
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(mCardView, mCardView.getWidth() / 2, 0, 40, mCardView.getWidth());
         mAnimator.setDuration(600);
         mAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         mAnimator.start();
@@ -292,11 +291,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_avater_default)
-                .into(new ViewTarget<View, GlideDrawable>(iv_header) {
+                .into(new ViewTarget<View, GlideDrawable>(mIvHeader) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
 
-                        iv_header.setImageDrawable(resource.getCurrent());
+                        mIvHeader.setImageDrawable(resource.getCurrent());
 
                     }
                 });
@@ -311,11 +310,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         Glide.with(this)
                 .load(R.drawable.ic_login_bg)
                 .centerCrop()
-                .into(new ViewTarget<View, GlideDrawable>(rl_login_bg) {
+                .into(new ViewTarget<View, GlideDrawable>(mRlLoginBg) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
 
-                        rl_login_bg.setBackground(resource.getCurrent());
+                        mRlLoginBg.setBackground(resource.getCurrent());
 
                     }
                 });

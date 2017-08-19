@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
@@ -82,18 +81,16 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
         mPaths = mPaths == null ? new ArrayList<>() : mPaths;
 
         //作为全局变量保存,用于销毁(一定要销毁，不然会报错)
-
         mLoadManager = loaderManager;
-
         loaderManager.initLoader(LOAD_IMAGE, null, this);
 
+        //设置RecyclerView
         setLayoutManager(new GridLayoutManager(mContext, 3));
-
         mGalleryAdapter = new GalleryAdapter(mImages, mContext, this);
+        mGalleryAdapter.setOnItemClickListener(this);
 
         setAdapter(mGalleryAdapter);
 
-        mGalleryAdapter.setOnItemClickListener(this);
 
     }
 
@@ -202,9 +199,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         } else {
 
-            Toast.makeText(mContext, "跳转到拍照页面", Toast.LENGTH_SHORT).show();
-
-
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
 
@@ -240,7 +234,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
                 ((Activity) mContext).startActivityForResult(intent, GALLERYVIEW_TAKEPHOTO);
 
             } else {
-                App.showToast("没有找到可用的存储位置");
+                App.showToast(getResources().getString(R.string.toast_not_found_storage));
 
             }
 
@@ -252,7 +246,7 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
 
         if (position > 0) {
             clearAllSelected();
-            App.showToast("清除所有已选择的图片");
+            App.showToast(getContext().getString(R.string.toast_clear_choice_pic));
         }
         return true;
     }
@@ -463,7 +457,6 @@ public class GalleryView extends RecyclerView implements android.app.LoaderManag
      * 使用结束的时候调用此方法销销毁LoadManager对象,和容器的生命周期进行绑定
      */
     public void destory() {
-
         mLoadManager.destroyLoader(LOAD_IMAGE);
     }
 

@@ -1,14 +1,14 @@
 package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
-import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
-import com.merpyzf.kangyuanmilk.common.data.Common;
+import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.login.RegisterActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
-import com.merpyzf.kangyuanmilk.ui.base.User;
 import com.merpyzf.kangyuanmilk.ui.login.contract.IRegisterContract;
 import com.merpyzf.kangyuanmilk.ui.login.model.IRegisterModel;
 import com.merpyzf.kangyuanmilk.ui.login.model.RegisterModelImpl;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
+import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -58,27 +58,37 @@ public class RegisterPresenterImpl extends BasePresenter<IRegisterContract.IRegi
                     @Override
                     public void onNext(@NonNull RegisterBean registerBean) {
 
-                        if (registerBean.getStatus() == Common.HTTP_OK) {
 
-                            if (registerBean.getResponse().isResult()) {
+                        new ErrorHandle(this, registerBean.getStatus()) {
 
-                                mMvpView.registerSuccess("注册成功,跳转到登录页面");
-                            } else {
 
-                                mMvpView.showErrorMsg("注册失败");
+                            @Override
+                            protected void deal() {
+
+                                if (registerBean.getResponse().isResult()) {
+
+                                    mMvpView.registerSuccess(context.getString(R.string.register_success));
+                                } else {
+
+                                    mMvpView.showErrorMsg(context.getString(R.string.register_failed));
+                                }
+
                             }
-                        } else {
-                            mMvpView.showErrorMsg("服务器异常");
-                        }
+                        };
+
+
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        mMvpView.showErrorMsg("连接超时");
+                        ErrorHandleHelper.handle(e, mMvpView);
+
                     }
 
                     @Override
                     public void onComplete() {
+
+
                         mMvpView.cancelLoadingDialog();
                     }
                 });
@@ -115,13 +125,10 @@ public class RegisterPresenterImpl extends BasePresenter<IRegisterContract.IRegi
                                 //不重复
                                 if (registerBean.getResponse().isResult()) {
 
-                                    LogHelper.i("不重复");
                                     mMvpView.userRepeat(false);
 
                                     //重复
                                 } else {
-
-                                    LogHelper.i("重复");
                                     mMvpView.userRepeat(true);
 
 

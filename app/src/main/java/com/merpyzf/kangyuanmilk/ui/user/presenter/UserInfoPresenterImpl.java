@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.user.UserInfoActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IUserInfoContract;

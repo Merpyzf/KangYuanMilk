@@ -31,26 +31,26 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
         RecyclerAdapter.ItemClickListener<SearchBean> {
 
     @BindView(R.id.iv_close)
-    ImageView iv_close; //关闭搜索框
+    ImageView mIvClose; //关闭搜索框
 
     @BindView(R.id.iv_open)
-    ImageView iv_open; //开启搜索框
+    ImageView mIvOpen; //开启搜索框
 
 
     @BindView(R.id.tv_search)
-    TextView tv_search; //搜索按钮
+    TextView mTvSearch; //搜索按钮
 
     @BindView(R.id.edt_search)
-    EditText edt_search; //搜索框
+    EditText mEdtSearch; //搜索框
 
     @BindView(R.id.cardView)
-    CardView cardView;
+    CardView mCardView;
 
     @BindView(R.id.rv_search_history)
-    RecyclerView rv_search_history;
+    RecyclerView mRvSearchHistory;
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
 
 
     private ISearchContract.ISearchPresenter mPresenter;
@@ -64,9 +64,9 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @Override
     public void initWidget() {
 
-        cardView.post(() -> SearchViewHelper.excuteAnimator(cardView));
-        rv_search_history.setLayoutManager(new LinearLayoutManager(this));
-        setSupportActionBar(toolbar);
+        mCardView.post(() -> SearchViewHelper.excuteAnimator(mCardView));
+        mRvSearchHistory.setLayoutManager(new LinearLayoutManager(this));
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -85,9 +85,9 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
 
     @Override
     public void initEvent() {
-        iv_close.setOnClickListener(this);
-        iv_open.setOnClickListener(this);
-        tv_search.setOnClickListener(this);
+        mIvClose.setOnClickListener(this);
+        mIvOpen.setOnClickListener(this);
+        mTvSearch.setOnClickListener(this);
 
     }
 
@@ -101,8 +101,8 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
             case R.id.iv_close:
 
             case R.id.iv_open:
-                edt_search.setText("");
-                SearchViewHelper.excuteAnimator(cardView);
+                mEdtSearch.setText("");
+                SearchViewHelper.excuteAnimator(mCardView);
                 mPresenter.getSearchHistoryData();
 
                 break;
@@ -112,18 +112,18 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
                 //获取历史关键字查询的数据
                 mPresenter.getSearchHistoryData();
 
-                String info = edt_search.getText().toString().trim();
+                String info = mEdtSearch.getText().toString().trim();
 
                 if (TextUtils.isEmpty(info)) {
 
-                    App.showToast("关键字不能为空");
+                    App.showToast(getString(R.string.toast_keyword_empty));
                     return;
                 }
 
                 //搜索关键字
                 mPresenter.searchMilkListData(info);
 
-                SearchViewHelper.excuteAnimator(cardView);
+                SearchViewHelper.excuteAnimator(mCardView);
 
                 mPresenter.saveSearchData(new SearchBean(info));
 
@@ -139,10 +139,8 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @Override
     public void showSearchHistory(List<SearchBean> searchBeanList) {
 
-        LogHelper.i("changdu ==>" + searchBeanList.size());
-
-        mAdapter = new SearchHistoryAdapter(mPresenter, searchBeanList, this, rv_search_history);
-        rv_search_history.setAdapter(mAdapter);
+        mAdapter = new SearchHistoryAdapter(mPresenter, searchBeanList, this, mRvSearchHistory);
+        mRvSearchHistory.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
 
 
@@ -196,8 +194,7 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @Override
     public void onItemClick(ViewHolder viewHolder, SearchBean searchBean, int position) {
 
-        LogHelper.i("====>" + searchBean.getSearchInfo());
-        edt_search.setText(searchBean.getSearchInfo());
+        mEdtSearch.setText(searchBean.getSearchInfo());
 
     }
 
@@ -205,7 +202,6 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     public boolean onItemLongClick(ViewHolder viewHolder, SearchBean searchBean, int position) {
 
 
-        LogHelper.i("====>onItemLongClick");
         return false;
     }
 }

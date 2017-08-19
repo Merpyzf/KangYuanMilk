@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.login.model;
 
 import com.merpyzf.kangyuanmilk.ui.login.bean.RegisterBean;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 
 import io.reactivex.Observable;
 

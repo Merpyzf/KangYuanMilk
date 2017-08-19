@@ -16,6 +16,8 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
+ * 商品分类选择的适配器
+ * <p>
  * Created by wangek on 2017-08-16.
  */
 
@@ -29,7 +31,7 @@ public class CategoryPickerAdapter extends RecyclerAdapter<Category> {
     public ViewHolder createHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.item_category_picker, parent,false);
+                .inflate(R.layout.item_category_picker, parent, false);
 
         return new ViewHolder(view);
     }

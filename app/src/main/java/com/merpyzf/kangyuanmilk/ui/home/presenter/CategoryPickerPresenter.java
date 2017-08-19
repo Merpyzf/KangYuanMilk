@@ -7,7 +7,7 @@ import com.merpyzf.kangyuanmilk.ui.home.contract.ICategoryPickerContract;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017-08-16.
+ * Created by wangke on 2017-08-16.
  */
 
 public class CategoryPickerPresenter extends BasePresenter<ICategoryPickerContract.ICategoryPickerView> implements ICategoryPickerContract.ICategoryPickPresenter {

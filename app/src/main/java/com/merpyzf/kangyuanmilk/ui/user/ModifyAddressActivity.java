@@ -35,19 +35,19 @@ import butterknife.BindView;
  */
 public class ModifyAddressActivity extends BaseActivity implements IModifyAddressContract.IModifyAddressView, View.OnClickListener, AddressPickerFragment.OnSelectorComplete {
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @BindView(R.id.edt_name)
-    EditText edt_name;
+    EditText mEdtName;
     @BindView(R.id.edt_phone)
-    EditText edt_phone;
+    EditText mEdtPhone;
     @BindView(R.id.tv_choice_address)
-    TextView tv_choice_address;
-    @BindView(R.id.ll_choice_address)
-    LinearLayout ll_choice_address;
+    TextView mTvChoiceAddress;
+    @BindView(R.id.linearlayout_choice_address)
+    LinearLayout mLlChoiceAddress;
     @BindView(R.id.edt_address_detail)
-    EditText edt_address_detail;
+    EditText mEdtAddressDetail;
     @BindView(R.id.btn_save_address)
-    Button btn_save_address;
+    Button mBtnSaveAddress;
 
 
     private IModifyAddressContract.IModefyAddressPresenter mPresenter = null;
@@ -81,7 +81,7 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
 
         mAddress.setAds_id(mAds.getAds_id());
         mAddress.setAddress_id(mAds.getAddress_id());
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
 
         LogHelper.i("待编辑的地址==> " + mAds.getAddress_content());
 
@@ -98,22 +98,22 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
     @Override
     public void initWidget() {
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         ActionBar bar = getSupportActionBar();
-        bar.setTitle("添加收货物地址");
+        bar.setTitle(R.string.title_modifyaddress_activity_text);
         bar.setDisplayHomeAsUpEnabled(true);
         mPickerFragment = new AddressPickerFragment();
 
         if (mAds != null) {
 
-            edt_name.setText(mAds.getConsignee());
-            edt_phone.setText(mAds.getConsignee_tel());
-            tv_choice_address.setText(mAds.getAddress_all());
-            edt_address_detail.setText(" " + mAds.getAddress_content());
-            getSupportActionBar().setTitle("修改收货地址");
+            mEdtName.setText(mAds.getConsignee());
+            mEdtPhone.setText(mAds.getConsignee_tel());
+            mTvChoiceAddress.setText(mAds.getAddress_all());
+            mEdtAddressDetail.setText(" " + mAds.getAddress_content());
+            getSupportActionBar().setTitle(R.string.title_modifyaddress_activity_modifytext);
         } else {
 
-            getSupportActionBar().setTitle("添加收货地址");
+            getSupportActionBar().setTitle(R.string.title_modifyaddress_activity_text);
         }
 
 
@@ -128,15 +128,15 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
 
     @Override
     public void initEvent() {
-        ll_choice_address.setOnClickListener(this);
-        btn_save_address.setOnClickListener(this);
+        mLlChoiceAddress.setOnClickListener(this);
+        mBtnSaveAddress.setOnClickListener(this);
         mPickerFragment.setOnSelectorComplete(this);
     }
 
     @Override
     public void showLoadingDialog() {
         mMaterialDialog = new MaterialDialog.Builder(this)
-                .title("保存中")
+                .title(R.string.title_dialog_modifyaddress_save)
                 .content(R.string.please_wait_save)
                 .progress(true, 0)
                 .canceledOnTouchOutside(false)
@@ -171,16 +171,16 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
     public Address getAddressInfo() {
 
 
-        String name = edt_name.getText().toString().trim();
-        String phone = edt_phone.getText().toString().trim();
+        String name = mEdtName.getText().toString().trim();
+        String phone = mEdtPhone.getText().toString().trim();
         //所在地址区域
-        String address = tv_choice_address.getText().toString();
+        String address = mTvChoiceAddress.getText().toString();
         //详细地址
-        String addressDetail = edt_address_detail.getText().toString().trim();
+        String addressDetail = mEdtAddressDetail.getText().toString().trim();
 
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(address) || TextUtils.isEmpty(addressDetail)) {
 
-            App.showToast("请检查输入是否有为空的项");
+            App.showToast(getString(R.string.modify_activity_check_isempty));
 
 
             return null;
@@ -188,7 +188,7 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
 
         if (!RegexHelper.regexPhoneNum(phone)) {
 
-            App.showToast("请输入正确的电话号码");
+            App.showToast(getString(R.string.modify_activity_check_iscorrect_phone));
 
             return null;
         }
@@ -235,7 +235,7 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
 
                 break;
 
-            case R.id.ll_choice_address:
+            case R.id.linearlayout_choice_address:
 
 
                 mPickerFragment.show(getSupportFragmentManager());
@@ -267,7 +267,7 @@ public class ModifyAddressActivity extends BaseActivity implements IModifyAddres
      */
     @Override
     public void selectedComplete(String address, int id) {
-        tv_choice_address.setText(address);
+        mTvChoiceAddress.setText(address);
         mAddress.setAds_id(id);
         mPickerFragment.dismiss();
     }

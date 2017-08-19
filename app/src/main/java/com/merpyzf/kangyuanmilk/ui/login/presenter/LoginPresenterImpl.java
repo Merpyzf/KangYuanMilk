@@ -1,9 +1,10 @@
 package com.merpyzf.kangyuanmilk.ui.login.presenter;
 
+import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
@@ -69,7 +70,7 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
                                 if (result) {
 
-                                    mMvpView.loginSuccess("登录成功", username, pwd);
+                                    mMvpView.loginSuccess(context.getString(R.string.login_success), username, pwd);
                                     //登录成功之后，将用户信息存储在数据库中
                                     saveUserInfo(loginBean.getResponse().getUser());
 
@@ -79,7 +80,7 @@ public class LoginPresenterImpl extends BasePresenter<ILoginContract.ILoginView>
 
                                 } else {
 
-                                    mMvpView.loginError("用户名或密码错误");
+                                    mMvpView.loginError(context.getString(R.string.login_failed));
 
 
                                 }

@@ -15,20 +15,20 @@ import butterknife.BindView;
  * @author wangke
  */
 public class OrderFragment extends BaseLazyFragment {
-    int refreshCount = 0;
-    private String tag;
+    int mRefreshCount = 0;
+    private String mTag;
     @BindView(R.id.tv_tag_name)
     TextView tv_tag_name;
 
     public OrderFragment(String tag) {
         super(tag);
-        this.tag = tag;
+        this.mTag = tag;
     }
 
     @Override
     protected void initWidget(View view) {
 
-        tv_tag_name.setText(tag);
+        tv_tag_name.setText(mTag);
 
     }
 
@@ -42,7 +42,7 @@ public class OrderFragment extends BaseLazyFragment {
 
         if (b) {
 
-            LogHelper.i(tag + "==>刷新的次数: " + refreshCount++);
+            LogHelper.i(mTag + "==>刷新的次数: " + mRefreshCount++);
 
         }
 
@@ -54,6 +54,6 @@ public class OrderFragment extends BaseLazyFragment {
      */
     @Override
     protected void onFragmentFirstVisible() {
-        LogHelper.i(tag + "==>第一次被打开 ");
+        LogHelper.i(mTag + "==>第一次被打开 ");
     }
 }

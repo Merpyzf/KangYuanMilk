@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
-import com.merpyzf.kangyuanmilk.ui.base.User;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.model.LoginModelImpl;
 import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
@@ -18,7 +18,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
 /**
- * Created by Administrator on 2017-07-29.
+ * Created by wangke on 2017-07-29.
  */
 
 public class HomePresenterImpl extends BasePresenter<IHomeContract.IHomeView> implements IHomeContract.IHomePresenter {

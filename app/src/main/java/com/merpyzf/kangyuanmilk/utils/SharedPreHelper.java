@@ -14,7 +14,7 @@ import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 
 public final class SharedPreHelper {
 
-    private SharedPreHelper(){
+    private SharedPreHelper() {
         throw new UnsupportedOperationException("u can't instantiante me……");
     }
 
@@ -38,7 +38,7 @@ public final class SharedPreHelper {
     }
 
 
-    public String getString(String sp_name, String key, String default_value) {
+    public static String getString(String sp_name, String key, String default_value) {
 
         String value = context.getSharedPreferences(sp_name, Context.MODE_PRIVATE)
                 .getString(key, default_value);
@@ -129,5 +129,22 @@ public final class SharedPreHelper {
             this.password = password;
         }
     }
+
+
+    public static void saveUseActions() {
+
+        putString(Common.SP_GUIDE, "isFirstGuide", "no");
+
+    }
+
+    public static boolean isFirstUse() {
+
+        String firstUse = getString(Common.SP_GUIDE, "isFirstGuide", "yes");
+
+        return "yes".equals(firstUse);
+
+
+    }
+
 
 }

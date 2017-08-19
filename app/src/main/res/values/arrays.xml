@@ -22,4 +22,40 @@
 
     </string-array>
 
+
+    <integer-array name="guide_icos">
+
+        <item>@drawable/ic_logo_github</item>
+        <item>@drawable/ic_logo_csdn</item>
+        <item>@drawable/ic_logo_github</item>
+
+    </integer-array>
+
+
+
+    <string-array name="guide_titles">
+
+        <item>下起了雨</item>
+        <item>你感到冷吗</item>
+        <item>看见窗前迷人的黑色吗</item>
+        <item>忧伤都写在脸上</item>
+    </string-array>
+
+    <string-array name="guide_hints">
+
+        <item>下起了雨</item>
+        <item>你感到冷吗</item>
+        <item>看见窗前迷人的黑色吗</item>
+        <item>忧伤的人</item>
+    </string-array>
+
+
+    <integer-array name="landing_bg">
+
+        <item>@color/cyan_300</item>
+        <item>@color/blue_300</item>
+        <item>@color/colorAccent</item>
+        <item>@color/amber_a400</item>
+    </integer-array>
+
 </resources>

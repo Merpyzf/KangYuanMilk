@@ -209,7 +209,7 @@ public class ApplyPermissionFragment extends BottomSheetDialogFragment implement
 
 
     //检查所有的权限是否都已经授予
-    private Boolean checkHaveAllPermis(Context context) {
+    public Boolean checkHaveAllPermis(Context context) {
 
         initData();
 

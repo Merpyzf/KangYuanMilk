@@ -10,6 +10,9 @@ public class Common {
     //用户登录信息保存的sp文件的文件名
     public static final String SP_LOGININFO = "loginInfo";
 
+    //保存app的使用记录
+    public static final String SP_GUIDE = "guide";
+
     public static final String SP_DEFAULT_ADDRESS = "sp_default_ads";
 
     //网络请求返回的几种状态

@@ -27,21 +27,20 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
-import com.merpyzf.kangyuanmilk.common.widget.ApplyPermissionFragment;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.ui.home.view.AboutActivity;
-import com.merpyzf.kangyuanmilk.ui.home.view.CategoryPickerFragment;
 import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
-import com.merpyzf.kangyuanmilk.ui.user.bean.User;
+import com.merpyzf.kangyuanmilk.ui.home.view.AboutActivity;
 import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.CategoryPickerFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.IndentFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.SearchActivity;
 import com.merpyzf.kangyuanmilk.ui.login.LoginActivity;
 import com.merpyzf.kangyuanmilk.ui.order.OrderActivity;
+import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.HomePresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
@@ -90,6 +89,10 @@ public class HomeActivity extends BaseActivity
 
     }
 
+    public static void startAction(Context context) {
+
+        context.startActivity(new Intent(context, HomeActivity.class));
+    }
 
     @Override
     public int getLayoutId() {
@@ -99,9 +102,6 @@ public class HomeActivity extends BaseActivity
     @Override
     public void initWidget() {
 
-        //进入时首先进行权限判断
-        ApplyPermissionFragment applyPermissionFragment = new ApplyPermissionFragment();
-        applyPermissionFragment.haveAll(getSupportFragmentManager(), this);
         setSupportActionBar(mToolbar);
 
         //从 navigationView中获取控件的引用时候,需要通过getHeaderView拿到HeaderView布局的引用，这样才能继续下面的工作
@@ -166,6 +166,9 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void initData() {
+
+        //记录是否第一次打开该应用
+        SharedPreHelper.saveUseActions();
 
         //注册一个观察者
         UserInfoSubject.getInstance().attach(HomeActivity.class.getSimpleName(), this);

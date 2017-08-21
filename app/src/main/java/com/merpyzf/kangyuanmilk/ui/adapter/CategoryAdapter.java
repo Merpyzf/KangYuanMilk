@@ -48,9 +48,9 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
 
     class MyViewHolder extends ViewHolder<Meizi.ResultsBean> {
 
-        @BindView(R.id.iv_goods)
+        @BindView(R.id.iv_product)
         ImageView iv_goods;
-        @BindView(R.id.tv_info)
+        @BindView(R.id.tv_product_name)
         TextView tv_info;
 
         public MyViewHolder(View itemView) {
@@ -82,6 +82,7 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
 
             Glide.with(mContext)
                     .load(resultsBean.getUrl())
+//                    .placeholder(R.drawable.ic_avater_default)
                     .centerCrop()
                     .into(iv_goods);
 

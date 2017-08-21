@@ -33,7 +33,7 @@ import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.ui.home.view.AboutActivity;
-import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.CategoryPickerFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.IndentFragment;
@@ -179,7 +179,7 @@ public class HomeActivity extends BaseActivity
         mNavFragManager = new NavFragManager(this, R.id.coordLayout, getSupportFragmentManager());
         //初始化底部tab菜单所对应的Fragment
         mNavFragManager.add(R.id.action_home, new NavFragManager.Tab(HomeFragment.class, R.id.action_home))
-                .add(R.id.action_goods, new NavFragManager.Tab(CategoryFragment.class, R.id.action_goods))
+                .add(R.id.action_goods, new NavFragManager.Tab(GoodsFragment.class, R.id.action_goods))
                 .add(R.id.action_shopping_cart, new NavFragManager.Tab(IndentFragment.class, R.id.action_shopping_cart));
         //初始化首页
         mNavFragManager.initHome(R.id.action_home);
@@ -359,9 +359,9 @@ public class HomeActivity extends BaseActivity
 
                     Fragment tab = mNavFragManager.getCurrentTab();
 
-                    if (tab instanceof CategoryFragment) {
+                    if (tab instanceof GoodsFragment) {
 
-                        ((CategoryFragment) tab).currentCategoryId(id);
+                        ((GoodsFragment) tab).currentCategoryId(id);
 
                     }
 

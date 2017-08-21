@@ -1,5 +1,7 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
+import com.merpyzf.kangyuanmilk.ui.home.bean.QueryKey;
+import com.merpyzf.kangyuanmilk.ui.home.bean.SearchBean;
 import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
@@ -21,7 +23,7 @@ import retrofit2.http.Path;
 public interface KangYuanApi {
 
     String BASE_URL = "http://115.159.127.212:8080/KangYuanMilk/android/";
-//    String BASE_URL = "http://192.168.0.46:8089/android/";
+//    String BASE_URL = "http://192.168.0.54:8089/android/";
 
     /**
      * 注册前检查用户名是否重复
@@ -60,6 +62,7 @@ public interface KangYuanApi {
 
     /**
      * 获取用户头像
+     *
      * @param user
      * @return
      */
@@ -68,6 +71,7 @@ public interface KangYuanApi {
 
     /**
      * 获取当前用户的所有地址信息
+     *
      * @param user
      * @return
      */
@@ -76,6 +80,7 @@ public interface KangYuanApi {
 
     /**
      * 删除地址
+     *
      * @param address
      * @return
      */
@@ -84,6 +89,7 @@ public interface KangYuanApi {
 
     /**
      * 设置默认地址
+     *
      * @param address
      * @return
      */
@@ -92,6 +98,7 @@ public interface KangYuanApi {
 
     /**
      * 添加地址并设置成默认
+     *
      * @param address
      * @return
      */
@@ -99,13 +106,16 @@ public interface KangYuanApi {
     Observable<MessageBean> addAddress(@Body Address address);
 
 
-
     @POST("user/changeAddress")
     Observable<MessageBean> updateAddress(@Body Address address);
 
 
     @GET("http://gank.io/api/data/福利/10/{page}")
-    Observable<Meizi> getMeizi(@Path("page")String page);
+    Observable<Meizi> getMeizi(@Path("page") String page);
+
+
+    @POST("shop/search")
+    Observable<SearchBean> searchGoods(@Body QueryKey queryKey);
 
 
 }

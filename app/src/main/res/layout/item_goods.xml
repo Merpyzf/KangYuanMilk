@@ -17,17 +17,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.merpyzf.kangyuanmilk.common.widget.SquareView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_goods"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_avater_default" />
+                <ImageView
+                    android:id="@+id/iv_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_avater_default" />
+
+
+            </com.merpyzf.kangyuanmilk.common.widget.SquareView>
 
             <TextView
-                android:id="@+id/tv_info"
+                android:id="@+id/tv_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center" />
@@ -41,12 +47,14 @@
                 >
 
                 <TextView
+                    android:id="@+id/tv_spec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="规格: 500ml"
 
                     />
                 <TextView
+                    android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"

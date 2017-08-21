@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.bean.PageBean;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     protected boolean isAutoLoadStatus = true;
     private boolean isOpenAutoLoad = false;
     private View mItemView;
+    private PageBean mPageBean;
+
 
 
     public RecyclerAdapter(List<Data> mDatas, Context mContext, final RecyclerView mRecyclerView) {
@@ -34,6 +37,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
         this.mDatas = mDatas;
         this.mContext = mContext;
         this.mRecyclerView = mRecyclerView;
+        this.mPageBean = new PageBean();
     }
 
     @Override
@@ -277,9 +281,9 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
      */
     public void addDatas(List<Data> dataList) {
 
-        int start = dataList.size();
+        int start = mDatas.size();
         mDatas.addAll(dataList);
-        int end = dataList.size() - 1;
+        int end = mDatas.size() - 1;
         notifyItemRangeChanged(start, end);
 
     }
@@ -296,11 +300,19 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     }
 
+    /**
+     * 清空所有数据
+     */
+    public void clearData(){
+
+        mDatas.clear();
+        notifyDataSetChanged();
+    }
 
 
-
-
-
+    public PageBean getPageBean() {
+        return mPageBean;
+    }
 
     public View getItemView() {
 

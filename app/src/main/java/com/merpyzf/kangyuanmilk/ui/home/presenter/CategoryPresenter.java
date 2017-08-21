@@ -1,7 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.home.presenter;
 
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
-import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 import com.merpyzf.kangyuanmilk.ui.home.contract.ICategoryContract;
 import com.merpyzf.kangyuanmilk.ui.home.model.CategoryModelImpl;
@@ -28,7 +28,7 @@ public class CategoryPresenter extends BasePresenter<ICategoryContract.ICategory
     }
 
     @Override
-    public void getMeiziData(CategoryFragment context, String page) {
+    public void getMeiziData(GoodsFragment context, String page, boolean isRefresh) {
 
         mModel.getMeizi(page)
                 .compose(context.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -50,7 +50,15 @@ public class CategoryPresenter extends BasePresenter<ICategoryContract.ICategory
                         }
 
 
-                        mMvpView.getMeiziData(meizi);
+                        if (isRefresh) {
+                            //刷新时第一页返回的数据
+                            mMvpView.getMeiziData(meizi,true);
+
+                        }else {
+                            //正常加载
+                            mMvpView.getMeiziData(meizi,false);
+                        }
+
 
                     }
 

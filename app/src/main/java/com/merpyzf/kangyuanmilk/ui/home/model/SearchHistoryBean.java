@@ -10,7 +10,7 @@ import java.util.Date;
  * 封装历史搜索信息
  */
 @DatabaseTable(tableName = "tab_search")
-public class SearchBean {
+public class SearchHistoryBean {
 
     @DatabaseField(columnName = "_id", generatedId = true)
     private int id;
@@ -19,14 +19,14 @@ public class SearchBean {
     @DatabaseField(columnName = "search_date")
     private Date date;
 
-    public SearchBean(String searchInfo) {
+    public SearchHistoryBean(String searchInfo) {
 
         this.searchInfo = searchInfo;
         this.date = new Date(System.currentTimeMillis());
     }
 
 
-    public SearchBean() {
+    public SearchHistoryBean() {
     }
 
     public int getId() {

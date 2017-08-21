@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.utils.db.dao;
 
 import com.j256.ormlite.dao.Dao;
 import com.merpyzf.kangyuanmilk.common.App;
-import com.merpyzf.kangyuanmilk.ui.home.model.SearchBean;
+import com.merpyzf.kangyuanmilk.ui.home.model.SearchHistoryBean;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
 
@@ -15,14 +15,14 @@ import java.util.List;
 
 public class SearchDao {
 
-    private static Dao<SearchBean, Integer> mDao = null;
+    private static Dao<SearchHistoryBean, Integer> mDao = null;
     private static SearchDao mSearchDao = null;
 
 
     public SearchDao() {
 
         mDao = DBHelper.getSingleInstance(App.getContext())
-                .getDao(SearchBean.class);
+                .getDao(SearchHistoryBean.class);
     }
 
     public static SearchDao getInstance() {
@@ -50,14 +50,14 @@ public class SearchDao {
     /**
      * 保存历史查询记录到数据库
      *
-     * @param searchBean
+     * @param searchHistoryBean
      * @return num 影响的行数
      */
-    public int saveSearchData(SearchBean searchBean) {
+    public int saveSearchData(SearchHistoryBean searchHistoryBean) {
 
         int num = -1;
         try {
-            num = mDao.create(searchBean);
+            num = mDao.create(searchHistoryBean);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -69,14 +69,14 @@ public class SearchDao {
     /**
      * 删除一条历史查询的数据
      *
-     * @param searchBean
+     * @param searchHistoryBean
      */
-    public int delSearchData(SearchBean searchBean) {
+    public int delSearchData(SearchHistoryBean searchHistoryBean) {
 
         int num = -1;
 
         try {
-            num = mDao.delete(searchBean);
+            num = mDao.delete(searchHistoryBean);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,16 +92,16 @@ public class SearchDao {
      */
     public void delAllSearchData() {
 
-        List<SearchBean> searchBeanList = getAllhistorySearchData();
+        List<SearchHistoryBean> searchHistoryBeanList = getAllhistorySearchData();
 
-        LogHelper.i("长度==》"+searchBeanList.size());
+        LogHelper.i("长度==》"+ searchHistoryBeanList.size());
 
 
-        for(int i=0;i<searchBeanList.size();i++){
+        for(int i = 0; i< searchHistoryBeanList.size(); i++){
 
 
             try {
-                mDao.delete(searchBeanList.get(i));
+                mDao.delete(searchHistoryBeanList.get(i));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -117,10 +117,10 @@ public class SearchDao {
      *
      * @return
      */
-    public static List<SearchBean> getAllhistorySearchData() {
+    public static List<SearchHistoryBean> getAllhistorySearchData() {
 
         try {
-            List<SearchBean> searchDataList = mDao.queryBuilder().orderBy("search_date", false).query();
+            List<SearchHistoryBean> searchDataList = mDao.queryBuilder().orderBy("search_date", false).query();
             return searchDataList;
         } catch (SQLException e) {
             e.printStackTrace();

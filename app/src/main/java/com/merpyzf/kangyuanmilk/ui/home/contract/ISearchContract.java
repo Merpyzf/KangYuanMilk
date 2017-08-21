@@ -2,7 +2,9 @@ package com.merpyzf.kangyuanmilk.ui.home.contract;
 
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
-import com.merpyzf.kangyuanmilk.ui.home.model.SearchBean;
+import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
+import com.merpyzf.kangyuanmilk.ui.home.bean.QueryKey;
+import com.merpyzf.kangyuanmilk.ui.home.model.SearchHistoryBean;
 
 import java.util.List;
 
@@ -18,12 +20,14 @@ public class ISearchContract {
         /**
          * 展示搜索历史数据
          */
-        void showSearchHistory(List<SearchBean> searchBeanList);
+        void showSearchHistory(List<SearchHistoryBean> searchHistoryBeanList);
 
         /**
-         * 展示查询出来的乳品列表
+         * 搜索返回的数据
+         * @param dataList
          */
-        void showMilkDataList();
+        void searchGoodsDataList(List<Goods> dataList);
+
 
 
     }
@@ -34,9 +38,9 @@ public class ISearchContract {
         /**
          * 搜索乳品信息
          *
-         * @param info 搜索的关键字
+         * @param queryKey 搜索的关键字信息
          */
-        void searchMilkListData(String info);
+        void searchGoodsKey(QueryKey queryKey);
 
         /**
          * 获取搜索历史的数据
@@ -46,17 +50,18 @@ public class ISearchContract {
         /**
          * 保存搜索数据
          */
-        void saveSearchData(SearchBean searchBean);
+        void saveSearchData(SearchHistoryBean searchHistoryBean);
 
         /**
          * 删除搜索历史的数据
          */
-        void delSearchHistoryData(SearchBean searchBean);
+        void delSearchHistoryData(SearchHistoryBean searchHistoryBean);
 
         /**
          * 删除所有的搜索历史的数据
          */
         void delAllSearchHistoryData();
+
 
     }
 

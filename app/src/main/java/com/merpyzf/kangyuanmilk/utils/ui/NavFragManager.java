@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
 
-import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 /**
@@ -140,11 +140,11 @@ public class NavFragManager {
 
     private void resetCategoryRefresh(Fragment fragment) {
 
-        if (fragment instanceof CategoryFragment) {
+        if (fragment instanceof GoodsFragment) {
 
             LogHelper.i("yes");
 
-            ((CategoryFragment) fragment).resetRefresh();
+            ((GoodsFragment) fragment).resetRefresh();
 
 
         }

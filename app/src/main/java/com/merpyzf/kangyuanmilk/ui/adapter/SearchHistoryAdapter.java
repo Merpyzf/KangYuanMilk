@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.contract.ISearchContract;
-import com.merpyzf.kangyuanmilk.ui.home.model.SearchBean;
+import com.merpyzf.kangyuanmilk.ui.home.model.SearchHistoryBean;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class SearchHistoryAdapter extends RecyclerAdapter {
     private static final int VIEW_CLEAR = 0x00002;
     private ISearchContract.ISearchPresenter mPresenter;
 
-    public SearchHistoryAdapter(ISearchContract.ISearchPresenter presenter, List<SearchBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
+    public SearchHistoryAdapter(ISearchContract.ISearchPresenter presenter, List<SearchHistoryBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
         mPresenter = presenter;
 
@@ -81,7 +81,7 @@ public class SearchHistoryAdapter extends RecyclerAdapter {
     /**
      * 显示搜索历史的ViewHolder
      */
-    class SearchViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<SearchBean> {
+    class SearchViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<SearchHistoryBean> {
 
         @BindView(R.id.tv_info)
         TextView tv_info;
@@ -96,22 +96,22 @@ public class SearchHistoryAdapter extends RecyclerAdapter {
         }
 
         @Override
-        protected void onBindWidget(SearchBean searchBean) {
+        protected void onBindWidget(SearchHistoryBean searchHistoryBean) {
 
-            tv_info.setText(searchBean.getSearchInfo());
+            tv_info.setText(searchHistoryBean.getSearchInfo());
 
             iv_del.setOnClickListener(view -> {
 
-                mDatas.remove(searchBean);
+                mDatas.remove(searchHistoryBean);
                 //删除数据库中的这一条数据
-                mPresenter.delSearchHistoryData(searchBean);
+                mPresenter.delSearchHistoryData(searchHistoryBean);
 
                 if (mDatas.size() == 1) {
                     mDatas.clear();
 
                 }
                 notifyDataSetChanged();
-                LogHelper.i("当前点击==>" + searchBean.getSearchInfo());
+                LogHelper.i("当前点击==>" + searchHistoryBean.getSearchInfo());
 
             });
 
@@ -121,7 +121,7 @@ public class SearchHistoryAdapter extends RecyclerAdapter {
     /**
      * 清空搜索历史的ViewHolder
      */
-    class ClearViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<SearchBean> {
+    class ClearViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<SearchHistoryBean> {
 
         @BindView(R.id.btn_clear)
         Button btn_clear;
@@ -132,7 +132,7 @@ public class SearchHistoryAdapter extends RecyclerAdapter {
         }
 
         @Override
-        protected void onBindWidget(SearchBean searchBean) {
+        protected void onBindWidget(SearchHistoryBean searchHistoryBean) {
 
             btn_clear.setOnClickListener(view -> {
 

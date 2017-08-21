@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.home.contract;
 
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
-import com.merpyzf.kangyuanmilk.ui.home.view.CategoryFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 
 /**
@@ -13,7 +13,7 @@ public interface ICategoryContract {
 
     public interface ICategoryView extends IBaseView {
 
-        void getMeiziData(Meizi meizi);
+        void getMeiziData(Meizi meizi, boolean isRefresh);
 
     }
 
@@ -21,7 +21,7 @@ public interface ICategoryContract {
     public interface ICategoryPresenter extends IBasePresenter<ICategoryView> {
 
 
-        void getMeiziData(CategoryFragment context, String page);
+        void getMeiziData(GoodsFragment context, String page, boolean isRefresh);
 
     }
 

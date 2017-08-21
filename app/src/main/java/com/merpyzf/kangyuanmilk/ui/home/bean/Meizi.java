@@ -126,5 +126,28 @@ public class Meizi {
         public void setWho(String who) {
             this.who = who;
         }
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ResultsBean bean = (ResultsBean) o;
+
+            if (used != bean.used) return false;
+            if (_id != null ? !_id.equals(bean._id) : bean._id != null) return false;
+            if (createdAt != null ? !createdAt.equals(bean.createdAt) : bean.createdAt != null)
+                return false;
+            if (desc != null ? !desc.equals(bean.desc) : bean.desc != null) return false;
+            if (publishedAt != null ? !publishedAt.equals(bean.publishedAt) : bean.publishedAt != null)
+                return false;
+            if (source != null ? !source.equals(bean.source) : bean.source != null) return false;
+            if (type != null ? !type.equals(bean.type) : bean.type != null) return false;
+            if (url != null ? !url.equals(bean.url) : bean.url != null) return false;
+            return who != null ? who.equals(bean.who) : bean.who == null;
+        }
+
+
     }
 }

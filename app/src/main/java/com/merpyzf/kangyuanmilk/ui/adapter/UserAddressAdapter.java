@@ -59,6 +59,7 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
         TextView mTvCb;
         @BindView(R.id.linearlayout_cb)
         LinearLayout mLinearlayoutCb;
+        private int mSelectedPosition = -1;
 
 
         public ViewHolder(View itemView) {
@@ -85,6 +86,7 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
             mTvEdit.setOnClickListener(this);
             mTvRemove.setOnClickListener(this);
         }
+
 
         @Override
         public void onClick(View view) {
@@ -113,27 +115,47 @@ public class UserAddressAdapter extends RecyclerAdapter<Address> {
 
                 case R.id.linearlayout_cb:
 
-
+                    //获取默认选中的那个item对应的position
                     for (int i = 0; i < mDatas.size(); i++) {
-
-                        mDatas.get(i).setDefault(false);
+                        if (mDatas.get(i).isDefault()) {
+                            mSelectedPosition = i;
+                        }
                     }
 
-                    data.setDefault(true);
+
+                    //获取当前选中的position的下标
+                    int position = getPosition();
+
+                    //局部item刷新
+                    if (mSelectedPosition != position) {
+
+                        //列表中有被选中的默认地址
+                        if (mSelectedPosition != -1) {
+
+                            mDatas.get(mSelectedPosition).setDefault(false);
+                            notifyItemChanged(mSelectedPosition);
+
+                        }
+
+                        mSelectedPosition = position;
+                        mDatas.get(mSelectedPosition).setDefault(true);
+                        notifyItemChanged(mSelectedPosition);
+
+                    }
+
+
                     if (mOnItemWidgetClickListener != null) {
 
                         mOnItemWidgetClickListener.onCheckedChanged(data);
 
                     }
-                    mRecyclerView.post(() -> notifyDataSetChanged());
+
 
                     break;
             }
 
 
         }
-
-
     }
 
     public void setmOnItemWidgetClickListener(IUserAddressCallBack.onItemWidgetClickListener mOnItemWidgetClickListener) {

@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.home.presenter;
 
+import com.merpyzf.kangyuanmilk.common.widget.TipView;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.home.bean.QueryKey;
 import com.merpyzf.kangyuanmilk.ui.home.bean.SearchBean;
@@ -8,7 +9,10 @@ import com.merpyzf.kangyuanmilk.ui.home.model.ISearchMode;
 import com.merpyzf.kangyuanmilk.ui.home.model.SearchHistoryBean;
 import com.merpyzf.kangyuanmilk.ui.home.model.SearchModelImpl;
 import com.merpyzf.kangyuanmilk.ui.home.view.SearchActivity;
+import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
+import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.NetworkHelper;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.List;
@@ -25,14 +29,14 @@ import io.reactivex.schedulers.Schedulers;
 public class SearchPresenterImpl extends BasePresenter<ISearchContract.ISearchView> implements ISearchContract.ISearchPresenter {
 
     private ISearchMode mModel;
+    private TipView mTipView;
     private SearchActivity mContext;
 
-    public SearchPresenterImpl(SearchActivity context) {
+    public SearchPresenterImpl(SearchActivity context, TipView tipView) {
         mModel = new SearchModelImpl();
+        this.mTipView = tipView;
         this.mContext = context;
-
     }
-
 
     /**
      * 查询乳品的列表
@@ -42,37 +46,64 @@ public class SearchPresenterImpl extends BasePresenter<ISearchContract.ISearchVi
     @Override
     public void searchGoodsKey(QueryKey queryKey) {
 
-        mModel.searchGoods(queryKey)
-                .compose(mContext.bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<SearchBean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
+        if (NetworkHelper.isAvailableByPing()) {
 
-                    @Override
-                    public void onNext(SearchBean searchBean) {
+            mTipView.reset();
+            mMvpView.showLoadingDialog();
+            mModel.searchGoods(queryKey)
+                    .compose(mContext.bindUntilEvent(ActivityEvent.DESTROY))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<SearchBean>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                        LogHelper.i("查询的长度:"+searchBean.getResponse().getDataList().size());
-                        mMvpView.searchGoodsDataList(searchBean.getResponse().getDataList());
+                        }
+                        @Override
+                        public void onNext(SearchBean searchBean) {
+
+                            new ErrorHandle(this, searchBean.getStatus()) {
+                                @Override
+                                protected void deal() {
+
+                                    if (searchBean.getResponse().getDataList().size() > 0) {
+
+                                        LogHelper.i("查询的长度:" + searchBean.getResponse().getDataList().size());
+                                        mMvpView.searchGoodsDataList(searchBean.getResponse().getDataList());
+
+                                    } else {
+
+                                        mTipView.setEmptyTip("服务器空空如也……");
+
+                                    }
+
+                                }
+                            };
 
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                    }
+                            ErrorHandleHelper.handle(e, mMvpView);
 
-                    @Override
-                    public void onComplete() {
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onComplete() {
 
+                            mMvpView.cancelLoadingDialog();
 
+                        }
+                    });
+
+        } else {
+
+            mTipView.setErrorTip("网络不可用，请检查网络！");
+
+        }
     }
 
     /**
@@ -87,11 +118,8 @@ public class SearchPresenterImpl extends BasePresenter<ISearchContract.ISearchVi
 
             searchHistoryData.add(new SearchHistoryBean(" "));
 
-            LogHelper.i("从数据库中查询到的条目个数==>"+searchHistoryData.size());
             mMvpView.showSearchHistory(searchHistoryData);
         }
-
-
     }
 
     /**
@@ -103,12 +131,7 @@ public class SearchPresenterImpl extends BasePresenter<ISearchContract.ISearchVi
     public void saveSearchData(SearchHistoryBean searchHistoryBean) {
 
         int num = mModel.saveSearchData(searchHistoryBean);
-
-        LogHelper.i("影响的行数==>" + num);
         List<SearchHistoryBean> searchHistoryData = mModel.getSearchHistoryData();
-
-        LogHelper.i("wk", "记录的条数==》" + searchHistoryData.size());
-
 
     }
 
@@ -125,8 +148,6 @@ public class SearchPresenterImpl extends BasePresenter<ISearchContract.ISearchVi
         mModel.delAllSearchData();
 
     }
-
-
 
 
 }

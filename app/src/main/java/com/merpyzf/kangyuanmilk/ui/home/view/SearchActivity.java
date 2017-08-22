@@ -20,6 +20,8 @@ import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.bean.PageBean;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
+import com.merpyzf.kangyuanmilk.common.widget.StaggeredGridLayoutManagerWrapper;
+import com.merpyzf.kangyuanmilk.common.widget.TipView;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 import com.merpyzf.kangyuanmilk.ui.adapter.SearchGoodsAdapter;
 import com.merpyzf.kangyuanmilk.ui.adapter.SearchHistoryAdapter;
@@ -28,6 +30,7 @@ import com.merpyzf.kangyuanmilk.ui.home.bean.QueryKey;
 import com.merpyzf.kangyuanmilk.ui.home.contract.ISearchContract;
 import com.merpyzf.kangyuanmilk.ui.home.model.SearchHistoryBean;
 import com.merpyzf.kangyuanmilk.ui.home.presenter.SearchPresenterImpl;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.SearchViewHelper;
 
 import java.util.ArrayList;
@@ -62,12 +65,12 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefresh;
 
-/*    @BindView(R.id.tipView)
-    TipView mTipView;*/
+    @BindView(R.id.tipView)
+    TipView mTipView;
 
     //显示搜索结果
     @BindView(R.id.xRecycler)
-    RecyclerView mXRecyclerView;
+    RecyclerView mGoodsRecyclerView;
 
     private ISearchContract.ISearchPresenter mPresenter;
     private SearchHistoryAdapter mSearchHistoryAdapter;
@@ -88,20 +91,17 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        mTipView.bindView(mSwipeRefresh);
+        mTipView.bindView(mSwipeRefresh);
 
         mCardView.post(() -> SearchViewHelper.excuteAnimator(mCardView));
 
         //显示搜索历史的RecyclerView
         mRvSearchHistory.setLayoutManager(new LinearLayoutManager(this));
 
-
         //显示搜索结果的RecyclerView
-        mXRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-
-        mSearchGoodsAdapter = new SearchGoodsAdapter(mOldGoodsList, this, mXRecyclerView);
-//        mXRecyclerView.setPullRefreshEnabled(true);
-        mXRecyclerView.setAdapter(mSearchGoodsAdapter);
+        mGoodsRecyclerView.setLayoutManager(new StaggeredGridLayoutManagerWrapper(2, StaggeredGridLayoutManager.VERTICAL));
+        mSearchGoodsAdapter = new SearchGoodsAdapter(mOldGoodsList, this, mGoodsRecyclerView);
+        mGoodsRecyclerView.setAdapter(mSearchGoodsAdapter);
 
 
     }
@@ -110,7 +110,7 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     protected void initData() {
         super.initData();
 
-        mPresenter = new SearchPresenterImpl(this);
+        mPresenter = new SearchPresenterImpl(this,mTipView);
         mPresenter.attachView(this);
         //获取历史关键字查询的数据
         mPresenter.getSearchHistoryData();
@@ -135,13 +135,24 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
                 key.setKey(pageBean.getRemark());
                 key.setNum(pageBean.getNum());
                 key.setPage(pageBean.getPage());
-
                 mPresenter.searchGoodsKey(key);
 
             }
         });
 
+        mSearchGoodsAdapter.setOnItemClickListener(new RecyclerAdapter.ItemClickListener<Goods>() {
+            @Override
+            public void onItemClick(ViewHolder viewHolder, Goods goods, int position) {
+                // TODO: 2017-08-22 点击跳转到商品详情页面 +
+                LogHelper.i("商品名:"+goods.getId());
 
+            }
+
+            @Override
+            public boolean onItemLongClick(ViewHolder viewHolder, Goods goods, int position) {
+                return false;
+            }
+        });
     }
 
 
@@ -202,18 +213,23 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
 
     }
 
-
+    /**
+     * 显示查询的历史记录
+     * @param searchHistoryBeanList
+     */
     @Override
     public void showSearchHistory(List<SearchHistoryBean> searchHistoryBeanList) {
-
 
         mSearchHistoryAdapter = new SearchHistoryAdapter(mPresenter, searchHistoryBeanList, this, mRvSearchHistory);
         mRvSearchHistory.setAdapter(mSearchHistoryAdapter);
         mSearchHistoryAdapter.setOnItemClickListener(this);
 
-
     }
 
+    /**
+     * 商品查询结果数据返回
+     * @param dataList
+     */
     @Override
     public void searchGoodsDataList(List<Goods> dataList) {
 
@@ -236,18 +252,28 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     }
 
 
+
+
     @Override
     public void showLoadingDialog() {
+        //加载中
+        mSwipeRefresh.setRefreshing(true);
 
     }
 
     @Override
     public void cancelLoadingDialog() {
 
+        mSwipeRefresh.setRefreshing(false);
+
     }
 
     @Override
     public void showErrorMsg(String errorMsg) {
+
+        cancelLoadingDialog();
+        App.showToast(errorMsg);
+
 
     }
 

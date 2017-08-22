@@ -28,8 +28,6 @@ public class ISearchContract {
          */
         void searchGoodsDataList(List<Goods> dataList);
 
-
-
     }
 
 

@@ -18,7 +18,7 @@ public class CategoryPickerPresenter extends BasePresenter<ICategoryPickerContra
         ArrayList<Category> categoryList = new ArrayList<>();
 
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 2; i++) {
 
 
             categoryList.add(new Category("分类" + i, i));

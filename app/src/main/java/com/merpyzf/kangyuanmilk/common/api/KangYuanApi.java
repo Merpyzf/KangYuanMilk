@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
+import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.QueryKey;
 import com.merpyzf.kangyuanmilk.ui.home.bean.SearchBean;
 import com.merpyzf.kangyuanmilk.ui.user.bean.User;
@@ -105,7 +106,11 @@ public interface KangYuanApi {
     @POST("user/setAddress")
     Observable<MessageBean> addAddress(@Body Address address);
 
-
+    /**
+     * 更新地址
+      * @param address
+     * @return
+     */
     @POST("user/changeAddress")
     Observable<MessageBean> updateAddress(@Body Address address);
 
@@ -113,9 +118,17 @@ public interface KangYuanApi {
     @GET("http://gank.io/api/data/福利/10/{page}")
     Observable<Meizi> getMeizi(@Path("page") String page);
 
-
+    /**
+     * 商品搜索
+     * @param queryKey
+     * @return
+     */
     @POST("shop/search")
     Observable<SearchBean> searchGoods(@Body QueryKey queryKey);
+
+    @POST("shop/getIndex")
+    Observable<HomeBean> getHomePageData();
+
 
 
 }

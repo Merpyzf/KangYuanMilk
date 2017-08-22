@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.merpyzf.kangyuanmilk.R;
-import com.merpyzf.kangyuanmilk.common.data.Response;
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
+import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.GliderImageLoader;
 import com.youth.banner.Banner;
@@ -31,14 +32,14 @@ import butterknife.BindView;
  * Created by wangke on 2017-08-10.
  */
 
-public class HomeAdapter extends RecyclerAdapter<Response.Data> {
+public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultListBean> {
 
     private static final int HEADER_BANNER = 0;
     private static final int NEW_ACTIVITY = 1;
     private static final int HOT_PRODUCT = 2;
     private static final int NEW_PRODUCT = 3;
 
-    public HomeAdapter(List<Response.Data> mDatas, Context mContext, RecyclerView mRecyclerView) {
+    public HomeAdapter(List<HomeBean.ResponseBean.ResultListBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
     }
 
@@ -105,7 +106,7 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
     /**
      * HeaderBanner
      */
-    class HeaderViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
+    class HeaderViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<HomeBean.ResponseBean.ResultListBean> {
 
         @BindView(R.id.banner)
         Banner mBanner;
@@ -115,7 +116,7 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
         }
 
         @Override
-        protected void onBindWidget(Response.Data data) {
+        protected void onBindWidget(HomeBean.ResponseBean.ResultListBean data) {
 
 
             List<String> imageList = new ArrayList<>();
@@ -153,7 +154,7 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
     /**
      * 最新活动
      */
-    class ActiveViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
+    class ActiveViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<HomeBean.ResponseBean.ResultListBean> {
 
         @BindView(R.id.banner_new_active)
         Banner mBanner;
@@ -166,7 +167,9 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
         }
 
         @Override
-        protected void onBindWidget(Response.Data data) {
+        protected void onBindWidget(HomeBean.ResponseBean.ResultListBean data) {
+
+            tv_title.setText(data.getModuleTitle());
 
             List<String> imageList = new ArrayList<>();
 
@@ -185,7 +188,7 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
     /**
      * 热销产品
      */
-    class HotSellViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
+    class HotSellViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<HomeBean.ResponseBean.ResultListBean> {
 
         @BindView(R.id.recyclerView)
         RecyclerView recyclerView;
@@ -203,8 +206,8 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
         }
 
         @Override
-        protected void onBindWidget(Response.Data data) {
-
+        protected void onBindWidget(HomeBean.ResponseBean.ResultListBean data) {
+            tv_title.setText(data.getModuleTitle());
             HotSellAdapter adapter = new HotSellAdapter(data.getDataInfoList(), mContext, recyclerView);
             recyclerView.setAdapter(adapter);
         }
@@ -213,7 +216,7 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
     /**
      * 新品尝鲜
      */
-    class NewProductViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.Data> {
+    class NewProductViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<HomeBean.ResponseBean.ResultListBean> {
 
         @BindView(R.id.iv_large)
         ImageView iv_large;
@@ -230,9 +233,10 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
         }
 
         @Override
-        protected void onBindWidget(Response.Data data) {
+        protected void onBindWidget(HomeBean.ResponseBean.ResultListBean data) {
 
-            List<Response.DataInfo> dataInfoList = data.getDataInfoList();
+            tv_title.setText(data.getModuleTitle());
+            List<HomeBean.ResponseBean.ResultListBean.DataInfoListBean> dataInfoList = data.getDataInfoList();
 
             loadImage(iv_large, dataInfoList.get(0).getImageview());
             loadImage(iv_small1, dataInfoList.get(1).getImageview());
@@ -243,10 +247,11 @@ public class HomeAdapter extends RecyclerAdapter<Response.Data> {
         private void loadImage(ImageView iv_large, String imageview) {
 
             Glide.with(mContext)
-                    .load(imageview)
+                    .load(Common.OUTSIDE_CHAIN+imageview)
                     .centerCrop()
                     .placeholder(R.drawable.ic_avater_default)
                     .into(iv_large);
+
         }
 
     }

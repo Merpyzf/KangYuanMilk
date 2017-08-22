@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.merpyzf.kangyuanmilk.R;
-import com.merpyzf.kangyuanmilk.common.data.Response;
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
+import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ import butterknife.BindView;
  * Created by Administrator on 2017-08-11.
  */
 
-public class HotSellAdapter extends RecyclerAdapter<Response.DataInfo> {
+public class HotSellAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultListBean.DataInfoListBean> {
 
-    public HotSellAdapter(List<Response.DataInfo> mDatas, Context mContext, RecyclerView mRecyclerView) {
+    public HotSellAdapter(List<HomeBean.ResponseBean.ResultListBean.DataInfoListBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
     }
 
@@ -39,7 +40,7 @@ public class HotSellAdapter extends RecyclerAdapter<Response.DataInfo> {
     }
 
 
-    class ViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Response.DataInfo> {
+    class ViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<HomeBean.ResponseBean.ResultListBean.DataInfoListBean> {
 
         @BindView(R.id.iv_product)
         ImageView iv_produuct;
@@ -56,18 +57,18 @@ public class HotSellAdapter extends RecyclerAdapter<Response.DataInfo> {
         }
 
         @Override
-        protected void onBindWidget(Response.DataInfo dataInfo) {
+        protected void onBindWidget(HomeBean.ResponseBean.ResultListBean.DataInfoListBean dataInfo) {
 
             Glide.with(mContext)
-                    .load(dataInfo.getImageview())
+                    .load(Common.OUTSIDE_CHAIN+dataInfo.getImageview())
                     .centerCrop()
                     .placeholder(R.drawable.ic_avater_default)
                     .into(iv_produuct);
 
 
             tv_product_name.setText(dataInfo.getTitle());
-            tv_spec.setText(dataInfo.getSpec());
-            tv_price.setText("￥ " + dataInfo.getPrice());
+            tv_spec.setText("规格: " + dataInfo.getSpec());
+            tv_price.setText("售价: " + dataInfo.getPrice() + " 元");
         }
     }
 

@@ -1,16 +1,21 @@
 package com.merpyzf.kangyuanmilk.ui.home.view;
 
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.google.gson.Gson;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.AdapterDiffCallback;
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseFragment;
-import com.merpyzf.kangyuanmilk.common.data.Response;
 import com.merpyzf.kangyuanmilk.ui.adapter.HomeAdapter;
-import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
+import com.merpyzf.kangyuanmilk.ui.home.contract.IHomeCantract;
+import com.merpyzf.kangyuanmilk.ui.home.presenter.HomePresenterImpl;
+import com.yalantis.phoenix.PullToRefreshView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +27,19 @@ import butterknife.BindView;
  *
  * @author wangke
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeView {
 
-    private List<String> mDatas = new ArrayList<>();
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.pull_to_refresh)
+    PullToRefreshView mPullToRefresh;
+    private List<HomeBean.ResponseBean.ResultListBean> oldDataList = new ArrayList<>();
+
+
     private LinearLayoutManager mLayoutManager;
+    private IHomeCantract.IHomePresenter mPresenter;
+    private HomeAdapter mHomeAdapter;
+    private MaterialDialog mLoginDialog;
 
     @Override
     protected int getContentLayoutId() {
@@ -39,184 +51,105 @@ public class HomeFragment extends BaseFragment {
 
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mHomeAdapter = new HomeAdapter(oldDataList, getContext(), mRecyclerView);
+        mRecyclerView.setAdapter(mHomeAdapter);
+
+    }
 
 
+    @Override
+    protected void initData() {
+
+        mPresenter = new HomePresenterImpl(this);
+        mPresenter.attachView(this);
+        mPresenter.getHomePageData(false);
 
     }
 
     @Override
     protected void initEvent() {
+        //刷新事件
+        mPullToRefresh.setOnRefreshListener(() -> {
 
+            mPresenter.getHomePageData(true);
+
+        });
     }
 
+
+    /**
+     * 等待的dialog弹窗
+     */
     @Override
-    protected void initData() {
-        mDatas.clear();
-        mDatas.add("haha");
+    public void showLoadingDialog() {
 
+        mLoginDialog = new MaterialDialog.Builder(getActivity())
+                .title("加载中")
+                .content("Please wait...")
+                .progress(true, 0)
+                .canceledOnTouchOutside(false)
+                .show();
 
-        Response response = new Response();
-
-        List dataList = new ArrayList<Response.Data>();
-
-
-        Response.Data dataMilk = new Response.Data();
-        List<Response.DataInfo> dataInfoList = new ArrayList<>();
-
-
-        //顶部Banner
-        Response.Data newHeader = new Response.Data();
-        List<Response.DataInfo> newHeaderList = new ArrayList<>();
-
-        Response.DataInfo HeaderInfo = new Response.DataInfo();
-        HeaderInfo.setId(1);
-        HeaderInfo.setTitle("标题1");
-        HeaderInfo.setImageview("http://otdmrup4y.bkt.clouddn.com/1.png");
-        newHeaderList.add(HeaderInfo);
-
-        Response.DataInfo HeaderInfo1 = new Response.DataInfo();
-        HeaderInfo1.setId(2);
-        HeaderInfo1.setTitle("标题2");
-        HeaderInfo1.setImageview("http://otdmrup4y.bkt.clouddn.com/10.png");
-        newHeaderList.add(HeaderInfo1);
-
-
-        Response.DataInfo HeaderInfo2 = new Response.DataInfo();
-        HeaderInfo2.setId(3);
-        HeaderInfo2.setTitle("标题3");
-        HeaderInfo2.setImageview("http://otdmrup4y.bkt.clouddn.com/11.png");
-        newHeaderList.add(HeaderInfo2);
-
-        newHeader.setDataInfoList(newHeaderList);
-        newHeader.setType("HEADER_BANNER");
-
-
-
-        //最新活动
-        Response.Data newActivity = new Response.Data();
-        List<Response.DataInfo> newActivityList = new ArrayList<>();
-
-        Response.DataInfo newActivityInfo = new Response.DataInfo();
-        newActivityInfo.setId(1);
-        newActivityInfo.setTitle("最新活动1");
-        newActivityInfo.setImageview("http://otdmrup4y.bkt.clouddn.com/12.jpg");
-        newActivityList.add(newActivityInfo);
-
-        Response.DataInfo newActivityInfo1 = new Response.DataInfo();
-        newActivityInfo1.setId(2);
-        newActivityInfo1.setTitle("最新活动2");
-        newActivityInfo1.setImageview("http://otdmrup4y.bkt.clouddn.com/13.png");
-        newActivityList.add(newActivityInfo1);
-
-
-        Response.DataInfo newActivityInfo2 = new Response.DataInfo();
-        newActivityInfo2.setId(3);
-        newActivityInfo2.setTitle("最新活动3");
-        newActivityInfo2.setImageview("http://otdmrup4y.bkt.clouddn.com/2.jpg");
-        newActivityList.add(newActivityInfo2);
-
-        newActivity.setDataInfoList(newActivityList);
-        newActivity.setType("NEW_ACTIVITY");
-
-
-
-        Response.DataInfo dataInfo1 = new Response.DataInfo();
-        dataInfo1.setId(1);
-        dataInfo1.setTitle("牛奶1");
-        dataInfo1.setImageview("http://otdmrup4y.bkt.clouddn.com/4.jpg");
-        dataInfo1.setPrice("5");
-        dataInfo1.setSpec("500ml");
-        dataInfoList.add(dataInfo1);
-
-        Response.DataInfo dataInfo2 = new Response.DataInfo();
-        dataInfo2.setId(1);
-        dataInfo2.setTitle("牛奶2");
-        dataInfo2.setImageview("http://otdmrup4y.bkt.clouddn.com/5.jpg");
-        dataInfo2.setPrice("4");
-        dataInfo2.setSpec("500ml");
-        dataInfoList.add(dataInfo2);
-
-
-        Response.DataInfo dataInfo3 = new Response.DataInfo();
-        dataInfo3.setId(1);
-        dataInfo3.setTitle("牛奶3");
-        dataInfo3.setImageview("http://otdmrup4y.bkt.clouddn.com/6.jpg");
-        dataInfo3.setPrice("4");
-        dataInfo3.setSpec("500ml");
-        dataInfoList.add(dataInfo3);
-
-
-        Response.DataInfo dataInfo4 = new Response.DataInfo();
-        dataInfo4.setId(4);
-        dataInfo4.setTitle("牛奶4");
-        dataInfo4.setImageview("http://otdmrup4y.bkt.clouddn.com/7.png");
-        dataInfo4.setPrice("4");
-        dataInfo4.setSpec("500ml");
-        dataInfoList.add(dataInfo4);
-
-        dataMilk.setDataInfoList(dataInfoList);
-        dataMilk.setType("HOT_PRODUCT");
-
-
-
-        //新品
-        Response.Data dataNewProduct = new Response.Data();
-        List<Response.DataInfo> dataInfoListNew = new ArrayList<>();
-
-        Response.DataInfo dataInfoNew1 = new Response.DataInfo();
-        dataInfoNew1.setId(1);
-        dataInfoNew1.setTitle("新品牛奶1");
-        dataInfoNew1.setImageview("http://otdmrup4y.bkt.clouddn.com/8.jpg");
-        dataInfoNew1.setPrice("5");
-        dataInfoNew1.setSpec("500ml");
-        dataInfoListNew.add(dataInfo1);
-
-        Response.DataInfo dataInfoNew2 = new Response.DataInfo();
-        dataInfoNew2.setId(1);
-        dataInfoNew2.setTitle("新品牛奶2");
-        dataInfoNew2.setImageview("http://otdmrup4y.bkt.clouddn.com/9.png");
-        dataInfoNew2.setPrice("4");
-        dataInfoNew2.setSpec("500ml");
-        dataInfoListNew.add(dataInfo2);
-
-
-        Response.DataInfo dataInfoNew3 = new Response.DataInfo();
-        dataInfoNew3.setId(1);
-        dataInfoNew3.setTitle("新品牛奶3");
-        dataInfoNew3.setImageview("http://otdmrup4y.bkt.clouddn.com/1.png");
-        dataInfoNew3.setPrice("4");
-        dataInfoNew3.setSpec("500ml");
-        dataInfoListNew.add(dataInfo3);
-
-        dataNewProduct.setDataInfoList(dataInfoListNew);
-        dataNewProduct.setType("NEW_PRODUCT");
-
-        dataList.add(newHeader);
-        dataList.add(newActivity);
-        dataList.add(dataMilk);
-        dataList.add(dataNewProduct);
-
-
-
-        response.setData(dataList);
-
-        mRecyclerView.setAdapter(new HomeAdapter(response.getData(), getContext(), mRecyclerView));
-        mLayoutManager.scrollToPosition(0);
-
-        Gson gson = new Gson();
-
-        String json = gson.toJson(response);
-
-        LogHelper.i("json====> " + json);
 
     }
 
+    /**
+     * 隐藏dialog
+     */
+    @Override
+    public void cancelLoadingDialog() {
 
+        if (mLoginDialog != null) {
+            mLoginDialog.dismiss();
+        }
+    }
+
+    /**
+     * 显示错误信息
+     *
+     * @param errorMsg
+     */
+    @Override
+    public void showErrorMsg(String errorMsg) {
+
+        cancelLoadingDialog();
+        App.showToast(errorMsg);
+
+    }
+
+    /**
+     * 显示主页面
+     *
+     * @param response
+     */
+    @Override
+    public void showHomePage(HomeBean.ResponseBean response) {
+
+        //初次加载
+        if (oldDataList.size() == 0) {
+            oldDataList.addAll(response.getResultList());
+            mLayoutManager.scrollToPosition(0);
+            mHomeAdapter.notifyDataSetChanged();
+        } else {
+            //刷新
+
+            AdapterDiffCallback<HomeBean.ResponseBean.ResultListBean> diffCallback = new AdapterDiffCallback<>(oldDataList, response.getResultList());
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+            mHomeAdapter.setDatas(response.getResultList());
+            diffResult.dispatchUpdatesTo(mHomeAdapter);
+            mPullToRefresh.setRefreshing(false);
+
+        }
+
+    }
+
+    /**
+     * Fragemnt的View销毁时回调
+     */
     @Override
     public void onDestroyView() {
-        LogHelper.i("onDestoryView==>");
+        mPresenter.detachView();
         super.onDestroyView();
-
-
     }
+
 }

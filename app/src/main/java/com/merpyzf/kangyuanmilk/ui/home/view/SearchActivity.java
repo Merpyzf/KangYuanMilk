@@ -242,7 +242,7 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
 
             //处于刷新状态
             AdapterDiffCallback<Goods> diffCallback = new AdapterDiffCallback<>(mOldGoodsList, dataList);
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback,true);
             diffResult.dispatchUpdatesTo(mSearchGoodsAdapter);
             mSearchGoodsAdapter.setDatas(dataList);
             mSwipeRefresh.setRefreshing(false);

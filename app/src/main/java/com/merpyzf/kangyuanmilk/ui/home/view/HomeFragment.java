@@ -134,7 +134,7 @@ public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeVie
             //刷新
 
             AdapterDiffCallback<HomeBean.ResponseBean.ResultListBean> diffCallback = new AdapterDiffCallback<>(oldDataList, response.getResultList());
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback,true);
             mHomeAdapter.setDatas(response.getResultList());
             diffResult.dispatchUpdatesTo(mHomeAdapter);
             mPullToRefresh.setRefreshing(false);

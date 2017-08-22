@@ -185,7 +185,7 @@ public class UserAddressActivity extends BaseActivity implements IUserAddressCon
                     AdapterDiffCallback<Address> diffCallback = new AdapterDiffCallback<>(mOldList, addresses);
 
                     //如果List的集合的数据量较大的时候，需要放入线程中进行计算,然后在主线程中进行UI的更新
-                    DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+                    DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback, true);
                     diffResult.dispatchUpdatesTo(mAdapter);
                     mAdapter.setDatas(addresses);
                     //刷新完毕

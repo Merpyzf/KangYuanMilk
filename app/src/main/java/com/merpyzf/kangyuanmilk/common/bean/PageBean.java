@@ -16,6 +16,16 @@ public class PageBean {
     //每一页对应展示的个数
     private int num = 10;
 
+    private String remark;
+
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public boolean isRefresh() {
         return isRefresh;

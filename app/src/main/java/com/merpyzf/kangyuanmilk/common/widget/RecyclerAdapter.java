@@ -346,7 +346,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     /**
      * 设置预先加载的事件监听(成功加载之后调用setAutoLoadCompleted方法将标记位重置为true)
      */
-    interface AutoLoadListener {
+    public interface AutoLoadListener {
         void startLoading(int position);
     }
 

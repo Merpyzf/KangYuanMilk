@@ -17,9 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.merpyzf.kangyuanmilk.common.widget.SquareView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/iv_product"
@@ -29,8 +26,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_avater_default" />
 
-
-            </com.merpyzf.kangyuanmilk.common.widget.SquareView>
 
             <TextView
                 android:id="@+id/tv_product_name"

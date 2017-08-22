@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.home.view;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.AdapterDiffCallback;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.bean.PageBean;
@@ -70,7 +72,8 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     private ISearchContract.ISearchPresenter mPresenter;
     private SearchHistoryAdapter mSearchHistoryAdapter;
 
-    private List<Goods> mGoodsList = new ArrayList<>();
+    private List<Goods> mOldGoodsList = new ArrayList<>();
+
     private SearchGoodsAdapter mSearchGoodsAdapter;
 
 
@@ -96,7 +99,7 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
         //显示搜索结果的RecyclerView
         mXRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        mSearchGoodsAdapter = new SearchGoodsAdapter(mGoodsList, this, mXRecyclerView);
+        mSearchGoodsAdapter = new SearchGoodsAdapter(mOldGoodsList, this, mXRecyclerView);
 //        mXRecyclerView.setPullRefreshEnabled(true);
         mXRecyclerView.setAdapter(mSearchGoodsAdapter);
 
@@ -120,6 +123,24 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
         mIvClose.setOnClickListener(this);
         mIvOpen.setOnClickListener(this);
         mTvSearch.setOnClickListener(this);
+
+
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                PageBean pageBean = mSearchGoodsAdapter.getPageBean();
+                QueryKey key = new QueryKey();
+
+                key.setKey(pageBean.getRemark());
+                key.setNum(pageBean.getNum());
+                key.setPage(pageBean.getPage());
+
+                mPresenter.searchGoodsKey(key);
+
+            }
+        });
+
 
     }
 
@@ -152,20 +173,27 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
                     return;
                 }
 
+                if (mOldGoodsList.size() > 0) {
+                    mOldGoodsList.clear();
+                    mSearchGoodsAdapter.notifyDataSetChanged();
+                }
 
                 PageBean pageBean = mSearchGoodsAdapter.getPageBean();
                 //每次查询的时候将查询的页置为0
                 pageBean.setPage(0);
                 int loadPage = pageBean.getLoadPage();
+                //搜索的数据比较少，此处不添加分页
+                pageBean.setNum(100);
+                pageBean.setRemark(key);
+
+
                 QueryKey queryKey = new QueryKey(key, loadPage, pageBean.getNum());
                 //搜索关键字
                 mPresenter.searchGoodsKey(queryKey);
 
-
                 SearchViewHelper.excuteAnimator(mCardView);
 
                 mPresenter.saveSearchData(new SearchHistoryBean(key));
-
 
                 break;
 
@@ -178,6 +206,7 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @Override
     public void showSearchHistory(List<SearchHistoryBean> searchHistoryBeanList) {
 
+
         mSearchHistoryAdapter = new SearchHistoryAdapter(mPresenter, searchHistoryBeanList, this, mRvSearchHistory);
         mRvSearchHistory.setAdapter(mSearchHistoryAdapter);
         mSearchHistoryAdapter.setOnItemClickListener(this);
@@ -188,7 +217,22 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
     @Override
     public void searchGoodsDataList(List<Goods> dataList) {
 
-        mSearchGoodsAdapter.addDatas(dataList);
+        //第一次搜索
+        if (mOldGoodsList.size() == 0) {
+            mOldGoodsList.addAll(dataList);
+            mSearchGoodsAdapter.notifyDataSetChanged();
+
+        } else {
+
+            //处于刷新状态
+            AdapterDiffCallback<Goods> diffCallback = new AdapterDiffCallback<>(mOldGoodsList, dataList);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+            diffResult.dispatchUpdatesTo(mSearchGoodsAdapter);
+            mSearchGoodsAdapter.setDatas(dataList);
+            mSwipeRefresh.setRefreshing(false);
+        }
+
+
     }
 
 
@@ -224,6 +268,13 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
         return true;
     }
 
+    /**
+     * 搜索历史RecyclerView 的item的点击事件
+     *
+     * @param viewHolder
+     * @param searchHistoryBean
+     * @param position
+     */
     @Override
     public void onItemClick(ViewHolder viewHolder, SearchHistoryBean searchHistoryBean, int position) {
 
@@ -231,6 +282,14 @@ public class SearchActivity extends BaseActivity implements ISearchContract.ISea
 
     }
 
+    /**
+     * 搜索历史RecyclerView 的item的长按事件
+     *
+     * @param viewHolder
+     * @param searchHistoryBean
+     * @param position
+     * @return
+     */
     @Override
     public boolean onItemLongClick(ViewHolder viewHolder, SearchHistoryBean searchHistoryBean, int position) {
 

@@ -2,8 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.home.model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.util.Date;
+import com.merpyzf.kangyuanmilk.utils.TimeHelper;
 
 /**
  * Created by wangke on 2017-08-01.
@@ -17,12 +16,12 @@ public class SearchHistoryBean {
     @DatabaseField(columnName = "search_info")
     private String searchInfo;
     @DatabaseField(columnName = "search_date")
-    private Date date;
+    private String date;
 
     public SearchHistoryBean(String searchInfo) {
 
         this.searchInfo = searchInfo;
-        this.date = new Date(System.currentTimeMillis());
+        this.date = TimeHelper.getDateTime(System.currentTimeMillis());
     }
 
 
@@ -45,11 +44,11 @@ public class SearchHistoryBean {
         this.searchInfo = searchInfo;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

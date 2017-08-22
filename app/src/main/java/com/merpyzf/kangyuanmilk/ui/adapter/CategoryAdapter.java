@@ -82,7 +82,7 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
 
             Glide.with(mContext)
                     .load(resultsBean.getUrl())
-//                    .placeholder(R.drawable.ic_avater_default)
+                    .placeholder(R.drawable.ic_avater_default)
                     .centerCrop()
                     .into(iv_goods);
 

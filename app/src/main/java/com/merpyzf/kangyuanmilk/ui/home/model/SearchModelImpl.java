@@ -24,6 +24,12 @@ public class SearchModelImpl implements ISearchMode {
     @Override
     public int saveSearchData(SearchHistoryBean searchHistoryBean) {
 
+
+        //
+
+
+
+
         return SearchDao.getInstance().saveSearchData(searchHistoryBean);
     }
 

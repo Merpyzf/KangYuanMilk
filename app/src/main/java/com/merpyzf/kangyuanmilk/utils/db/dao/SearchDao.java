@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.home.model.SearchHistoryBean;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.TimeHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
 
 import java.sql.SQLException;
@@ -57,7 +58,23 @@ public class SearchDao {
 
         int num = -1;
         try {
+
+            //先查询记录中是否已经存在这条搜索记录
+
+            //如果有的话,直接根据查询出来的id更新这条搜索记录的事件
+
+            //如果没有则直接插入进去
+
+            List<SearchHistoryBean> search_info = mDao.queryBuilder().where().eq("search_info", searchHistoryBean.getSearchInfo()).query();
+
+            //表示这个关键字在之前已经查询过
+            if (search_info.size() == 1) {
+                num = mDao.updateRaw("UPDATE tab_search SET  search_date = ? WHERE search_info = ?", TimeHelper.getDateTime(System.currentTimeMillis()), searchHistoryBean.getSearchInfo());
+
+                return num;
+            }
             num = mDao.create(searchHistoryBean);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,10 +111,10 @@ public class SearchDao {
 
         List<SearchHistoryBean> searchHistoryBeanList = getAllhistorySearchData();
 
-        LogHelper.i("长度==》"+ searchHistoryBeanList.size());
+        LogHelper.i("长度==》" + searchHistoryBeanList.size());
 
 
-        for(int i = 0; i< searchHistoryBeanList.size(); i++){
+        for (int i = 0; i < searchHistoryBeanList.size(); i++) {
 
 
             try {
@@ -107,7 +124,6 @@ public class SearchDao {
             }
 
         }
-
 
 
     }

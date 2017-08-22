@@ -55,7 +55,6 @@ public class SearchPresenterImpl extends BasePresenter<ISearchContract.ISearchVi
                     @Override
                     public void onNext(SearchBean searchBean) {
 
-
                         LogHelper.i("查询的长度:"+searchBean.getResponse().getDataList().size());
                         mMvpView.searchGoodsDataList(searchBean.getResponse().getDataList());
 

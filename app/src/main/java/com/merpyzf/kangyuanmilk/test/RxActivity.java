@@ -34,7 +34,7 @@ public class RxActivity extends AppCompatActivity {
 //        backpressure1();
 //        backpressure2();
 
-        testThread();
+//        testThread();
 
     }
 
@@ -192,5 +192,8 @@ public class RxActivity extends AppCompatActivity {
 
 
     }
+
+
+
 
 }

@@ -5,7 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
@@ -36,11 +37,16 @@ public class CategoryPickerAdapter extends RecyclerAdapter<Category> {
         return new ViewHolder(view);
     }
 
+    //记录上一次选中的item的下标
+    private int OldCheckedPosition = 0;
 
     class ViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<Category> {
 
+        @BindView(R.id.linearlayout_category_cb)
+        LinearLayout mLinearCategoryCb;
         @BindView(R.id.tv_category_name)
-        TextView tv_category_name;
+        CheckBox tv_category_name;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -49,7 +55,9 @@ public class CategoryPickerAdapter extends RecyclerAdapter<Category> {
         @Override
         protected void onBindWidget(Category category) {
 
-            tv_category_name.setText(category.getCategoryName());
+            tv_category_name.setText(category.getCategory_name());
+            tv_category_name.setChecked(category.isChoice());
+
 
         }
     }

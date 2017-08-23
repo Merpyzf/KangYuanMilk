@@ -7,30 +7,56 @@ package com.merpyzf.kangyuanmilk.ui.home.bean;
 
 public class Category {
 
-    private String categoryName;
-    private int categoryId;
+    /**
+     * category_id : 1
+     * category_name : 纯牛奶
+     * remark : null
+     */
 
-    public Category(String categoryName, int categoryId) {
-        this.categoryName = categoryName;
-        this.categoryId = categoryId;
+    private int category_id;
+    private String category_name;
+    //记录当前分类是否被选中,默认未选中
+    private boolean choice = false;
+    private Object remark;
+
+
+    public Category(int category_id, String category_name) {
+        this.category_id = category_id;
+        this.category_name = category_name;
     }
 
     public Category() {
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public int getCategory_id() {
+        return category_id;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public String getCategory_name() {
+        return category_name;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
+    public Object getRemark() {
+        return remark;
+    }
+
+    public void setRemark(Object remark) {
+        this.remark = remark;
+    }
+
+    public boolean isChoice() {
+        return choice;
+    }
+
+    public void setChoice(boolean choice) {
+        this.choice = choice;
     }
 }

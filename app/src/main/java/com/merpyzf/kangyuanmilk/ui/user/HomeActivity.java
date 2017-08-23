@@ -33,8 +33,8 @@ import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
 import com.merpyzf.kangyuanmilk.ui.home.view.AboutActivity;
-import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.CategoryPickerFragment;
+import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.HomeFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.IndentFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.SearchActivity;
@@ -57,7 +57,7 @@ import butterknife.BindView;
  */
 public class HomeActivity extends BaseActivity
         implements IHomeContract.IHomeView, NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener
-        , Observer {
+        , Observer{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -80,6 +80,7 @@ public class HomeActivity extends BaseActivity
     private HomePresenterImpl mPresenter;
     private NavFragManager mNavFragManager = null;
     private AppBarState mCurrentAppBarState = AppBarState.IDLE;
+
 
 
     private enum CurrentPage {

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:id="@+id/linearlayout_category_cb"
     android:orientation="vertical">
 
 
@@ -11,13 +12,15 @@
         android:layout_height="60dp"
         android:src="@drawable/ic_avater_default"
     />
-
-
-    <TextView
+    <CheckBox
         android:id="@+id/tv_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:button="@null"
+        android:enabled="false"
+        android:textColor="@drawable/category_text_selector"
         android:text="牛奶"
         />
+
 
 </LinearLayout>

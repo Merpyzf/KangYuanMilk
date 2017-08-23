@@ -56,12 +56,10 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
         public MyViewHolder(View itemView) {
             super(itemView);
 
-
         }
 
         @Override
         protected void onBindWidget(Meizi.ResultsBean resultsBean) {
-
 
             ViewGroup.LayoutParams params = iv_goods.getLayoutParams();
 

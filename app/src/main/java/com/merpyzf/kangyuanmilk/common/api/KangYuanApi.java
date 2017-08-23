@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
+import com.merpyzf.kangyuanmilk.ui.home.bean.CategoryBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.QueryKey;
 import com.merpyzf.kangyuanmilk.ui.home.bean.SearchBean;
@@ -128,6 +129,13 @@ public interface KangYuanApi {
 
     @POST("shop/getIndex")
     Observable<HomeBean> getHomePageData();
+
+    /**
+     * 获取商品分类
+     * @return
+     */
+    @POST("shop/getMilkCategory")
+    Observable<CategoryBean> getGooodsCategory();
 
 
 

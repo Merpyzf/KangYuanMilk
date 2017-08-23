@@ -8,8 +8,6 @@ import butterknife.Unbinder;
 
 /**
  * Created by wangke on 17-7-16.
- *
- *
  */
 
 public abstract class ViewHolder<Data> extends RecyclerView.ViewHolder {

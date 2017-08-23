@@ -42,6 +42,7 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
     private OnCategoryCheckedCListener mListener = null;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    private CategoryPickerAdapter mAdapter;
 
     public void show(FragmentManager fragmentManager) {
 
@@ -95,34 +96,42 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
     @Override
     public void showGoodsCategory(List<Category> categoryList) {
 
-        CategoryPickerAdapter adapter = new CategoryPickerAdapter(categoryList, getContext(), mRecyclerView);
+        mAdapter = new CategoryPickerAdapter(categoryList, getContext(), mRecyclerView);
 
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(mAdapter);
 
-        if (adapter != null) {
+        if (mAdapter != null) {
 
-            adapter.setOnItemClickListener(this);
+            mAdapter.setOnItemClickListener(this);
 
         }
 
 
     }
 
-
-    @Override
-    public void onDestroy() {
-        mUnbinder.unbind();
-        mListener = null;
-        super.onDestroy();
-
-    }
+    //上一个被选中的分类的下标
+    private int mOldCheckedPosition = 0;
 
     @Override
     public void onItemClick(ViewHolder viewHolder, Category category, int position) {
 
         if (mListener != null) {
 
-            mListener.checkedCategoryId(category.getCategoryId());
+            List<Category> datas = mAdapter.getDatas();
+            for (int i = 0; i < datas.size(); i++) {
+                //找出被选中的商品分类所在的下标记
+                if (datas.get(i).isChoice()) {
+                    mOldCheckedPosition = i;
+                    datas.get(i).setChoice(false);
+                }
+            }
+            //局部刷新RecyclerView
+            mAdapter.notifyItemChanged(mOldCheckedPosition);
+            datas.get(position).setChoice(true);
+            mAdapter.notifyItemChanged(position);
+
+            mListener.checkedCategoryId(category.getCategory_id());
+
 
         }
 
@@ -145,5 +154,15 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
 
     public void setmListener(OnCategoryCheckedCListener mListener) {
         this.mListener = mListener;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        mUnbinder.unbind();
+        mListener = null;
+        mPresenter.detachView();
+        super.onDestroy();
+
     }
 }

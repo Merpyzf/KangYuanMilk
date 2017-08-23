@@ -16,6 +16,7 @@ import com.merpyzf.kangyuanmilk.ui.adapter.CategoryAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
 import com.merpyzf.kangyuanmilk.ui.home.contract.ICategoryContract;
 import com.merpyzf.kangyuanmilk.ui.home.presenter.CategoryPresenter;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.ItemMarginDecoration;
 
 import java.util.ArrayList;
@@ -227,13 +228,8 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
      */
     public void currentCategoryId(int id) {
 
-        if (id == 0) {
 
-            mSwipeRefresh.setRefreshing(true);
-        } else {
-
-            mSwipeRefresh.setRefreshing(false);
-        }
+        LogHelper.i("当前商品的分类id==>"+id);
 
     }
 

@@ -17,7 +17,7 @@ public class CategoryModelImpl implements ICategoryModel {
     public Observable<Meizi> getMeizi(String page) {
 
         return RetrofitFactory.getServiceInstance()
-                .getMeizi(page)
+                .getMeizi(page,"10")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 

@@ -8,7 +8,7 @@ package com.merpyzf.kangyuanmilk.common.bean;
 public class PageBean {
 
     //是否处于刷新状态
-    private boolean isRefresh;
+    private boolean isRefresh = false;
 
     //展示页
     private int page = 0;
@@ -53,13 +53,22 @@ public class PageBean {
 
     //获取当前加载的页数
     public int getLoadPage() {
-        if(isRefresh){
-            return  page=1;
+        if (isRefresh) {
+            return page = 1;
         }
         return ++page;
     }
 
+    /**
+     * 重置初始状态
+     */
+    public void reset() {
 
+        isRefresh = false;
+        num = 10;
+        page = 1;
+
+    }
 
 
 }

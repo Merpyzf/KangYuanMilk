@@ -76,15 +76,12 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
                 getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.pink_a100)});
         mSwipeRefresh.setEnabled(true);
 
-        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+        mSwipeRefresh.setOnRefreshListener(() -> {
 
-                //刷新
-                mPresenter.getMeiziData(GoodsFragment.this, "1", true);
+            //刷新
+            mPresenter.getMeiziData(GoodsFragment.this, "1", true);
 
 
-            }
         });
 
 
@@ -162,6 +159,7 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
             if (isFirst) {
 
                 mAdapter = new CategoryAdapter(meizi.getResults(), getActivity(), mRecyclerView);
+
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
 
@@ -175,9 +173,7 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
 
         }
 
-
     }
-
 
     @Override
     public void onClick(View view) {
@@ -193,7 +189,6 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
         }
 
     }
-
 
     /**
      * 重置swipeRefresh刷新,解决因为swipeRefresh处于显示状态下无法detachView的问题
@@ -220,7 +215,6 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
 
     }
 
-
     /**
      * 当前选中的CategoryId由最外面的HomeActivity进行调用
      *
@@ -229,10 +223,13 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
     public void currentCategoryId(int id) {
 
 
-        LogHelper.i("当前商品的分类id==>"+id);
+        LogHelper.i("当前商品的分类id==>" + id);
+        mAdapter.getPageBean().reset();
+        //这里的remark表示未商品id
+        mAdapter.getPageBean().setRemark(id+"");
+
 
     }
-
 
     @Override
     public void onDestroyView() {

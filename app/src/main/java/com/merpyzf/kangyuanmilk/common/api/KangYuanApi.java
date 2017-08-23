@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
 import com.merpyzf.kangyuanmilk.ui.home.bean.CategoryBean;
+import com.merpyzf.kangyuanmilk.ui.home.bean.GoodsBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.QueryKey;
 import com.merpyzf.kangyuanmilk.ui.home.bean.SearchBean;
@@ -109,18 +110,20 @@ public interface KangYuanApi {
 
     /**
      * 更新地址
-      * @param address
+     *
+     * @param address
      * @return
      */
     @POST("user/changeAddress")
     Observable<MessageBean> updateAddress(@Body Address address);
 
 
-    @GET("http://gank.io/api/data/福利/10/{page}")
-    Observable<Meizi> getMeizi(@Path("page") String page);
+    @GET("http://gank.io/api/data/福利/{num}/{page}")
+    Observable<Meizi> getMeizi(@Path("page") String page, @Path("num") String num);
 
     /**
      * 商品搜索
+     *
      * @param queryKey
      * @return
      */
@@ -132,11 +135,22 @@ public interface KangYuanApi {
 
     /**
      * 获取商品分类
+     *
      * @return
      */
     @POST("shop/getMilkCategory")
     Observable<CategoryBean> getGooodsCategory();
 
+    /**
+     * 根据分类id获取商品列表
+     *
+     * @param id   商品分类id
+     * @param page 要显示的页
+     * @param num  每一个页面显示商品的个数
+     * @return
+     */
+    @POST("shop/getMilkByCategory/{id}/{page}/{num}")
+    Observable<GoodsBean> getGoodsById(@Path("id") String id, @Path("page") String page, @Path("num") String num);
 
 
 }

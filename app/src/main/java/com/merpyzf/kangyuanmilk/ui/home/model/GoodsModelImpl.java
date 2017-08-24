@@ -1,6 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.home.model;
 
-import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
+import com.merpyzf.kangyuanmilk.ui.home.bean.GoodsBean;
 import com.merpyzf.kangyuanmilk.utils.http.RetrofitFactory;
 
 import io.reactivex.Observable;
@@ -11,13 +11,13 @@ import io.reactivex.schedulers.Schedulers;
  * Created by wangke on 2017-08-14.
  */
 
-public class CategoryModelImpl implements ICategoryModel {
+public class GoodsModelImpl implements IGoodsModel {
 
     @Override
-    public Observable<Meizi> getMeizi(String page) {
+    public Observable<GoodsBean> getGoodsData(String categoryId, String page, String num) {
 
         return RetrofitFactory.getServiceInstance()
-                .getMeizi(page,"10")
+                .getGoodsById(categoryId, page, num)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 

@@ -56,7 +56,7 @@ public class PageBean {
         if (isRefresh) {
             return page = 1;
         }
-        return ++page;
+        return page+=1;
     }
 
     /**

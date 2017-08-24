@@ -28,7 +28,6 @@ public class SearchGoodsAdapter extends RecyclerAdapter<Goods> {
     public SearchGoodsAdapter(List<Goods> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
     }
-
     @Override
     public ViewHolder createHolder(ViewGroup parent, int viewType) {
 
@@ -36,10 +35,7 @@ public class SearchGoodsAdapter extends RecyclerAdapter<Goods> {
                 .inflate(R.layout.item_goods, parent, false);
         return new SearchGoodsHolder(view);
     }
-
-
     class SearchGoodsHolder extends ViewHolder<Goods> {
-
 
         @BindView(R.id.iv_product)
         ImageView iv_produuct;
@@ -50,11 +46,9 @@ public class SearchGoodsAdapter extends RecyclerAdapter<Goods> {
         @BindView(R.id.tv_price)
         TextView tv_price;
 
-
         public SearchGoodsHolder(View itemView) {
             super(itemView);
         }
-
         @Override
         protected void onBindWidget(Goods goods) {
 
@@ -67,7 +61,6 @@ public class SearchGoodsAdapter extends RecyclerAdapter<Goods> {
             tv_product_name.setText(goods.getTitle());
             tv_spec.setText(goods.getSpec());
             tv_price.setText("￥"+goods.getPrice());
-
         }
     }
 

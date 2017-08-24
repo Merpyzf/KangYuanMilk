@@ -3,7 +3,6 @@ package com.merpyzf.kangyuanmilk.ui.home.bean;
 /**
  * Created by wangke on 2017-08-21.
  * 商品对象
- *
  */
 
 public class Goods {
@@ -15,7 +14,7 @@ public class Goods {
      * title : 酸奶
      */
     private int id;
-    private Object imageview;
+    private String imageview;
     private int price;
     private String spec;
     private String title;
@@ -28,11 +27,11 @@ public class Goods {
         this.id = id;
     }
 
-    public Object getImageview() {
+    public String getImageview() {
         return imageview;
     }
 
-    public void setImageview(Object imageview) {
+    public void setImageview(String imageview) {
         this.imageview = imageview;
     }
 

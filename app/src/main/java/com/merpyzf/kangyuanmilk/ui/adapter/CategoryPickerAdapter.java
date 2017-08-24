@@ -55,6 +55,8 @@ public class CategoryPickerAdapter extends RecyclerAdapter<Category> {
         @Override
         protected void onBindWidget(Category category) {
 
+
+
             tv_category_name.setText(category.getCategory_name());
             tv_category_name.setChecked(category.isChoice());
 

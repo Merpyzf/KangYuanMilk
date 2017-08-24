@@ -46,6 +46,36 @@ public final class SharedPreHelper {
         return value;
     }
 
+
+    public static void putInt(String sp_name, String key, int value) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sp_name, Context.MODE_PRIVATE);
+        sharedPreferences.edit()
+                .putInt(key, value)
+                .commit();
+
+    }
+
+
+    public static int getInt(String sp_name, String key, int default_value) {
+
+        int value = context.getSharedPreferences(sp_name, Context.MODE_PRIVATE)
+                .getInt(key, default_value);
+
+        return value;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * 保存登录信息
      *
@@ -130,13 +160,19 @@ public final class SharedPreHelper {
         }
     }
 
-
+    /**
+     * 记录app的使用
+     */
     public static void saveUseActions() {
 
         putString(Common.SP_GUIDE, "isFirstGuide", "no");
 
     }
 
+    /**
+     * 是否是第一次使用
+     * @return
+     */
     public static boolean isFirstUse() {
 
         String firstUse = getString(Common.SP_GUIDE, "isFirstGuide", "yes");
@@ -146,6 +182,25 @@ public final class SharedPreHelper {
 
     }
 
+
+    /**
+     * 保存上一次选择的分类id
+     * @param id
+     */
+    public static void saveOldChoiceCategory(int id){
+
+        putInt("sp_category","oldCategory",id);
+
+    }
+
+    /**
+     * 获取上一次选择的分类id
+     * @return
+     */
+    public static int getOldChoiceCategory(){
+
+        return getInt("sp_category","oldCategory",-1);
+    }
 
 
 

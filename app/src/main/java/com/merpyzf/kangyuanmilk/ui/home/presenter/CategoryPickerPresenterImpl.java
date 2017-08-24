@@ -17,12 +17,12 @@ import io.reactivex.schedulers.Schedulers;
  * Created by wangke on 2017-08-16.
  */
 
-public class CategoryPickerPresenter extends BasePresenter<ICategoryPickerContract.ICategoryPickerView>
+public class CategoryPickerPresenterImpl extends BasePresenter<ICategoryPickerContract.ICategoryPickerView>
         implements ICategoryPickerContract.ICategoryPickPresenter {
 
     private ICategoryPickerModel mModel;
 
-    public CategoryPickerPresenter() {
+    public CategoryPickerPresenterImpl() {
         mModel = new CategoryPickerModelImpl();
     }
 

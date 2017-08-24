@@ -19,7 +19,8 @@ import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 import com.merpyzf.kangyuanmilk.ui.adapter.CategoryPickerAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Category;
 import com.merpyzf.kangyuanmilk.ui.home.contract.ICategoryPickerContract;
-import com.merpyzf.kangyuanmilk.ui.home.presenter.CategoryPickerPresenter;
+import com.merpyzf.kangyuanmilk.ui.home.presenter.CategoryPickerPresenterImpl;
+import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mPresenter = new CategoryPickerPresenter();
+        mPresenter = new CategoryPickerPresenterImpl();
         mPresenter.attachView(this);
         View view = inflater.inflate(R.layout.fragment_category_picker, container, false);
         mUnbinder = ButterKnife.bind(this, view);
@@ -100,6 +101,26 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
     @Override
     public void showGoodsCategory(List<Category> categoryList) {
 
+        int oldCategoryId = SharedPreHelper.getOldChoiceCategory();
+
+        if (oldCategoryId != -1 && oldCategoryId != 1) {
+
+            for (int i = 0; i < categoryList.size(); i++) {
+                Category category = categoryList.get(i);
+                if (category.getCategory_id() == 1) {
+
+                    category.setChoice(false);
+                } else if (category.getCategory_id() == oldCategoryId) {
+
+                    category.setChoice(true);
+
+                }
+            }
+
+
+        }
+
+
         mAdapter = new CategoryPickerAdapter(categoryList, getContext(), mRecyclerView);
 
         mRecyclerView.setAdapter(mAdapter);
@@ -109,7 +130,6 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
             mAdapter.setOnItemClickListener(this);
 
         }
-
 
     }
 
@@ -135,8 +155,8 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
             mAdapter.notifyItemChanged(position);
 
             mListener.checkedCategoryId(category.getCategory_id());
-
-
+            SharedPreHelper.saveOldChoiceCategory(category.getCategory_id());
+            dismiss();
         }
 
     }

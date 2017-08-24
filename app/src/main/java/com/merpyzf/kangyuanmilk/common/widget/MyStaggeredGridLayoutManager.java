@@ -58,6 +58,19 @@ public class MyStaggeredGridLayoutManager extends StaggeredGridLayoutManager {
         //0.3f是自己估摸的一个值，可以根据不同需求自己修改
         MILLISECONDS_PER_INCH = context.getResources().getDisplayMetrics().density * 0.3f + (x);
     }
+    @Override
+    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        //捕获 IndexOutOfBoundsException 异常，避免在刷新的时候程序崩溃
+        try {
+            super.onLayoutChildren(recycler, state);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 }

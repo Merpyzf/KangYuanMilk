@@ -167,6 +167,9 @@ public class HomeActivity extends BaseActivity
         });
 
 
+        /**
+         * 监听CategoryPickerFragment 的当前状态(显示/隐藏),当显示时候进行背景的整体虚化
+         */
         mCategoryPickerFragment.setOnCurrentStateListener(new CategoryPickerFragment.OnCurrentStateListener() {
 
             @Override

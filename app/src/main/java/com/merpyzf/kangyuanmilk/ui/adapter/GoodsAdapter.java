@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
-import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
+import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
 import com.merpyzf.kangyuanmilk.utils.ScreenHelper;
 
 import java.util.List;
@@ -24,14 +24,19 @@ import butterknife.BindView;
  * Created by wangke on 2017-08-14.
  */
 
-public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
+public class GoodsAdapter extends RecyclerAdapter<Goods> {
 
     //item中imageView的默认高度，用于实现瀑布流效果
     private int mImageViewHeight = 200;
 
-    public CategoryAdapter(List<Meizi.ResultsBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
+    public GoodsAdapter(List<Goods> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
         mImageViewHeight = ScreenHelper.getScreenHeight()/5;
+
+    }
+
+
+    public static interface onOItem{
 
     }
 
@@ -46,7 +51,7 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
     }
 
 
-    class MyViewHolder extends ViewHolder<Meizi.ResultsBean> {
+    class MyViewHolder extends ViewHolder<Goods> {
 
         @BindView(R.id.iv_product)
         ImageView iv_goods;
@@ -59,7 +64,7 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
         }
 
         @Override
-        protected void onBindWidget(Meizi.ResultsBean resultsBean) {
+        protected void onBindWidget(Goods goods) {
 
             ViewGroup.LayoutParams params = iv_goods.getLayoutParams();
 
@@ -79,12 +84,12 @@ public class CategoryAdapter extends RecyclerAdapter<Meizi.ResultsBean> {
 
 
             Glide.with(mContext)
-                    .load(resultsBean.getUrl())
+                    .load(goods.getImageview())
                     .placeholder(R.drawable.ic_avater_default)
                     .centerCrop()
                     .into(iv_goods);
 
-            tv_info.setText(resultsBean.getDesc());
+            tv_info.setText(goods.getTitle());
 
 
         }

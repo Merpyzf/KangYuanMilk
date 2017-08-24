@@ -11,12 +11,14 @@ import android.view.View;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseFragment;
+import com.merpyzf.kangyuanmilk.common.bean.PageBean;
 import com.merpyzf.kangyuanmilk.common.widget.MyStaggeredGridLayoutManager;
-import com.merpyzf.kangyuanmilk.ui.adapter.CategoryAdapter;
-import com.merpyzf.kangyuanmilk.ui.home.bean.Meizi;
-import com.merpyzf.kangyuanmilk.ui.home.contract.ICategoryContract;
-import com.merpyzf.kangyuanmilk.ui.home.presenter.CategoryPresenter;
+import com.merpyzf.kangyuanmilk.ui.adapter.GoodsAdapter;
+import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
+import com.merpyzf.kangyuanmilk.ui.home.contract.IGoodsContract;
+import com.merpyzf.kangyuanmilk.ui.home.presenter.GoodsPresenterImpl;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
+import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.ItemMarginDecoration;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import butterknife.BindView;
  *
  * @author wangke
  */
-public class GoodsFragment extends BaseFragment implements ICategoryContract.ICategoryView, View.OnClickListener {
+public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoodsView, View.OnClickListener {
     @BindView(R.id.recyclerView)
     XRecyclerView mRecyclerView;
     @BindView(R.id.fab_top)
@@ -37,15 +39,24 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefresh;
 
-    private ICategoryContract.ICategoryPresenter mPresenter;
+    private IGoodsContract.IGoodsPresenter mPresenter;
     private int page = 1;
-    private CategoryAdapter mAdapter;
+    private GoodsAdapter mAdapter;
     private ItemMarginDecoration mDecoration;
     private boolean isFirst = true;
     private MyStaggeredGridLayoutManager mLayoutManager;
     private BottomSheetBehavior<View> mBehavior;
     //存放旧的商品列表
-    private List<Meizi.ResultsBean> mOldGoodsList = new ArrayList<>();
+    private List<Goods> mGoodsList = new ArrayList<>();
+    private PageBean mPageBean;
+
+
+    /**
+     * 当打开商品页面时候.首先判断sp文件中有没有存储上一次选择的id
+     * <p>
+     * 如果没有就去 就去加载默认 分类id为1
+     * 如果有就去加载 上一次记录的id
+     */
 
 
     public GoodsFragment() {
@@ -62,7 +73,8 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
     @Override
     protected void initWidget(View rootview) {
 
-
+        isFirst = true;
+        mGoodsList.clear();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mLayoutManager = new MyStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -86,9 +98,16 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
 
         //刷新
         mSwipeRefresh.setOnRefreshListener(() -> {
-            mPresenter.getMeiziData(GoodsFragment.this, "1", true);
+
+            //当设置为刷新状态时候此时的page将设置为1
+            mPageBean.setRefresh(true);
+            mPresenter.getGoodsData(GoodsFragment.this,mPageBean.getRemark(),String.valueOf(mPageBean.getLoadPage()),String.valueOf(mPageBean.getNum()));
+
+
         });
 
+
+        //刷新/加载更多事件的监听
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -99,9 +118,7 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
             public void onLoadMore() {
 
                 //分页加载数据
-                page++;
-                mPresenter.getMeiziData(GoodsFragment.this, page + "", false);
-
+                mPresenter.getGoodsData(GoodsFragment.this, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
 
             }
         });
@@ -110,15 +127,34 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
 
     @Override
     protected void initData() {
+        //首次先将数据清空
+        mGoodsList.clear();
+
+        mAdapter = new GoodsAdapter(mGoodsList, getActivity(), mRecyclerView);
 
 
-        mPresenter = new CategoryPresenter();
+        mPageBean = mAdapter.getPageBean();
+        int oldCategoryId = SharedPreHelper.getOldChoiceCategory();
+
+        if (oldCategoryId != -1) {
+            //这里的Remark表示为商品分类id
+            mPageBean.setRemark(String.valueOf(oldCategoryId));
+        } else {
+            mPageBean.setRemark(String.valueOf(1));
+        }
+
+        mPageBean.setPage(1);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+
+        mPresenter = new GoodsPresenterImpl();
         mPresenter.attachView(this);
 
-        if (page == 1) {
-            mPresenter.getMeiziData(this, "1", false);
+        //首次进入时进行数据的获取
+        mPresenter.getGoodsData(this, mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
 
-        }
+
     }
 
     @Override
@@ -137,39 +173,38 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
     }
 
     @Override
-    public void getMeiziData(Meizi meizi, boolean isRefresh) {
+    public void getGoodsData(List<Goods> goodsList) {
 
-        if (isRefresh) {
 
-            if (mAdapter != null) {
-                mAdapter.clearData();
-                mAdapter.addDatas(meizi.getResults());
-                mSwipeRefresh.setRefreshing(false);
-                page = 1;
-                return;
-            }
-        }
 
-        if (page == 1) {
+            if (mPageBean.isRefresh()) {
 
-            if (isFirst) {
+                if (mAdapter != null) {
+                    mAdapter.clearData();
+                    mAdapter.addDatas(goodsList);
+                    //重置刷新的状态
+                    mPageBean.setRefresh(false);
+                    mSwipeRefresh.setRefreshing(mPageBean.isRefresh());
 
-                mAdapter = new CategoryAdapter(meizi.getResults(), getActivity(), mRecyclerView);
-
-                mRecyclerView.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
-
-                isFirst = false;
+                    return;
+                }
             }
 
-        } else {
+            if (mPageBean.getPage() == 1) {
 
-            mRecyclerView.loadMoreComplete();
-            mAdapter.addDatas(meizi.getResults());
+                if (isFirst) {
+                    mAdapter.addDatas(goodsList);
+                    isFirst = false;
+                }
+
+            } else {
+
+                mAdapter.addDatas(goodsList);
+                mRecyclerView.loadMoreComplete();
+            }
 
         }
 
-    }
 
     @Override
     public void onClick(View view) {
@@ -220,10 +255,17 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
 
 
         LogHelper.i("当前商品的分类id==>" + id);
-        mAdapter.getPageBean().reset();
-        //这里的remark表示未商品id
-        mAdapter.getPageBean().setRemark(id + "");
 
+
+        mGoodsList.clear();
+        mAdapter.notifyDataSetChanged();
+
+        mAdapter.getPageBean().reset();
+        //这里的remark表示商品分类id
+        mAdapter.getPageBean().setRemark(id + "");
+        isFirst = true;
+        mPageBean.reset();
+        mPresenter.getGoodsData(this, mPageBean.getRemark(),String.valueOf(mPageBean.getPage()),String.valueOf(mPageBean.getNum()));
 
     }
 

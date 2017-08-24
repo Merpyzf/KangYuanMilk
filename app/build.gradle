@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -35,7 +36,6 @@ android {
 
 
 }
-
 buildscript {
     repositories {
         mavenCentral()
@@ -111,7 +111,7 @@ dependencies {
     compile 'com.yalantis:phoenix:1.2.3'
     compile 'com.mikhaellopez:circularfillableloaders:1.2.0'
     compile 'com.github.ronaldsmartin:Material-ViewPagerIndicator:1.0.4'
-
+    compile 'com.github.mmin18:realtimeblurview:1.1.0'
 
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'

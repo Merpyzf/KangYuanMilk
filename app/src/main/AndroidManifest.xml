@@ -116,7 +116,11 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.BottomSheetActivity" />
-        <activity android:name=".test.Main2Activity" />
+        <activity android:name=".test.Main2Activity" >
+
+
+
+        </activity>
         <activity
             android:name=".ui.order.OrderActivity"
             android:theme="@style/AppTheme.NoActionBar" />

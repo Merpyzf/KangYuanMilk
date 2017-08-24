@@ -2,6 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.home.view;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -39,7 +40,9 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
     private Unbinder mUnbinder;
     private ICategoryPickerContract.ICategoryPickPresenter mPresenter;
 
-    private OnCategoryCheckedCListener mListener = null;
+    private OnCategoryCheckedListener mListener = null;
+    private OnCurrentStateListener mStateListener = null;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private CategoryPickerAdapter mAdapter;
@@ -65,6 +68,7 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
         mRecyclerView.setLayoutManager(layoutManager);
 
         mPresenter.getGoodsCategory();
+
 
         return view;
     }
@@ -142,7 +146,29 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
         return false;
     }
 
-    public interface OnCategoryCheckedCListener {
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+
+        if (mStateListener != null) {
+            mStateListener.dialogShow();
+        }
+
+        super.show(manager, tag);
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+
+        if (mStateListener != null) {
+
+            mStateListener.dialogDismiss();
+        }
+        super.onDismiss(dialog);
+    }
+
+
+    public interface OnCategoryCheckedListener {
         /**
          * 选中分类时的回调方法
          *
@@ -152,10 +178,31 @@ public class CategoryPickerFragment extends BottomSheetDialogFragment implements
 
     }
 
-    public void setmListener(OnCategoryCheckedCListener mListener) {
+    public void setmListener(OnCategoryCheckedListener mListener) {
         this.mListener = mListener;
     }
 
+    /**
+     * 对当前 BottomSheetDialogFragment 状态的监听
+     */
+    public interface OnCurrentStateListener {
+        /**
+         * 显示状态
+         */
+        void dialogShow();
+
+        /**
+         * 隐藏状态
+         */
+        void dialogDismiss();
+
+
+    }
+
+
+    public void setOnCurrentStateListener(OnCurrentStateListener mStateListener) {
+        this.mStateListener = mStateListener;
+    }
 
     @Override
     public void onDestroy() {

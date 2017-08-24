@@ -64,26 +64,17 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-
         mLayoutManager = new MyStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //禁用默认的刷新
         mRecyclerView.setPullRefreshEnabled(false);
+        //添加分隔线
         mDecoration = new ItemMarginDecoration(3, 1);
         mRecyclerView.addItemDecoration(mDecoration);
 
         mSwipeRefresh.setColorSchemeColors(new int[]{getResources().getColor(R.color.colorAccent),
                 getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.pink_a100)});
         mSwipeRefresh.setEnabled(true);
-
-        mSwipeRefresh.setOnRefreshListener(() -> {
-
-            //刷新
-            mPresenter.getMeiziData(GoodsFragment.this, "1", true);
-
-
-        });
-
 
     }
 
@@ -92,6 +83,11 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
 
 
         mFabMoveTop.setOnClickListener(this);
+
+        //刷新
+        mSwipeRefresh.setOnRefreshListener(() -> {
+            mPresenter.getMeiziData(GoodsFragment.this, "1", true);
+        });
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -226,7 +222,7 @@ public class GoodsFragment extends BaseFragment implements ICategoryContract.ICa
         LogHelper.i("当前商品的分类id==>" + id);
         mAdapter.getPageBean().reset();
         //这里的remark表示未商品id
-        mAdapter.getPageBean().setRemark(id+"");
+        mAdapter.getPageBean().setRemark(id + "");
 
 
     }

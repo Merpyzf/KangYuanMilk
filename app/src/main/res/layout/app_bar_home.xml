@@ -33,8 +33,24 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <!--承装内容的布局,用来填充Fragment-->
-        <include layout="@layout/content_home" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <!--承装内容的布局,用来填充Fragment-->
+            <include layout="@layout/content_home" />
+
+
+
+            <com.github.mmin18.widget.RealtimeBlurView
+                android:id="@+id/realtimeBlurView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                 />
+
+        </RelativeLayout>
 
 
         <android.support.design.widget.BottomNavigationView

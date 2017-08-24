@@ -26,6 +26,8 @@
     <!--导航栏Icon遮罩色-->
     <color name="navIconTintLight">@color/white_alpha_240</color>
 
+    <color name="colorBlur">#8000</color>
+
     <!--背景色-->
     <color name="windowsBackground">#f7f7f7</color>
     <color name="windowBackgroundLight">#f8f8f8</color>

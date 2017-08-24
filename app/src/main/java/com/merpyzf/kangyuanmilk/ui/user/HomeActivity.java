@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.github.mmin18.widget.RealtimeBlurView;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
@@ -57,7 +58,7 @@ import butterknife.BindView;
  */
 public class HomeActivity extends BaseActivity
         implements IHomeContract.IHomeView, NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener
-        , Observer{
+        , Observer {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -71,6 +72,9 @@ public class HomeActivity extends BaseActivity
     AppBarLayout mAppbar;
     @BindView(R.id.coordLayout)
     CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.realtimeBlurView)
+    RealtimeBlurView mRealtimeBlurView;
+
     //默认为主页
     private CurrentPage mCurrentPage = CurrentPage.HOME;
 
@@ -80,7 +84,7 @@ public class HomeActivity extends BaseActivity
     private HomePresenterImpl mPresenter;
     private NavFragManager mNavFragManager = null;
     private AppBarState mCurrentAppBarState = AppBarState.IDLE;
-
+    private CategoryPickerFragment mCategoryPickerFragment;
 
 
     private enum CurrentPage {
@@ -104,7 +108,7 @@ public class HomeActivity extends BaseActivity
     public void initWidget() {
 
         setSupportActionBar(mToolbar);
-
+        mRealtimeBlurView.setVisibility(View.INVISIBLE);
         //从 navigationView中获取控件的引用时候,需要通过getHeaderView拿到HeaderView布局的引用，这样才能继续下面的工作
         View view = mNavigationView.getHeaderView(0);
         mRlNavHeader = view.findViewById(R.id.rl_nav_header);
@@ -123,7 +127,7 @@ public class HomeActivity extends BaseActivity
 
         getMaxMemoryInfo();
 
-
+        mCategoryPickerFragment = new CategoryPickerFragment();
     }
 
     /**
@@ -160,6 +164,25 @@ public class HomeActivity extends BaseActivity
             }
 
 
+        });
+
+
+        mCategoryPickerFragment.setOnCurrentStateListener(new CategoryPickerFragment.OnCurrentStateListener() {
+
+            @Override
+            public void dialogShow() {
+                mRealtimeBlurView.setVisibility(View.VISIBLE);
+                mRealtimeBlurView.setBlurRadius(10);
+                mRealtimeBlurView.setOverlayColor(getResources().getColor(R.color.colorBlur));
+
+            }
+
+            @Override
+            public void dialogDismiss() {
+
+                mRealtimeBlurView.setVisibility(View.INVISIBLE);
+
+            }
         });
 
 
@@ -352,11 +375,11 @@ public class HomeActivity extends BaseActivity
             //商品分类
             case R.id.action_home_category:
 
-                CategoryPickerFragment categoryPickerFragment = new CategoryPickerFragment();
 
-                categoryPickerFragment.show(getSupportFragmentManager());
+                mCategoryPickerFragment.show(getSupportFragmentManager());
 
-                categoryPickerFragment.setmListener(id -> {
+
+                mCategoryPickerFragment.setmListener(id -> {
 
                     Fragment tab = mNavFragManager.getCurrentTab();
 

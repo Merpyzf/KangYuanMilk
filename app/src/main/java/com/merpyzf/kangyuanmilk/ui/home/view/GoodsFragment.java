@@ -1,7 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.home.view;
 
 
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -59,19 +58,9 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     private PageBean mPageBean;
 
 
-    /**
-     * 当打开商品页面时候.首先判断sp文件中有没有存储上一次选择的id
-     * <p>
-     * 如果没有就去 就去加载默认 分类id为1
-     * 如果有就去加载 上一次记录的id
-     */
-
-
     public GoodsFragment() {
 
-
     }
-
 
     @Override
     protected int getContentLayoutId() {
@@ -81,19 +70,24 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     @Override
     protected void initWidget(View rootview) {
 
+        //标记数据是否第一次加载
         isFirst = true;
         mTipView.bindView(mRootView);
 
-        mGoodsList.clear();
+        //由于Fragment每次切换的时候数据不会被清楚，因此需要手动清除，避免加载重复数据
+        if (mGoodsList.size() > 0) {
+            mGoodsList.clear();
+        }
+
+        //RecyclerView的初始化
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mLayoutManager = new MyStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //禁用默认的刷新
         mRecyclerView.setPullRefreshEnabled(false);
-        //添加分隔线
         mDecoration = new ItemMarginDecoration(3, 1);
         mRecyclerView.addItemDecoration(mDecoration);
 
+        //设置SwipeRefresh在刷新时候变换的颜色
         mSwipeRefresh.setColorSchemeColors(new int[]{getResources().getColor(R.color.colorAccent),
                 getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.pink_a100)});
         mSwipeRefresh.setEnabled(true);
@@ -103,21 +97,17 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     @Override
     protected void initEvent() {
 
-
+        //返回最顶部
         mFabMoveTop.setOnClickListener(this);
-
         //刷新
         mSwipeRefresh.setOnRefreshListener(() -> {
-
             //当设置为刷新状态时候此时的page将设置为1
             mPageBean.setRefresh(true);
-            mPresenter.getGoodsData(GoodsFragment.this,mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
-
-
+            mPresenter.getGoodsData(GoodsFragment.this, mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
         });
 
 
-        //刷新/加载更多事件的监听
+        //RecyclerView分页加载触发的监听
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -128,7 +118,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
             public void onLoadMore() {
 
                 //分页加载数据
-                mPresenter.getGoodsData(GoodsFragment.this,mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
+                mPresenter.getGoodsData(GoodsFragment.this, mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
 
             }
         });
@@ -137,32 +127,19 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
 
     @Override
     protected void initData() {
-        //首次先将数据清空
-        mGoodsList.clear();
 
         mAdapter = new GoodsAdapter(mGoodsList, getActivity(), mRecyclerView);
 
-
         mPageBean = mAdapter.getPageBean();
-        int oldCategoryId = SharedPreHelper.getOldChoiceCategory();
-
-        if (oldCategoryId != -1) {
-            //这里的Remark表示为商品分类id
-            mPageBean.setRemark(String.valueOf(oldCategoryId));
-        } else {
-            mPageBean.setRemark(String.valueOf(1));
-        }
-
+        //获取上一次选择的商品分类id
+        mPageBean.setRemark(String.valueOf(SharedPreHelper.getOldChoiceCategory()));
         mPageBean.setPage(1);
 
         mRecyclerView.setAdapter(mAdapter);
-
-
         mPresenter = new GoodsPresenterImpl();
         mPresenter.attachView(this);
-
         //首次进入时进行数据的获取
-        mPresenter.getGoodsData(this,mTipView ,mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
+        mPresenter.getGoodsData(this, mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
 
 
     }
@@ -170,21 +147,32 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     @Override
     public void showLoadingDialog() {
 
+        mSwipeRefresh.setRefreshing(true);
+
     }
 
     @Override
     public void cancelLoadingDialog() {
+
+        if (mSwipeRefresh.isRefreshing()) {
+
+            mSwipeRefresh.setRefreshing(false);
+        }
 
     }
 
     @Override
     public void showErrorMsg(String errorMsg) {
 
+        cancelLoadingDialog();
+        App.showToast(errorMsg);
+
+
     }
 
     @Override
     public void getGoodsData(List<Goods> goodsList) {
-
+        //下拉刷新时的数据加载
         if (mPageBean.isRefresh()) {
 
             if (mAdapter != null) {
@@ -199,54 +187,41 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
         }
 
         //如果没有加载出数据
-        if(goodsList.size() == 0){
-
+        if (goodsList.size() == 0) {
             mRecyclerView.loadMoreComplete();
             App.showToast("没有更多的数据加载");
             return;
-
         }
 
 
-
         if (mPageBean.getPage() == 1) {
-
             if (isFirst) {
                 mAdapter.addDatas(goodsList);
                 isFirst = false;
             }
-
         } else {
 
             mAdapter.addDatas(goodsList);
             mRecyclerView.loadMoreComplete();
         }
-
     }
-
 
     @Override
     public void showEmpty() {
 
         //表示第一次加载的时候数据就为空，不包括刷新
-        if(mAdapter.getPageBean().getPage() == 1){
+        if (mAdapter.getPageBean().getPage() == 1) {
 
             mTipView.setEmptyTip("空空如也");
 
         }
-
-
-
     }
 
     @Override
     public void showNetError() {
 
-
         mTipView.setErrorTip("网络异常");
-
     }
-
 
     @Override
     public void onClick(View view) {
@@ -260,7 +235,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
 
                 break;
         }
-
     }
 
     /**
@@ -295,19 +269,14 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
      */
     public void currentCategoryId(int id) {
 
-
-        LogHelper.i("当前商品的分类id==>" + id);
-
-
         mGoodsList.clear();
         mAdapter.notifyDataSetChanged();
 
-        mAdapter.getPageBean().reset();
         //这里的remark表示商品分类id
-        mAdapter.getPageBean().setRemark(id + "");
+        mPageBean.setRemark(id + "");
         isFirst = true;
         mPageBean.reset();
-        mPresenter.getGoodsData(this,mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
+        mPresenter.getGoodsData(this, mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
 
     }
 
@@ -317,6 +286,4 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
         mRecyclerView.removeItemDecoration(mDecoration);
         super.onDestroyView();
     }
-
-
 }

@@ -28,7 +28,6 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
 
-
                 />
 
         </android.support.design.widget.AppBarLayout>

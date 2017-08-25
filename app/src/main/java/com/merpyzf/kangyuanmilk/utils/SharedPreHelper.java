@@ -199,7 +199,7 @@ public final class SharedPreHelper {
      */
     public static int getOldChoiceCategory(){
 
-        return getInt("sp_category","oldCategory",-1);
+        return getInt("sp_category","oldCategory",1);
     }
 
 

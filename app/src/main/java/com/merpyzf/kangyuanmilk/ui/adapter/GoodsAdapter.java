@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
@@ -84,7 +85,7 @@ public class GoodsAdapter extends RecyclerAdapter<Goods> {
 
 
             Glide.with(mContext)
-                    .load(goods.getImageview())
+                    .load(Common.OUTSIDE_CHAIN+goods.getImageview())
                     .placeholder(R.drawable.ic_avater_default)
                     .centerCrop()
                     .into(iv_goods);

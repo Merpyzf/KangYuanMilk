@@ -31,7 +31,6 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     private PageBean mPageBean;
 
 
-
     public RecyclerAdapter(List<Data> mDatas, Context mContext, final RecyclerView mRecyclerView) {
 
         this.mDatas = mDatas;
@@ -207,12 +206,13 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     /**
      * 插入到指定位置
+     *
      * @param position
      * @param data
      */
-    public void insertItem(int position,Data data){
+    public void insertItem(int position, Data data) {
 
-        mDatas.add(position,data);
+        mDatas.add(position, data);
         notifyItemInserted(position);
     }
 
@@ -224,8 +224,6 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     public void updateItem(int position) {
         notifyItemChanged(position);
     }
-
-
 
 
     /**
@@ -284,16 +282,25 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
         int start = mDatas.size();
         mDatas.addAll(dataList);
         int end = mDatas.size() - 1;
-        notifyItemRangeChanged(start, end);
+
+        if (dataList.size() == 1) {
+            notifyItemChanged(0);
+
+        } else {
+
+            notifyItemRangeChanged(start, end);
+        }
+
 
     }
 
 
     /**
      * 移除一条数据
+     *
      * @param data
      */
-    public void remove(Data data){
+    public void remove(Data data) {
 
         mDatas.remove(data);
         notifyDataSetChanged();
@@ -303,7 +310,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
     /**
      * 清空所有数据
      */
-    public void clearData(){
+    public void clearData() {
 
         mDatas.clear();
         notifyDataSetChanged();
@@ -329,7 +336,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<ViewHol
 
     /**
      * 设置item点击事件的兼听
-     * todo 这里的范型有点问题！！！
+     * todo 这里泛型有点问题！！！
      *
      * @param <Data>
      */

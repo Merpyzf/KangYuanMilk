@@ -172,7 +172,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
 
     @Override
     public void getGoodsData(List<Goods> goodsList) {
-        //下拉刷新时的数据加载
+        //刷新
         if (mPageBean.isRefresh()) {
 
             if (mAdapter != null) {
@@ -188,17 +188,19 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
 
         //如果没有加载出数据
         if (goodsList.size() == 0) {
+
             mRecyclerView.loadMoreComplete();
             App.showToast("没有更多的数据加载");
             return;
+
         }
-
-
         if (mPageBean.getPage() == 1) {
+
             if (isFirst) {
                 mAdapter.addDatas(goodsList);
                 isFirst = false;
             }
+
         } else {
 
             mAdapter.addDatas(goodsList);
@@ -269,7 +271,16 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
      */
     public void currentCategoryId(int id) {
 
+
+        LogHelper.i("当前商品的分类id==>" + id);
+
+
         mGoodsList.clear();
+
+        if(mAdapter==null){
+
+            return;
+        }
         mAdapter.notifyDataSetChanged();
 
         //这里的remark表示商品分类id
@@ -286,4 +297,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
         mRecyclerView.removeItemDecoration(mDecoration);
         super.onDestroyView();
     }
+
+
 }

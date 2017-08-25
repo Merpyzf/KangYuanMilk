@@ -33,10 +33,12 @@ public class GoodsPresenterImpl extends BasePresenter<IGoodsContract.IGoodsView>
     }
 
     @Override
-    public void getGoodsData(GoodsFragment context, TipView tipView,String categoryId, String page, String num) {
+    public void getGoodsData(GoodsFragment context, TipView tipView, String categoryId, String page, String num) {
 
-        tipView.reset();
+        if (tipView != null) {
 
+            tipView.reset();
+        }
         if (NetworkHelper.isAvailableByPing()) {
 
             mModel.getGoodsData(categoryId, page, num)

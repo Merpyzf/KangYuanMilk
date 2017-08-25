@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +39,8 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
     private static final int NEW_ACTIVITY = 1;
     private static final int HOT_PRODUCT = 2;
     private static final int NEW_PRODUCT = 3;
+
+    private onHeaderBtnClickListener mHeaderBtnClickListener;
 
     public HomeAdapter(List<HomeBean.ResponseBean.ResultListBean> mDatas, Context mContext, RecyclerView mRecyclerView) {
         super(mDatas, mContext, mRecyclerView);
@@ -106,10 +109,19 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
     /**
      * HeaderBanner
      */
-    class HeaderViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<HomeBean.ResponseBean.ResultListBean> {
+    class HeaderViewHolder extends com.merpyzf.kangyuanmilk.common.widget.ViewHolder<HomeBean.ResponseBean.ResultListBean> implements View.OnClickListener {
 
         @BindView(R.id.banner)
         Banner mBanner;
+        @BindView(R.id.ll_fresh_milk)
+        LinearLayout mBtnFreshMilk;
+        @BindView(R.id.ll_yoghourt)
+        LinearLayout mBtnYoghourt;
+        @BindView(R.id.ll_nearby_stores)
+        LinearLayout mBtnNearStores;
+        @BindView(R.id.ll_repeat_order)
+        LinearLayout mBtnRepeatOrder;
+
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
@@ -138,7 +150,6 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
                 }
             });
 
-
             mBanner.isAutoPlay(true);
             mBanner.setImages(imageList);
             mBanner.setImageLoader(new GliderImageLoader());
@@ -147,8 +158,93 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
             mBanner.setBannerAnimation(Transformer.Stack);
             mBanner.start();
 
+            mBtnFreshMilk.setOnClickListener(this);
+            mBtnNearStores.setOnClickListener(this);
+            mBtnRepeatOrder.setOnClickListener(this);
+            mBtnYoghourt.setOnClickListener(this);
+
 
         }
+
+        @Override
+        public void onClick(View view) {
+
+            switch (view.getId()) {
+                //新鲜牛奶 btn
+                case R.id.ll_fresh_milk:
+
+                    LogHelper.i("ll_fresh_milk");
+                    if (mHeaderBtnClickListener != null) {
+                        mHeaderBtnClickListener.onfreshMilkBtnClick();
+                    }
+
+
+                    break;
+
+                //新鲜酸奶 btn
+                case R.id.ll_yoghourt:
+
+                    if (mHeaderBtnClickListener != null) {
+                        mHeaderBtnClickListener.onYoghourtBtnClick();
+                    }
+
+                    LogHelper.i("ll_yoghourt");
+                    break;
+
+                //附近门店 btn
+                case R.id.ll_nearby_stores:
+
+                    if (mHeaderBtnClickListener != null) {
+                        mHeaderBtnClickListener.onNearbyStoresBtnClick();
+                    }
+
+                    LogHelper.i("ll_nearby_stores");
+                    break;
+
+                //订单续订 btn
+                case R.id.ll_repeat_order:
+
+                    if (mHeaderBtnClickListener != null) {
+                        mHeaderBtnClickListener.onRepeatOrderBtnClick();
+                    }
+
+
+                    LogHelper.i("ll_repeat_order");
+
+                    break;
+            }
+
+        }
+    }
+
+
+    public interface onHeaderBtnClickListener {
+
+        /**
+         * 新鲜牛奶点击时回调
+         */
+        void onfreshMilkBtnClick();
+
+        /**
+         * 新鲜酸奶点击时回调
+         */
+        void onYoghourtBtnClick();
+
+        /**
+         * 附近门店击时回调
+         */
+        void onNearbyStoresBtnClick();
+
+        /**
+         * 订单续订点击时回调
+         */
+        void onRepeatOrderBtnClick();
+
+
+    }
+
+    public void setOnHeaderBtnClickListener(onHeaderBtnClickListener mHeaderBtnClickListener) {
+        this.mHeaderBtnClickListener = mHeaderBtnClickListener;
     }
 
     /**
@@ -247,7 +343,7 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
         private void loadImage(ImageView iv_large, String imageview) {
 
             Glide.with(mContext)
-                    .load(Common.OUTSIDE_CHAIN+imageview)
+                    .load(Common.OUTSIDE_CHAIN + imageview)
                     .centerCrop()
                     .placeholder(R.drawable.ic_avater_default)
                     .into(iv_large);

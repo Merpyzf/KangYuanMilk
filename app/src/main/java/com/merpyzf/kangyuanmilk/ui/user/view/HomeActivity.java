@@ -33,6 +33,7 @@ import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
+import com.merpyzf.kangyuanmilk.ui.adapter.HomeAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.view.AboutActivity;
 import com.merpyzf.kangyuanmilk.ui.home.view.CategoryPickerFragment;
 import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
@@ -58,7 +59,7 @@ import butterknife.BindView;
  */
 public class HomeActivity extends BaseActivity
         implements IHomeContract.IHomeView, NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener
-        , Observer {
+        , HomeAdapter.onHeaderBtnClickListener, Observer {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -292,8 +293,6 @@ public class HomeActivity extends BaseActivity
 
                 mToolbar.setTitle(R.string.title_activity_home);
                 mNavFragManager.performClickNavMenu(item.getItemId());
-                mCoordinatorLayout.setEnabled(true);
-
                 mCurrentPage = CurrentPage.HOME;
                 //刷新menu中的item
                 invalidateOptionsMenu();
@@ -302,17 +301,16 @@ public class HomeActivity extends BaseActivity
             case R.id.action_goods:
 
                 mToolbar.setTitle(R.string.title_goods);
-                mNavFragManager.performClickNavMenu(item.getItemId());
-                mCoordinatorLayout.setEnabled(false);
 
+                mNavFragManager.performClickNavMenu(item.getItemId());
                 mCurrentPage = CurrentPage.GOODS;
+
                 invalidateOptionsMenu();
                 break;
             case R.id.action_shopping_cart:
 
                 mToolbar.setTitle(R.string.title_shoppingcart);
                 mNavFragManager.performClickNavMenu(item.getItemId());
-                mCoordinatorLayout.setEnabled(false);
 
                 mCurrentPage = CurrentPage.SHOPPING_CART;
                 invalidateOptionsMenu();
@@ -414,6 +412,57 @@ public class HomeActivity extends BaseActivity
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onfreshMilkBtnClick() {
+
+
+        selectedGoodsAction(2);
+
+
+    }
+
+
+    @Override
+    public void onYoghourtBtnClick() {
+
+
+        selectedGoodsAction(2);
+
+    }
+
+
+    @Override
+    public void onNearbyStoresBtnClick() {
+        App.showToast("附近商店");
+    }
+
+    @Override
+    public void onRepeatOrderBtnClick() {
+        App.showToast("订单续订");
+    }
+
+    /**
+     * 选择商品页面
+     *
+     * @param id 商品分类对应的编号
+     */
+    private void selectedGoodsAction(int id) {
+
+        mToolbar.setTitle(R.string.title_goods);
+
+        mNavFragManager.performClickNavMenu(R.id.action_goods);
+
+        mCurrentPage = CurrentPage.GOODS;
+        invalidateOptionsMenu();
+        mBottomNavView.setSelectedItemId(R.id.action_goods);
+
+        // TODO: 2017-08-25  BUG!!!
+        GoodsFragment currentTab = (GoodsFragment) mNavFragManager.getCurrentTab();
+        currentTab.currentCategoryId(id);
+
     }
 
     /**
@@ -572,6 +621,14 @@ public class HomeActivity extends BaseActivity
     public void cancelLoadingDialog() {
 
     }
+
+
+    public void Test1() {
+
+        App.showToast("新鲜牛奶");
+
+    }
+
 
     public enum AppBarState {
         EXPAND,

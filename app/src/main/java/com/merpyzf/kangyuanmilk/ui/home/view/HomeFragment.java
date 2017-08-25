@@ -15,6 +15,7 @@ import com.merpyzf.kangyuanmilk.ui.adapter.HomeAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
 import com.merpyzf.kangyuanmilk.ui.home.contract.IHomeCantract;
 import com.merpyzf.kangyuanmilk.ui.home.presenter.HomePresenterImpl;
+import com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import butterknife.BindView;
  *
  * @author wangke
  */
-public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeView {
+public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeView, HomeAdapter.onHeaderBtnClickListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -35,11 +36,11 @@ public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeVie
     PullToRefreshView mPullToRefresh;
     private List<HomeBean.ResponseBean.ResultListBean> oldDataList = new ArrayList<>();
 
-
     private LinearLayoutManager mLayoutManager;
     private IHomeCantract.IHomePresenter mPresenter;
     private HomeAdapter mHomeAdapter;
     private MaterialDialog mLoginDialog;
+    private HomeActivity mHomeActivity = null;
 
     @Override
     protected int getContentLayoutId() {
@@ -49,6 +50,7 @@ public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeVie
     @Override
     protected void initWidget(View rootview) {
 
+        mHomeActivity = (HomeActivity) getActivity();
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mHomeAdapter = new HomeAdapter(oldDataList, getContext(), mRecyclerView);
@@ -74,6 +76,9 @@ public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeVie
             mPresenter.getHomePageData(true);
 
         });
+
+        mHomeAdapter.setOnHeaderBtnClickListener(this);
+
     }
 
 
@@ -134,7 +139,7 @@ public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeVie
             //刷新
 
             AdapterDiffCallback<HomeBean.ResponseBean.ResultListBean> diffCallback = new AdapterDiffCallback<>(oldDataList, response.getResultList());
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback,true);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback, true);
             mHomeAdapter.setDatas(response.getResultList());
             diffResult.dispatchUpdatesTo(mHomeAdapter);
             mPullToRefresh.setRefreshing(false);
@@ -142,6 +147,59 @@ public class HomeFragment extends BaseFragment implements IHomeCantract.IHomeVie
         }
 
     }
+
+
+    @Override
+    public void onfreshMilkBtnClick() {
+
+
+        if (mHomeActivity != null) {
+
+            mHomeActivity.onfreshMilkBtnClick();
+        }
+
+
+    }
+
+    @Override
+    public void onYoghourtBtnClick() {
+
+
+        if (mHomeActivity != null) {
+
+            mHomeActivity.onYoghourtBtnClick();
+        }
+
+
+    }
+
+    @Override
+    public void onNearbyStoresBtnClick() {
+
+
+        if (mHomeActivity != null) {
+
+            mHomeActivity.onNearbyStoresBtnClick();
+        }
+
+
+
+
+    }
+
+    @Override
+    public void onRepeatOrderBtnClick() {
+
+
+        if (mHomeActivity != null) {
+
+            mHomeActivity.onRepeatOrderBtnClick();
+        }
+
+
+
+    }
+
 
     /**
      * Fragemnt的View销毁时回调

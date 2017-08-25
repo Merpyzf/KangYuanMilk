@@ -128,7 +128,13 @@ public class TipView extends RelativeLayout implements ITipView {
     public void reset() {
 
         setVisibility(INVISIBLE);
-        mBindView.setVisibility(VISIBLE);
+
+        if (mBindView != null) {
+
+            mBindView.setVisibility(VISIBLE);
+
+        }
+
 
     }
 
@@ -136,6 +142,11 @@ public class TipView extends RelativeLayout implements ITipView {
     public void bindView(View view) {
 
         mBindView = view;
+        setVisibility(INVISIBLE);
+        if (mBindView != null) {
+            mBindView.setVisibility(VISIBLE);
+
+        }
 
     }
 

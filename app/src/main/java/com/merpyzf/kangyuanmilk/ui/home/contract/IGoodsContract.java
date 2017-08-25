@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.home.contract;
 
+import com.merpyzf.kangyuanmilk.common.widget.TipView;
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
@@ -17,7 +18,15 @@ public interface IGoodsContract {
 
         void getGoodsData(List<Goods> goodsList);
 
+        /**
+         * 商品为空时的提示
+         */
+        void showEmpty();
 
+        /**
+         * 网络错误时的提示
+         */
+        void showNetError();
 
     }
 
@@ -25,7 +34,7 @@ public interface IGoodsContract {
     interface IGoodsPresenter extends IBasePresenter<IGoodsView> {
 
 
-        void getGoodsData(GoodsFragment context, String categoryId, String page, String num);
+        void getGoodsData(GoodsFragment context, TipView tipView, String categoryId, String page, String num);
 
     }
 

@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.user.contract;
 
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
-import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity;
 
 /**
  * Created by wangke on 2017-07-29.

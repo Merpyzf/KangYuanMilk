@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.user.contract;
 
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
-import com.merpyzf.kangyuanmilk.ui.user.UserAddressActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.UserAddressActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
 
 import java.util.List;

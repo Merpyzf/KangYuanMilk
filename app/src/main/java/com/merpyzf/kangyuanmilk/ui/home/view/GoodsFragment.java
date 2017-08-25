@@ -2,6 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.home.view;
 
 
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +11,11 @@ import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseFragment;
 import com.merpyzf.kangyuanmilk.common.bean.PageBean;
 import com.merpyzf.kangyuanmilk.common.widget.MyStaggeredGridLayoutManager;
+import com.merpyzf.kangyuanmilk.common.widget.TipView;
 import com.merpyzf.kangyuanmilk.ui.adapter.GoodsAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
 import com.merpyzf.kangyuanmilk.ui.home.contract.IGoodsContract;
@@ -38,6 +41,12 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     FloatingActionButton mFabMoveTop;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefresh;
+    @BindView(R.id.coordLayout)
+    CoordinatorLayout mRootView;
+
+    @BindView(R.id.tipView)
+    TipView mTipView;
+
 
     private IGoodsContract.IGoodsPresenter mPresenter;
     private int page = 1;
@@ -45,7 +54,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     private ItemMarginDecoration mDecoration;
     private boolean isFirst = true;
     private MyStaggeredGridLayoutManager mLayoutManager;
-    private BottomSheetBehavior<View> mBehavior;
     //存放旧的商品列表
     private List<Goods> mGoodsList = new ArrayList<>();
     private PageBean mPageBean;
@@ -74,6 +82,8 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     protected void initWidget(View rootview) {
 
         isFirst = true;
+        mTipView.bindView(mRootView);
+
         mGoodsList.clear();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mLayoutManager = new MyStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -101,7 +111,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
 
             //当设置为刷新状态时候此时的page将设置为1
             mPageBean.setRefresh(true);
-            mPresenter.getGoodsData(GoodsFragment.this,mPageBean.getRemark(),String.valueOf(mPageBean.getLoadPage()),String.valueOf(mPageBean.getNum()));
+            mPresenter.getGoodsData(GoodsFragment.this,mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
 
 
         });
@@ -118,7 +128,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
             public void onLoadMore() {
 
                 //分页加载数据
-                mPresenter.getGoodsData(GoodsFragment.this, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
+                mPresenter.getGoodsData(GoodsFragment.this,mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getLoadPage()), String.valueOf(mPageBean.getNum()));
 
             }
         });
@@ -152,7 +162,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
         mPresenter.attachView(this);
 
         //首次进入时进行数据的获取
-        mPresenter.getGoodsData(this, mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
+        mPresenter.getGoodsData(this,mTipView ,mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
 
 
     }
@@ -175,35 +185,67 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     @Override
     public void getGoodsData(List<Goods> goodsList) {
 
+        if (mPageBean.isRefresh()) {
 
-
-            if (mPageBean.isRefresh()) {
-
-                if (mAdapter != null) {
-                    mAdapter.clearData();
-                    mAdapter.addDatas(goodsList);
-                    //重置刷新的状态
-                    mPageBean.setRefresh(false);
-                    mSwipeRefresh.setRefreshing(mPageBean.isRefresh());
-
-                    return;
-                }
-            }
-
-            if (mPageBean.getPage() == 1) {
-
-                if (isFirst) {
-                    mAdapter.addDatas(goodsList);
-                    isFirst = false;
-                }
-
-            } else {
-
+            if (mAdapter != null) {
+                mAdapter.clearData();
                 mAdapter.addDatas(goodsList);
-                mRecyclerView.loadMoreComplete();
+                //重置刷新的状态
+                mPageBean.setRefresh(false);
+                mSwipeRefresh.setRefreshing(mPageBean.isRefresh());
+
+                return;
             }
+        }
+
+        //如果没有加载出数据
+        if(goodsList.size() == 0){
+
+            mRecyclerView.loadMoreComplete();
+            App.showToast("没有更多的数据加载");
+            return;
 
         }
+
+
+
+        if (mPageBean.getPage() == 1) {
+
+            if (isFirst) {
+                mAdapter.addDatas(goodsList);
+                isFirst = false;
+            }
+
+        } else {
+
+            mAdapter.addDatas(goodsList);
+            mRecyclerView.loadMoreComplete();
+        }
+
+    }
+
+
+    @Override
+    public void showEmpty() {
+
+        //表示第一次加载的时候数据就为空，不包括刷新
+        if(mAdapter.getPageBean().getPage() == 1){
+
+            mTipView.setEmptyTip("空空如也");
+
+        }
+
+
+
+    }
+
+    @Override
+    public void showNetError() {
+
+
+        mTipView.setErrorTip("网络异常");
+
+    }
 
 
     @Override
@@ -265,7 +307,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
         mAdapter.getPageBean().setRemark(id + "");
         isFirst = true;
         mPageBean.reset();
-        mPresenter.getGoodsData(this, mPageBean.getRemark(),String.valueOf(mPageBean.getPage()),String.valueOf(mPageBean.getNum()));
+        mPresenter.getGoodsData(this,mTipView, mPageBean.getRemark(), String.valueOf(mPageBean.getPage()), String.valueOf(mPageBean.getNum()));
 
     }
 

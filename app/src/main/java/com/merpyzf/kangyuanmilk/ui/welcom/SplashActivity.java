@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.widget.ApplyPermissionFragment;
-import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 
 public class SplashActivity extends AppCompatActivity {

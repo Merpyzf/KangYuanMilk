@@ -3,7 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.user.contract;
 import com.merpyzf.kangyuanmilk.ui.base.IBasePresenter;
 import com.merpyzf.kangyuanmilk.ui.base.IBaseView;
 import com.merpyzf.kangyuanmilk.ui.user.bean.User;
-import com.merpyzf.kangyuanmilk.ui.user.UserInfoActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.UserInfoActivity;
 
 /**
  * Created by Administrator on 2017-07-27.

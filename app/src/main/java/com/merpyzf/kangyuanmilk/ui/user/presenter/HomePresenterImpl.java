@@ -4,7 +4,7 @@ import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.bean.LoginBean;
 import com.merpyzf.kangyuanmilk.ui.login.model.LoginModelImpl;
-import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IHomeContract;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
 import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;

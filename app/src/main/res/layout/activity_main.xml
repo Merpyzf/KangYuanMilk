@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.merpyzf.kangyuanmilk.ui.user.HomeActivity">
+    tools:context="com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity">
 
     <EditText
         android:id="@+id/edt_user"

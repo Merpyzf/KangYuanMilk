@@ -1,4 +1,4 @@
-package com.merpyzf.kangyuanmilk.ui.user;
+package com.merpyzf.kangyuanmilk.ui.user.view;
 
 import android.app.ActivityManager;
 import android.app.ActivityOptions;

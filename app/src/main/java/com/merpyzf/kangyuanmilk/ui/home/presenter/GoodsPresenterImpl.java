@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.ui.home.presenter;
 
+import com.merpyzf.kangyuanmilk.common.widget.TipView;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
 import com.merpyzf.kangyuanmilk.ui.home.bean.GoodsBean;
@@ -7,6 +8,9 @@ import com.merpyzf.kangyuanmilk.ui.home.contract.IGoodsContract;
 import com.merpyzf.kangyuanmilk.ui.home.model.GoodsModelImpl;
 import com.merpyzf.kangyuanmilk.ui.home.model.IGoodsModel;
 import com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment;
+import com.merpyzf.kangyuanmilk.utils.ErrorHandle;
+import com.merpyzf.kangyuanmilk.utils.ErrorHandleHelper;
+import com.merpyzf.kangyuanmilk.utils.NetworkHelper;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import java.util.List;
@@ -25,39 +29,70 @@ public class GoodsPresenterImpl extends BasePresenter<IGoodsContract.IGoodsView>
     public GoodsPresenterImpl() {
 
         mModel = new GoodsModelImpl();
+
     }
 
     @Override
-    public void getGoodsData(GoodsFragment context, String categoryId, String page, String num) {
+    public void getGoodsData(GoodsFragment context, TipView tipView,String categoryId, String page, String num) {
 
-        mModel.getGoodsData(categoryId, page, num)
-                .compose(context.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .subscribe(new Observer<GoodsBean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        tipView.reset();
 
-                    }
+        if (NetworkHelper.isAvailableByPing()) {
 
-                    @Override
-                    public void onNext(GoodsBean goodsBean) {
+            mModel.getGoodsData(categoryId, page, num)
+                    .compose(context.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                    .subscribe(new Observer<GoodsBean>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                        List<Goods> results = goodsBean.getResponse().getDataList();
+                        }
 
-                        mMvpView.getGoodsData(results);
+                        @Override
+                        public void onNext(GoodsBean goodsBean) {
 
 
-                    }
+                            new ErrorHandle(this, goodsBean.getStatus()) {
 
-                    @Override
-                    public void onError(Throwable e) {
+                                @Override
+                                protected void deal() {
 
-                    }
 
-                    @Override
-                    public void onComplete() {
+                                    List<Goods> results = goodsBean.getResponse().getDataList();
 
-                    }
-                });
+                                    if (results.size() == 0) {
 
+                                        mMvpView.showEmpty();
+
+
+                                    }
+
+                                    mMvpView.getGoodsData(results);
+
+
+                                }
+                            };
+
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                            ErrorHandleHelper.handle(e, mMvpView);
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+
+        } else {
+
+            mMvpView.showNetError();
+        }
     }
+
+
 }

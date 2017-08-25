@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.merpyzf.kangyuanmilk.ui.user.HomeActivity"
+    tools:context="com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
 

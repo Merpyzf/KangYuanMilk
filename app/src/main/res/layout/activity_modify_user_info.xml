@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.merpyzf.kangyuanmilk.ui.user.ModifyUserInfoActivity">
+    tools:context="com.merpyzf.kangyuanmilk.ui.user.view.ModifyUserInfoActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

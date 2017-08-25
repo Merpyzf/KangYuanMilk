@@ -5,19 +5,26 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <com.merpyzf.kangyuanmilk.common.widget.TipView
+        android:id="@+id/tipView"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/coordLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context="com.merpyzf.kangyuanmilk.ui.home.view.GoodsFragment">
 
 
         <com.jcodecraeer.xrecyclerview.XRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/blue_50"
+            />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_top"
@@ -28,7 +35,11 @@
             android:layout_marginRight="20dp"
             android:src="@drawable/ic_upward"
             android:tint="@color/white" />
+
+
+
     </android.support.design.widget.CoordinatorLayout>
+
 
 
 

@@ -38,12 +38,10 @@
 
         <!-- 主界面 -->
         <activity
-            android:name=".ui.user.HomeActivity"
+            android:name=".ui.user.view.HomeActivity"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -87,7 +85,7 @@
             android:value="6d83934ee009eaeb2f887234b5899934" />
 
         <activity
-            android:name=".ui.user.UserInfoActivity"
+            android:name=".ui.user.view.UserInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.TestAddressActivity"
@@ -98,17 +96,17 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.StudyActivity" />
         <activity
-            android:name=".ui.user.ModifyUserInfoActivity"
+            android:name=".ui.user.view.ModifyUserInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.StudyRecyclerViewActivity" />
         <activity android:name=".test.StudyRecycler1ViewActivity" />
         <activity android:name=".test.StudyRecyclerw2viewActivity" />
         <activity android:name=".test.ImageViewActivity" />
         <activity
-            android:name=".ui.user.ModifyAddressActivity"
+            android:name=".ui.user.view.ModifyAddressActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.user.UserAddressActivity"
+            android:name=".ui.user.view.UserAddressActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.WaveActivity" />
         <activity
@@ -116,8 +114,7 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.BottomSheetActivity" />
-        <activity android:name=".test.Main2Activity" >
-
+        <activity android:name=".test.Main2Activity">
 
 
         </activity>
@@ -128,7 +125,10 @@
             android:name=".ui.home.view.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.home.view.GoodsDetailActivity" />
-        <activity android:name=".ui.welcom.SplashActivity"></activity>
+        <activity android:name=".ui.welcom.SplashActivity">
+
+
+        </activity>
         <activity
             android:name=".ui.welcom.GuideActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>

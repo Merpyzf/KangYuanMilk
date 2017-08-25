@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.user.presenter;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.ui.base.BasePresenter;
-import com.merpyzf.kangyuanmilk.ui.user.UserAddressActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.UserAddressActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.Address;
 import com.merpyzf.kangyuanmilk.ui.user.bean.MessageBean;
 import com.merpyzf.kangyuanmilk.ui.user.bean.UserAddressBean;

@@ -28,7 +28,7 @@ import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.login.contract.ILoginContract;
 import com.merpyzf.kangyuanmilk.ui.login.presenter.LoginPresenterImpl;
-import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 

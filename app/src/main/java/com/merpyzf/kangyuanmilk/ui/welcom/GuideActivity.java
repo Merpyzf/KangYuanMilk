@@ -15,7 +15,7 @@ import com.itsronald.widget.ViewPagerIndicator;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
 import com.merpyzf.kangyuanmilk.common.widget.ColorShades;
-import com.merpyzf.kangyuanmilk.ui.user.HomeActivity;
+import com.merpyzf.kangyuanmilk.ui.user.view.HomeActivity;
 import com.merpyzf.kangyuanmilk.utils.SharedPreHelper;
 
 import butterknife.BindView;

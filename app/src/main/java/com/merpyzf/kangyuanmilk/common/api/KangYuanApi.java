@@ -25,7 +25,7 @@ import retrofit2.http.Path;
 
 public interface KangYuanApi {
 
-    String BASE_URL = "http://115.159.127.212:8080/KangYuanMilk/android/";
+    String BASE_URL = "http://115.159.127.212:80/KangYuanMilk/android/";
 //    String BASE_URL = "http://192.168.0.54:8089/android/";
 
     /**

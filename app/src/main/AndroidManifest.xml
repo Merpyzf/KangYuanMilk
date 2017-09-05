@@ -42,12 +42,6 @@
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
 
         </activity>
         <activity
@@ -114,10 +108,7 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.BottomSheetActivity" />
-        <activity android:name=".test.Main2Activity">
-
-
-        </activity>
+        <activity android:name=".test.Main2Activity"></activity>
         <activity
             android:name=".ui.order.OrderActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -125,16 +116,17 @@
             android:name=".ui.home.view.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.home.view.GoodsDetailActivity" />
-        <activity android:name=".ui.welcom.SplashActivity">
-
-
-        </activity>
+        <activity android:name=".ui.welcom.SplashActivity"></activity>
         <activity
             android:name=".ui.welcom.GuideActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".test.RxActivity">
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".test.RxActivity"></activity>
+        <activity android:name=".test.CalenderViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

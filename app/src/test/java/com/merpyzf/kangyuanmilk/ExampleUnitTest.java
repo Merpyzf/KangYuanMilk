@@ -2,7 +2,11 @@ package com.merpyzf.kangyuanmilk;
 
 import org.junit.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.ObservableEmitter;
@@ -88,10 +92,10 @@ public class ExampleUnitTest {
 
     }
 
-    public <T>void countGreaterThan(List<T> array, T max){
+    public <T> void countGreaterThan(List<T> array, T max) {
 
-        int count =0;
-        for(int i=0;i<array.size();i++){
+        int count = 0;
+        for (int i = 0; i < array.size(); i++) {
 
          /*   if(array.get(i)>max){
 
@@ -102,11 +106,23 @@ public class ExampleUnitTest {
         }
 
 
-
     }
-    @Test
 
-    public void testGenericity1() {
+    @Test
+    public void testCalender() {
+        try {
+            String dateString = "2017-08-28";
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = sdf.parse(dateString);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int week = calendar.get(Calendar.WEEK_OF_MONTH);
+           System.out.println("第"+week+"周的第"+(calendar.get(Calendar.DAY_OF_WEEK)-1) +"天");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
     }

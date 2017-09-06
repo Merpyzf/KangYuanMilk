@@ -28,4 +28,13 @@ public final class TimeHelper {
 
     }
 
+
+    public static String getDate(Date date) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = format.format(date);
+        return strDate;
+    }
+
+
 }

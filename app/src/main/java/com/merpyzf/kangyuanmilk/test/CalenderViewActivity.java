@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.widget.CalendarManager;
 import com.merpyzf.kangyuanmilk.common.widget.CalendarView;
+import com.merpyzf.kangyuanmilk.common.widget.MyRecyclerView;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class CalenderViewActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
+    private MyRecyclerView mRecyclerView;
     private List<Integer> mMonth;
     private Context mContext;
 
@@ -38,7 +40,7 @@ public class CalenderViewActivity extends AppCompatActivity {
         mMonth.add(11);
         mMonth.add(12);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = (MyRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
         mRecyclerView.setAdapter(new myAdapter(mMonth, mContext, mRecyclerView));
@@ -71,8 +73,11 @@ public class CalenderViewActivity extends AppCompatActivity {
 
         public myHolder(View itemView) {
             super(itemView);
-            tv_header = (TextView) itemView.findViewById(R.id.tv_header);
-            mCalendarView = (CalendarView) itemView.findViewById(R.id.calendarView);
+            tv_header = itemView.findViewById(R.id.tv_header);
+            mCalendarView = itemView.findViewById(R.id.calendarView);
+
+            //将CalendarView添加到CalendarManager中进行统一管理
+            CalendarManager.getInstance().addCalendarView(mCalendarView);
 
         }
 

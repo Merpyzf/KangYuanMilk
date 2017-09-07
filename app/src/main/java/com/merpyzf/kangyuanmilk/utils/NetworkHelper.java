@@ -77,7 +77,11 @@ public final class NetworkHelper {
      * @return {@code true}: 可用<br>{@code false}: 不可用
      */
     public static boolean isAvailableByPing() {
-        return isAvailableByPing(null);
+//        return isAvailableByPing(null);
+
+        // TODO: 2017/9/7 在主线程调用ping命令容易出现anr
+
+        return true;
     }
 
     /**

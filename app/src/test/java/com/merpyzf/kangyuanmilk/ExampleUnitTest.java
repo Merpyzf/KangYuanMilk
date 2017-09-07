@@ -111,14 +111,14 @@ public class ExampleUnitTest {
     @Test
     public void testCalender() {
         try {
-            String dateString = "2017-08-28";
+            String dateString = "2017-09-9";
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sdf.parse(dateString);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             int week = calendar.get(Calendar.WEEK_OF_MONTH);
-           System.out.println("第"+week+"周的第"+(calendar.get(Calendar.DAY_OF_WEEK)-1) +"天");
+           System.out.println("第"+week+"周的第"+(calendar.get(Calendar.DAY_OF_WEEK)) +"天");
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -126,7 +126,6 @@ public class ExampleUnitTest {
 
 
     }
-
 
     @Test
     public void testRxJava1() {

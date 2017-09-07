@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.merpyzf.kangyuanmilk.common.widget.CalendarView
-        android:id="@+id/calenderView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/yellow_100" />
+        android:layout_height="match_parent"
+        ></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

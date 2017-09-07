@@ -2,6 +2,7 @@ package com.merpyzf.kangyuanmilk.common.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -10,7 +11,6 @@ import android.view.View;
 
 import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
-import com.merpyzf.kangyuanmilk.utils.TimeHelper;
 
 import net.qiujuer.genius.res.Resource;
 import net.qiujuer.genius.ui.Ui;
@@ -37,6 +37,10 @@ public class CalendarView extends View {
 
     private Paint mPaintCell = null;
     private Paint mPaintText = null;
+    //用于填充颜色的paint
+    private Paint mPaintFill = null;
+
+
     private int FIRST_CELL_INDEX = -1;
 
 
@@ -45,10 +49,11 @@ public class CalendarView extends View {
      */
     enum CellState {
 
-        CURRENT,
-        BEFORE,
-        AFTER,
-        REST
+        CURRENT, //当天
+        BEFORE, //以前
+        AFTER, //以后
+        WEEK, //周末
+
 
     }
 
@@ -66,7 +71,9 @@ public class CalendarView extends View {
         init();
     }
 
-
+    /**
+     * 初始化画笔
+     */
     public void init() {
 
         mPaintCell = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -78,6 +85,12 @@ public class CalendarView extends View {
         mPaintText.setColor(Resource.Color.BLACK);
         mPaintText.setTextSize(Ui.dipToPx(getResources(), 16));
         mPaintText.setTextAlign(Paint.Align.CENTER);
+
+        mPaintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintFill.setColor(Color.argb(100, 20, 30, 40));
+        mPaintFill.setStyle(Paint.Style.FILL);
+
+
     }
 
     @Override
@@ -155,8 +168,19 @@ public class CalendarView extends View {
                     // TODO: 2017/9/6 日期选择点击的回调,并绘制当前cell的状态
 
                     LogHelper.i("点击的cell的下标 ==>" + clickPosition);
-                }
+                    LogHelper.i("点击cell的日期 ==> " + mCellList.get(clickPosition).getDate());
 
+                    for (Cell cell : mCellList) {
+
+                        cell.setChoiceState(false,"hello");
+
+                    }
+
+
+                    mCellList.get(clickPosition).setChoiceState(true, "hello");
+                    postInvalidate();
+
+                }
 
                 break;
 
@@ -219,10 +243,11 @@ public class CalendarView extends View {
 
             Calendar calendar = Calendar.getInstance();
             calendar.set(CalendarUtils.getCurrentYear(), month - 1, i);
-            String strDate = TimeHelper.getDate(calendar.getTime());
+            String strDate = CalendarUtils.getDate(calendar.getTime());
             int dayOfWeek = CalendarUtils.getDayOfWeek(strDate);
-            if (i == 1) {
 
+            if (i == 1) {
+                //记录当前CalendarView中的第一个cell的index
                 FIRST_CELL_INDEX = dayOfWeek;
             }
 
@@ -262,6 +287,9 @@ public class CalendarView extends View {
         private CellState mState;
         private int row; //行
         private int col; //列
+        private String tip = "";
+        //标记当前的cell是否被选中
+        private boolean isChoice = false;
 
         public Cell(Calendar calendar, int row, int col) {
 
@@ -271,6 +299,21 @@ public class CalendarView extends View {
             getCurrentState(calendar);
 
         }
+
+
+        /**
+         * 设置当前cell的选中状态状态
+         *
+         * @param isChoice
+         */
+        public void setChoiceState(Boolean isChoice, String tip) {
+
+            this.tip = tip;
+            this.isChoice = isChoice;
+
+
+        }
+
 
         /**
          * 绘制自己的边框
@@ -282,6 +325,15 @@ public class CalendarView extends View {
             canvas.drawRect(col * mCellWidth, row * mCellHeight, col * mCellWidth + mCellWidth, row * mCellHeight + mCellHeight, mPaintCell);
 
             canvas.drawText(String.valueOf(mCalendar.get(Calendar.DAY_OF_MONTH)), (float) (col * mCellWidth + mCellWidth * 0.5), (float) (row * mCellHeight + mCellHeight * 0.5), mPaintText);
+
+            if (isChoice) {
+
+                //将填充一个透明色，突出选中的那个日期，同时绘制文字到上面
+                canvas.drawRect(col * mCellWidth, row * mCellHeight, col * mCellWidth + mCellWidth, row * mCellHeight + mCellHeight, mPaintFill);
+                canvas.drawText(String.valueOf("开始"), (float) (col * mCellWidth + mCellWidth * 0.5), (float) (row * mCellHeight + mCellHeight * 0.75), mPaintText);
+
+
+            }
 
 
         }
@@ -297,12 +349,20 @@ public class CalendarView extends View {
             Calendar currCalendar = Calendar.getInstance();
             currCalendar.setTime(CalendarUtils.getCurrentDate());
 
+            //周末
+            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 
+                mState = CellState.WEEK;
+            }
+
+
+            //以后的日期
             if (calendar.get(Calendar.MONTH) > currCalendar.get(Calendar.MONTH)) {
                 mState = CellState.AFTER;
                 LogHelper.i("after");
                 return mState;
 
+                //前面的日期
             } else if (calendar.get(Calendar.MONTH) < currCalendar.get(Calendar.MONTH)) {
 
                 LogHelper.i("before");
@@ -340,6 +400,28 @@ public class CalendarView extends View {
         }
 
 
+        /**
+         * 返回当前cell的日期
+         *
+         * @return
+         */
+        public String getDate() {
+
+            String strDate;
+
+            return mCalendar.get(Calendar.YEAR) + "-" + mCalendar.get(Calendar.MONTH) + "-" + mCalendar.get(Calendar.DAY_OF_MONTH);
+
+        }
+
+
+        /**
+         * 重置当前cell的选中状态
+         */
+        public void reset() {
+
+            isChoice = false;
+
+        }
     }
 
 

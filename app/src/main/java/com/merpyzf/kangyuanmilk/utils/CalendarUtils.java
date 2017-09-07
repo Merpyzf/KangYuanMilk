@@ -54,7 +54,7 @@ public class CalendarUtils {
 
 
     /**
-     * 获取传入日期所在每月的第几周
+     * 获取当前日期为每月的第几周
      *
      * @param date
      * @return
@@ -127,5 +127,31 @@ public class CalendarUtils {
 
 
         return result;
+    }
+
+    /**
+     * 根据传入的毫秒数返回当前的时间
+     *
+     * @param time 毫秒数
+     * @return String类型的时间
+     */
+    public static String getDateTime(long time) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String strDateTime = format.format(new Date(time));
+        return strDateTime;
+
+    }
+
+    /**
+     * 根据传入的Date类型的日期返回Str类型的 yyyy-MM-dd 时间
+     * @param date
+     * @return
+     */
+    public static String getDate(Date date) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = format.format(date);
+        return strDate;
     }
 }

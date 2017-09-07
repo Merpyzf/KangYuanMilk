@@ -29,7 +29,58 @@ public class MyRecyclerView extends RecyclerView {
 
     GestureDetector mGestureDetector = new GestureDetector(App.getContext(), new MyGestureListener());
 
+
+
+
+
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent e) {
+
+
+        boolean isIntercept = false;
+
+
+        switch (e.getAction()){
+
+            case MotionEvent.ACTION_DOWN:
+
+                LogHelper.i("tag","==> ACTION_DOWN");
+
+                //不拦截
+                isIntercept = false;
+
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+
+                LogHelper.i("tag","==> ACTION_MOVE");
+
+                //拦截
+                isIntercept = true;
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+
+                LogHelper.i("tag","==> ACTION_UP");
+
+                //抬起的时候不进行拦截
+                isIntercept = false;
+
+                break;
+
+        }
+
+        LogHelper.i("tag","isIntercept==>"+isIntercept);
+
+
+        return isIntercept;
+    }
+
+
+
+
+ /*   @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
 
 
@@ -38,44 +89,49 @@ public class MyRecyclerView extends RecyclerView {
         isIntercept = mGestureDetector.onTouchEvent(e);
 
 
-        LogHelper.i("isIntercept==>"+isIntercept);
+        LogHelper.i("tag", "isIntercept==>" + isIntercept);
 
         return isIntercept;
-    }
+    }*/
+
 
 }
 
 class MyGestureListener implements GestureDetector.OnGestureListener {
 
+    private boolean isIntercept = false;
+
     @Override
     public boolean onDown(MotionEvent motionEvent) {
 
 
-        LogHelper.i("==>onDown");
-
-
-        return false;
+        //onDown事件拦截之后，后续的时间就传递到当前的ViewGroup，不会将事件传递到下面的子View中去
+        return isIntercept;
     }
 
     @Override
     public void onShowPress(MotionEvent motionEvent) {
+
 
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent motionEvent) {
 
+        isIntercept = false;
 
-
-        return false;
+        return isIntercept;
     }
 
     @Override
     public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
 
 
-        LogHelper.i("==>onScroll");
-        return true;
+        LogHelper.i("tag","==>onScroll");
+        isIntercept = true;
+
+
+        return isIntercept;
     }
 
     @Override
@@ -86,8 +142,13 @@ class MyGestureListener implements GestureDetector.OnGestureListener {
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
 
-        LogHelper.i("==>onFling");
-        return true;
+
+        isIntercept = false;
+
+        LogHelper.i("tag","onFling==>");
+
+        return isIntercept;
     }
+
 
 }

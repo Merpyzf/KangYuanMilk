@@ -43,6 +43,13 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
 
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
@@ -122,11 +129,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.RxActivity"></activity>
         <activity android:name=".test.CalenderViewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

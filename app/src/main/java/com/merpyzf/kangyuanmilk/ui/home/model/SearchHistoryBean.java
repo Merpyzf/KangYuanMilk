@@ -2,7 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.home.model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.merpyzf.kangyuanmilk.utils.TimeHelper;
+import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
 
 /**
  * Created by wangke on 2017-08-01.
@@ -21,7 +21,7 @@ public class SearchHistoryBean {
     public SearchHistoryBean(String searchInfo) {
 
         this.searchInfo = searchInfo;
-        this.date = TimeHelper.getDateTime(System.currentTimeMillis());
+        this.date = CalendarUtils.getDateTime(System.currentTimeMillis());
     }
 
 

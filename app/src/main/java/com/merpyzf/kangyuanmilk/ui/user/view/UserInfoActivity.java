@@ -24,17 +24,17 @@ import com.bumptech.glide.request.target.ViewTarget;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
-import com.merpyzf.kangyuanmilk.common.widget.GalleryFragment;
 import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.observer.Observer;
 import com.merpyzf.kangyuanmilk.common.observer.UserInfoSubject;
 import com.merpyzf.kangyuanmilk.common.widget.AvaterView;
+import com.merpyzf.kangyuanmilk.common.widget.GalleryFragment;
 import com.merpyzf.kangyuanmilk.common.widget.GalleryView;
 import com.merpyzf.kangyuanmilk.ui.user.bean.User;
 import com.merpyzf.kangyuanmilk.ui.user.contract.IUserInfoContract;
 import com.merpyzf.kangyuanmilk.ui.user.presenter.UserInfoPresenterImpl;
+import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
-import com.merpyzf.kangyuanmilk.utils.TimeHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.yalantis.ucrop.UCrop;
 
@@ -285,7 +285,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoContract.
         mTvGender.setText(user.isUser_sex() ? "男" : "女");
         mTvDefaultAddress.setText(user.getAddress_content());
         mTvIdentity.setText(user.getUser_idcard());
-        mTvRegDate.setText(TimeHelper.getDateTime(Long.valueOf(user.getUser_registerdate())));
+        mTvRegDate.setText(CalendarUtils.getDateTime(Long.valueOf(user.getUser_registerdate())));
         mTvTel.setText(user.getUser_tel());
 
         LogHelper.i(user.toString());

@@ -3,8 +3,8 @@ package com.merpyzf.kangyuanmilk.utils.db.dao;
 import com.j256.ormlite.dao.Dao;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.ui.home.model.SearchHistoryBean;
+import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
-import com.merpyzf.kangyuanmilk.utils.TimeHelper;
 import com.merpyzf.kangyuanmilk.utils.db.DBHelper;
 
 import java.sql.SQLException;
@@ -69,7 +69,7 @@ public class SearchDao {
 
             //表示这个关键字在之前已经查询过
             if (search_info.size() == 1) {
-                num = mDao.updateRaw("UPDATE tab_search SET  search_date = ? WHERE search_info = ?", TimeHelper.getDateTime(System.currentTimeMillis()), searchHistoryBean.getSearchInfo());
+                num = mDao.updateRaw("UPDATE tab_search SET  search_date = ? WHERE search_info = ?", CalendarUtils.getDateTime(System.currentTimeMillis()), searchHistoryBean.getSearchInfo());
 
                 return num;
             }

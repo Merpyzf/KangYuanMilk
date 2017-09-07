@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.common.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -45,11 +46,30 @@ public class CalenderView extends View {
 
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+
+
+    }
+
     class Cell{
 
         int row; //行
         int col; //列
 
+
+
+
+    }
+
+
+    enum CellState{
+
+        CURREENT, //当前的日期
+        BEFORE_CURRENT,  //之前的日期
+        ARTER_CURRENT //之后的日期
 
 
     }

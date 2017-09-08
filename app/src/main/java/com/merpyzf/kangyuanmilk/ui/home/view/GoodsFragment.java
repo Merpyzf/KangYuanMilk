@@ -14,7 +14,9 @@ import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseFragment;
 import com.merpyzf.kangyuanmilk.common.bean.PageBean;
 import com.merpyzf.kangyuanmilk.common.widget.MyStaggeredGridLayoutManager;
+import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.TipView;
+import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 import com.merpyzf.kangyuanmilk.ui.adapter.GoodsAdapter;
 import com.merpyzf.kangyuanmilk.ui.home.bean.Goods;
 import com.merpyzf.kangyuanmilk.ui.home.contract.IGoodsContract;
@@ -92,6 +94,8 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
                 getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.pink_a100)});
         mSwipeRefresh.setEnabled(true);
 
+
+
     }
 
     @Override
@@ -129,6 +133,22 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
     protected void initData() {
 
         mAdapter = new GoodsAdapter(mGoodsList, getActivity(), mRecyclerView);
+
+        mAdapter.setOnItemClickListener(new RecyclerAdapter.ItemClickListener<Goods>() {
+            @Override
+            public void onItemClick(ViewHolder viewHolder, Goods goods, int position) {
+
+
+                GoodsDetailActivity.showAction(getContext());
+
+
+            }
+
+            @Override
+            public boolean onItemLongClick(ViewHolder viewHolder, Goods goods, int position) {
+                return false;
+            }
+        });
 
         mPageBean = mAdapter.getPageBean();
         //获取上一次选择的商品分类id
@@ -277,7 +297,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
 
         mGoodsList.clear();
 
-        if(mAdapter==null){
+        if (mAdapter == null) {
 
             return;
         }

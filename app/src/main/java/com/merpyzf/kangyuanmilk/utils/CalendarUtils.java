@@ -145,6 +145,7 @@ public class CalendarUtils {
 
     /**
      * 根据传入的Date类型的日期返回Str类型的 yyyy-MM-dd 时间
+     *
      * @param date
      * @return
      */
@@ -154,4 +155,21 @@ public class CalendarUtils {
         String strDate = format.format(date);
         return strDate;
     }
+
+    /**
+     * 计算两个日期间的天数
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static int getIntervalDay(Calendar startDate, Calendar endDate) {
+
+        int day = (int) ((endDate.getTimeInMillis() - startDate.getTimeInMillis()) / (1000 * 3600 * 24));
+
+        LogHelper.i("日期间的间隔天数==>"+day);
+
+        return day;
+
+    }
+
 }

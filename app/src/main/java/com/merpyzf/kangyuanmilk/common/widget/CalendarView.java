@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
@@ -21,6 +22,10 @@ import java.util.List;
 
 /**
  * Created by wangke on 2017/9/5.
+ *
+ * 放置在recyclerView中时,当第二个条目没有完全展开的时候，程序会出现空指针异常,未找到程序bug
+ * 未修复
+ *
  */
 
 public class CalendarView extends View {
@@ -40,9 +45,13 @@ public class CalendarView extends View {
     //用于填充颜色的paint
     private Paint mPaintFill = null;
 
+    //两个选中日期之间的最小的间隔天数
+    private int mMinIntervalDay = 6;
+
     private int FIRST_CELL_INDEX = -1;
 
     public List<Cell> getCellList() {
+
         return mCellList;
     }
 
@@ -165,45 +174,32 @@ public class CalendarView extends View {
 
                 mLastCellPosition = clickPosition;
 
-                //当点击的位置在mCellList这个区域内时,相应用户的点击事件
+                //当前点击的cell的日期
+
                 if (clickPosition >= 0 && clickPosition < mCellList.size()) {
 
-                    // TODO: 2017/9/6 日期选择点击的回调,并绘制当前cell的状态
+                    Calendar CellCalender = mCellList.get(clickPosition).getCalendar();
 
-                    LogHelper.i("点击的cell的下标 ==>" + clickPosition);
-                    LogHelper.i("点击cell的日期 ==> " + mCellList.get(clickPosition).getDate());
+
+                    //当点击的位置在mCellList这个区域内时,相应用户的点击事件
+                    if (clickPosition < mCellList.size()) {
+
+                        // TODO: 2017/9/6 日期选择点击的回调,并绘制当前cell的状态
+
+                        LogHelper.i("点击的cell的下标 ==>" + clickPosition);
+                        LogHelper.i("点击cell的日期 ==> " + mCellList.get(clickPosition).getDate());
 
 
 //                    resetCellState();
 
-                    CalendarManager manager = CalendarManager.getInstance();
+                        CalendarManager manager = CalendarManager.getInstance();
 
-                    /**
-                     * 开始时间
-                     */
-                    if (manager.getStartDate() == null) {
+                        /**
+                         * 开始时间
+                         */
+                        if (manager.getStartDate() == null) {
 
-                        if (mCellList.get(clickPosition).getCalendar().getTimeInMillis() > CalendarUtils.getCurrentDate().getTime()) {
-
-                            mCellList.get(clickPosition).setChoiceState(true, "开始");
-                            //选择的开始时间保存在CalendarManager中
-                            manager.setStartDate(mCellList.get(clickPosition).getCalendar());
-
-                            CalendarManager.getInstance().postInvalidate();
-
-                        }
-                        return true;
-                    }
-                    /**
-                     * 结束时间
-                     */
-                    if (manager.getEndDate() == null) {
-
-                        if(  mCellList.get(clickPosition).getCalendar().getTimeInMillis() > CalendarUtils.getCurrentDate().getTime()) {
-
-                            if (mCellList.get(clickPosition).getCalendar().getTimeInMillis() <= manager.getStartDate().getTimeInMillis()) {
-
-                                CalendarManager.getInstance().resetCellState();
+                            if (CellCalender.getTimeInMillis() > CalendarUtils.getCurrentDate().getTime()) {
 
                                 mCellList.get(clickPosition).setChoiceState(true, "开始");
                                 //选择的开始时间保存在CalendarManager中
@@ -211,69 +207,86 @@ public class CalendarView extends View {
 
                                 CalendarManager.getInstance().postInvalidate();
 
-                                return true;
+
                             }
-                            mCellList.get(clickPosition).setChoiceState(true, "结束");
-
-                            //将选择的结束时间保存在CalendarManager中
-                            manager.setEndDate(mCellList.get(clickPosition).getCalendar());
-
-                            CalendarManager.getInstance().isCompleted = true;
-                            CalendarManager.getInstance().postInvalidate();
-
                             return true;
                         }
-                    }
+                        /**
+                         * 结束时间
+                         */
+                        if (manager.getEndDate() == null) {
+
+                            Calendar startCalendar = manager.getStartDate();
+
+                            if (CellCalender.getTimeInMillis() > CalendarUtils.getCurrentDate().getTime()) {
+
+                                if (CellCalender.getTimeInMillis() <= startCalendar.getTimeInMillis()) {
+
+                                    CalendarManager.getInstance().resetCellState();
+
+                                    mCellList.get(clickPosition).setChoiceState(true, "开始");
+                                    //选择的开始时间保存在CalendarManager中
+                                    manager.setStartDate(mCellList.get(clickPosition).getCalendar());
+
+                                    CalendarManager.getInstance().postInvalidate();
+
+                                    return true;
+                                }
 
 
-                    /**
-                     * 对之前选择的时间进行修改
-                     */
-                    if (CalendarManager.getInstance().isCompleted == true) {
-
-                        //当前选中的日期
-                        long currChoiceDate = mCellList.get(clickPosition).getCalendar().getTimeInMillis();
-
-                        //上一个选择结束的日期
-                        long lastEndDate = CalendarManager.getInstance().getEndDate().getTimeInMillis();
-
-                        //当开始日期和结束日期已经确定好之后,用户再次进行更改日期的时候需要根据条件进行判断
-                        //当前选中的日期小于上一次选中的结束日期并且要大于当前系统的日期，这个时候重置选择，重新设置开始日期
-                        if (currChoiceDate > CalendarUtils.getCurrentDate().getTime()  ) {
+                                if (CalendarUtils.getIntervalDay(startCalendar, CellCalender) < mMinIntervalDay) {
 
 
-                            CalendarManager.getInstance().resetCellState();
+                                    App.showToast("所选的天数的间隔需要大于" + mMinIntervalDay + "天");
 
-                            mCellList.get(clickPosition).setChoiceState(true, "开始");
+                                    return true;
 
-                            manager.setStartDate(mCellList.get(clickPosition).getCalendar());
-                            manager.setEndDate(null);
-                            CalendarManager.getInstance().isCompleted = false;
+                                }
+
+                                mCellList.get(clickPosition).setChoiceState(true, "结束");
+
+                                //将选择的结束时间保存在CalendarManager中
+                                manager.setEndDate(mCellList.get(clickPosition).getCalendar());
+
+                                CalendarManager.getInstance().isCompleted = true;
+                                CalendarManager.getInstance().postInvalidate();
+
+                                return true;
+                            }
+                        }
+
+
+                        /**
+                         * 对之前选择的时间进行修改
+                         */
+                        if (CalendarManager.getInstance().isCompleted == true) {
+
+                            //当前选中的日期
+                            long currChoiceDate = mCellList.get(clickPosition).getCalendar().getTimeInMillis();
+
+                            //上一个选择结束的日期
+                            long lastEndDate = CalendarManager.getInstance().getEndDate().getTimeInMillis();
+
+                            //当开始日期和结束日期已经确定好之后,用户再次进行更改日期的时候需要根据条件进行判断
+                            //当前选中的日期小于上一次选中的结束日期并且要大于当前系统的日期，这个时候重置选择，重新设置开始日期
+                            if (currChoiceDate > CalendarUtils.getCurrentDate().getTime()) {
+
+
+                                CalendarManager.getInstance().resetCellState();
+                                mCellList.get(clickPosition).setChoiceState(true, "开始");
+
+                                manager.setStartDate(CellCalender);
+                                manager.setEndDate(null);
+                                CalendarManager.getInstance().isCompleted = false;
+
+                            }
 
                         }
 
-                    }
 
-
-        /*            if( CalendarManager.getInstance().isCompleted){
-
-                        //重置状态
-                        resetCellState();
-                        mCellList.get(clickPosition).setChoiceState(true, "开始");
-                        manager.setStartDate(mCellList.get(clickPosition).getCalendar());
-
-                        manager.setEndDate(null);
-                        CalendarManager.getInstance().isCompleted =false;
+                        CalendarManager.getInstance().postInvalidate();
 
                     }
-*/
-
-
-                    //重绘内容
-//                    postInvalidate();
-
-                    CalendarManager.getInstance().postInvalidate();
-
                 }
 
                 break;
@@ -283,22 +296,6 @@ public class CalendarView extends View {
 
 
                 LogHelper.i("move===>");
-
-
-               /* int c1 = (int) (event.getX() / mCellWidth);
-                int r1 = (int) (event.getY() / mCellHeight);
-
-
-                int clickPosition1 = r1 * COL + c1;
-
-                LogHelper.i("move");
-
-                if (mLastCellPosition != clickPosition1) {
-
-                    LogHelper.i("点击的cell的下标 move==>" + clickPosition1);
-                    mLastCellPosition = clickPosition1;
-                }
-*/
 
                 break;
 
@@ -421,7 +418,13 @@ public class CalendarView extends View {
          */
         public void drawSelf(Canvas canvas) {
 
-            canvas.drawRect(col * mCellWidth, row * mCellHeight, col * mCellWidth + mCellWidth, row * mCellHeight + mCellHeight, mPaintCell);
+            if (mState == CellState.BEFORE) {
+
+                mPaintText.setColor(Resource.Color.GREY);
+            } else {
+
+                mPaintText.setColor(Resource.Color.BLACK);
+            }
 
             canvas.drawText(String.valueOf(mCalendar.get(Calendar.DAY_OF_MONTH)), (float) (col * mCellWidth + mCellWidth * 0.5), (float) (row * mCellHeight + mCellHeight * 0.5), mPaintText);
 
@@ -437,7 +440,8 @@ public class CalendarView extends View {
 
                 if (current > startTime && current < endTime) {
 
-
+                    //灰色
+                    mPaintFill.setColor(Color.argb(30, 20, 30, 40));
                     canvas.drawRect(col * mCellWidth, row * mCellHeight, col * mCellWidth + mCellWidth, row * mCellHeight + mCellHeight, mPaintFill);
 
 
@@ -447,6 +451,8 @@ public class CalendarView extends View {
 
             if (isChoice) {
 
+                //绿色
+                mPaintFill.setColor(Color.argb(130, 77, 175, 81));
                 //将填充一个透明色，突出选中的那个日期，同时绘制文字到上面
                 canvas.drawRect(col * mCellWidth, row * mCellHeight, col * mCellWidth + mCellWidth, row * mCellHeight + mCellHeight, mPaintFill);
                 canvas.drawText(String.valueOf(tip), (float) (col * mCellWidth + mCellWidth * 0.5), (float) (row * mCellHeight + mCellHeight * 0.8), mPaintText);

@@ -33,6 +33,22 @@ public class CalendarUtils {
 
 
     /**
+     * 获取当前所在的月份
+     * @return
+     */
+    public static int getCurrentMonth(){
+        Date date = new Date(System.currentTimeMillis());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
+
+        String format = dateFormat.format(date);
+
+        return Integer.valueOf(format);
+    }
+
+
+
+    /**
      * 获取当前日期所在每周的第几天
      *
      * @param date
@@ -171,5 +187,8 @@ public class CalendarUtils {
         return day;
 
     }
+
+
+
 
 }

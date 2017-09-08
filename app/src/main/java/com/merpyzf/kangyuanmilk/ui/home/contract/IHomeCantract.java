@@ -14,7 +14,7 @@ public interface IHomeCantract {
 
         /**
          * 展示主页数据
-         * @param responseBeanList
+         * @param responseBean
          */
         void showHomePage(HomeBean.ResponseBean responseBean);
 

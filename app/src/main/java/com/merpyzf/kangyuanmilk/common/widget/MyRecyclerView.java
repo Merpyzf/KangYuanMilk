@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 /**
@@ -27,21 +26,21 @@ public class MyRecyclerView extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
-    GestureDetector mGestureDetector = new GestureDetector(App.getContext(), new MyGestureListener());
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent e) {
-
-
-        boolean isIntercept = false;
-
-        isIntercept = mGestureDetector.onTouchEvent(e);
-
-
-        LogHelper.i("isIntercept==>"+isIntercept);
-
-        return isIntercept;
-    }
+//    GestureDetector mGestureDetector = new GestureDetector(App.getContext(), new MyGestureListener());
+//
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent e) {
+//
+//
+//        boolean isIntercept = false;
+//
+//        isIntercept = mGestureDetector.onTouchEvent(e);
+//
+//
+//        LogHelper.i("isIntercept==>"+isIntercept);
+//
+//        return isIntercept;
+//    }
 
 }
 

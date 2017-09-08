@@ -12,7 +12,7 @@ import java.util.List;
  * Created by wangke on 2017-08-01.
  */
 
-public class ISearchContract {
+public interface ISearchContract {
 
 
     public interface ISearchView extends IBaseView {

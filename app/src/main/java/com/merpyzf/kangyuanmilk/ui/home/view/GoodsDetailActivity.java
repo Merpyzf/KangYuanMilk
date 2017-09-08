@@ -2,6 +2,7 @@ package com.merpyzf.kangyuanmilk.ui.home.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.webkit.WebView;
 
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 import butterknife.BindView;
 
@@ -21,11 +23,27 @@ public class GoodsDetailActivity extends BaseActivity {
     WebView mWebView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    private int mGoodsId = 0;
 
-    public static void showAction(Context context) {
 
-        context.startActivity(new Intent(context, GoodsDetailActivity.class));
+    public static void showAction(Bundle bundle,Context context) {
 
+        Intent intent = new Intent(context, GoodsDetailActivity.class);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+
+    }
+
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+
+
+        mGoodsId = (int) bundle.get("goods_id");
+
+        LogHelper.i("商品id==>"+mGoodsId);
+
+        return super.initArgs(bundle);
     }
 
     @Override
@@ -72,8 +90,6 @@ public class GoodsDetailActivity extends BaseActivity {
 
 
         }
-
-
 
         return true;
     }

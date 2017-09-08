@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.home.view;
 
 
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -138,9 +139,9 @@ public class GoodsFragment extends BaseFragment implements IGoodsContract.IGoods
             @Override
             public void onItemClick(ViewHolder viewHolder, Goods goods, int position) {
 
-
-                GoodsDetailActivity.showAction(getContext());
-
+                Bundle bundle = new Bundle();
+                bundle.putInt("goods_id", goods.getId());
+                GoodsDetailActivity.showAction(bundle,getContext());
 
             }
 

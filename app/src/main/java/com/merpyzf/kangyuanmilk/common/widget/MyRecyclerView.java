@@ -4,6 +4,11 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+
+import com.merpyzf.kangyuanmilk.common.App;
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
 /**
  * Created by wangke on 2017-08-11.
@@ -22,7 +27,7 @@ public class MyRecyclerView extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
-  /*  GestureDetector mGestureDetector = new GestureDetector(App.getContext(), new MyGestureListener());
+    GestureDetector mGestureDetector = new GestureDetector(App.getContext(), new MyGestureListener());
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
@@ -84,5 +89,5 @@ class MyGestureListener implements GestureDetector.OnGestureListener {
         LogHelper.i("==>onFling");
         return true;
     }
-*/
+
 }

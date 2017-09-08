@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 
@@ -21,6 +22,10 @@ import java.util.List;
 
 /**
  * Created by wangke on 2017/9/5.
+ *
+ * 放置在recyclerView中时,当第二个条目没有完全展开的时候，程序会出现空指针异常,未找到程序bug
+ * 未修复
+ *
  */
 
 public class CalendarView extends View {
@@ -40,9 +45,13 @@ public class CalendarView extends View {
     //用于填充颜色的paint
     private Paint mPaintFill = null;
 
+    //两个选中日期之间的最小的间隔天数
+    private int mMinIntervalDay = 6;
+
     private int FIRST_CELL_INDEX = -1;
 
     public List<Cell> getCellList() {
+
         return mCellList;
     }
 
@@ -255,6 +264,22 @@ public class CalendarView extends View {
                     }
 
 
+        /*            if( CalendarManager.getInstance().isCompleted){
+
+                        //重置状态
+                        resetCellState();
+                        mCellList.get(clickPosition).setChoiceState(true, "开始");
+                        manager.setStartDate(mCellList.get(clickPosition).getCalendar());
+
+                        manager.setEndDate(null);
+                        CalendarManager.getInstance().isCompleted =false;
+
+                    }
+*/
+
+
+                    //重绘内容
+//                    postInvalidate();
 
                     CalendarManager.getInstance().postInvalidate();
 
@@ -266,9 +291,23 @@ public class CalendarView extends View {
             case MotionEvent.ACTION_MOVE:
 
 
-                LogHelper.i("CalendarView 的 move===>");
+                LogHelper.i("move===>");
 
 
+               /* int c1 = (int) (event.getX() / mCellWidth);
+                int r1 = (int) (event.getY() / mCellHeight);
+
+
+                int clickPosition1 = r1 * COL + c1;
+
+                LogHelper.i("move");
+
+                if (mLastCellPosition != clickPosition1) {
+
+                    LogHelper.i("点击的cell的下标 move==>" + clickPosition1);
+                    mLastCellPosition = clickPosition1;
+                }
+*/
 
                 break;
 

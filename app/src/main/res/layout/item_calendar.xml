@@ -15,7 +15,6 @@
 
     <com.merpyzf.kangyuanmilk.common.widget.CalendarView
         android:id="@+id/calendarView"
-        android:background="@color/yellow_50"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

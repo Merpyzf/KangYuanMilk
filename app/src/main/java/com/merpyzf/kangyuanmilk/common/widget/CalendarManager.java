@@ -1,5 +1,7 @@
 package com.merpyzf.kangyuanmilk.common.widget;
 
+import com.merpyzf.kangyuanmilk.utils.LogHelper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -101,32 +103,35 @@ public class CalendarManager {
     }
 
 
-
     /**
      * 重置所有CalendarView中cell的当前选中状态
      */
     public void resetCellState() {
 
-        if(mCalendarViews.size()>0){
 
-            for (CalendarView calendar : mCalendarViews) {
+        LogHelper.i("日历选择器的个数==>" + mCalendarViews.size());
 
-                for (CalendarView.Cell cell : calendar.getCellList()) {
 
-                    cell.setChoiceState(false, "");
+        for (CalendarView calendar : mCalendarViews) {
 
-                }
+
+            for (CalendarView.Cell cell : calendar.getCellList()) {
+
+
+                LogHelper.i("初始化");
+
+                cell.setChoiceState(false, "");
+
 
             }
 
 
         }
 
-
-
-
-
     }
 
 
 }
+
+
+

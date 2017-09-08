@@ -56,7 +56,7 @@ public class MyRecyclerView extends RecyclerView {
                 LogHelper.i("tag","==> ACTION_MOVE");
 
                 //拦截
-                isIntercept = true;
+                isIntercept = false;
 
                 break;
 

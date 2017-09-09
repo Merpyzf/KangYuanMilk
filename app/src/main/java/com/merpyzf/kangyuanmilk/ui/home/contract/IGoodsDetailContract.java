@@ -33,6 +33,12 @@ public interface IGoodsDetailContract {
 
 
         /**
+         * 填充webView的内容
+         * @param html
+         */
+        void fillWebView(String html);
+
+        /**
          * 设置收货地址的位置
          *
          * 如果用户已经登录，但是没有设置默认的收货地址，点击当前项 跳转到地址选择的界面，进行地址的设置

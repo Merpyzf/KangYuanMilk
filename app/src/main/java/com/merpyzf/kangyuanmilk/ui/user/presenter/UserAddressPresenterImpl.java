@@ -189,6 +189,14 @@ public class UserAddressPresenterImpl extends BasePresenter<IUserAddressContract
 
                                 if (messageBean.getResponse().isResult()) {
 
+                                    //如果删除的是默认设置的地址,则将数据库中的用户的默认地址删除
+                                    if(address.isDefault()){
+
+                                        UserDao.getInstance().setUserDefaultAds(null);
+
+
+                                    }
+
                                     mMvpView.showSuccess(context.getString(R.string.user_address_delete_success));
                                     mMvpView.removeAdsSuccess(address);
 

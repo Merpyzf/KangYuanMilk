@@ -25,321 +25,325 @@
     </android.support.design.widget.AppBarLayout>
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    <android.support.v4.widget.NestedScrollView
+        <android.support.v4.widget.NestedScrollView
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-
-        <RelativeLayout
-
+            android:id="@+id/nested_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_header"
+
+            >
+
+
+            <RelativeLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:elevation="5dp"
-                app:cardCornerRadius="5dp">
+                android:layout_height="match_parent">
 
-
-                <LinearLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <com.youth.banner.Banner
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"/>
+                    android:layout_margin="5dp"
+                    android:elevation="5dp"
+                    app:cardCornerRadius="5dp">
 
 
                     <LinearLayout
-                        android:id="@+id/ll_goods_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/cv_header"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_goods_name"
-                            android:layout_width="wrap_content"
+
+                        <com.youth.banner.Banner
+                            android:id="@+id/banner_goods"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp" />
+
+
+                        <LinearLayout
+                            android:id="@+id/ll_goods_detail"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="牛奶的名字"
-                            android:textSize="18sp"
+                            android:layout_below="@id/cv_header"
+                            android:orientation="vertical">
 
-                            />
+                            <TextView
+                                android:id="@+id/tv_goods_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="牛奶的名字"
+                                android:textSize="18sp"
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="牛奶价格: 7.9元"
+                                />
 
-                            />
+                            <TextView
+                                android:id="@+id/tv_goods_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="牛奶价格: 7.9元"
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="260ml"
+                                />
 
-                            />
+                            <TextView
+                                android:id="@+id/tv_goods_spec"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="260ml"
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text="订奶规则: 现在下单,巴拉巴拉巴拉巴拉"
+                                />
 
-                            />
+                            <TextView
+                                android:id="@+id/tv_order_spec"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="4dp"
+                                android:text="订奶规则: 现在下单,巴拉巴拉巴拉巴拉"
+
+                                />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                </LinearLayout>
+
+                </android.support.v7.widget.CardView>
 
 
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cv_header"
-                android:layout_margin="5dp"
-                android:elevation="5dp"
-                app:cardCornerRadius="5dp">
-
-                <RelativeLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_below="@id/cv_header"
+                    android:layout_margin="5dp"
+                    android:elevation="5dp"
+                    app:cardCornerRadius="5dp">
 
-                    <TextView
-                        android:id="@+id/tv_title"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:drawableTint="#666666"
-                        android:padding="4dp"
-
-                        android:text="送 至: " />
-
-                    <ImageView
-                        android:id="@+id/iv_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/tv_title"
-                        android:src="@drawable/ic_location" />
-
-                    <TextView
-                        android:id="@+id/tv_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/iv_location"
-                        android:text="默认配送的位置"
-
-                        />
-
-                </RelativeLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_params"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cv_location"
-                android:layout_margin="5dp"
-                android:elevation="5dp"
-                app:cardCornerRadius="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:drawableTint="#666666"
-                        android:text="已 选:"
-                        android:padding="4dp"
-
-
-                        />
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp">
 
                         <TextView
-                            android:id="@+id/tv_date"
+                            android:id="@+id/tv_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:drawableTint="#666666"
+                            android:padding="4dp"
+
+                            android:text="送 至: " />
+
+                        <ImageView
+                            android:id="@+id/iv_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/tv_title"
+                            android:src="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/tv_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@id/iv_location"
-                            android:text="配送时间: 2017-09-10 到 2017-10-31"
+                            android:text="默认配送的位置"
+
+                            />
+
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_params"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cv_location"
+                    android:layout_margin="5dp"
+                    android:elevation="5dp"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:drawableTint="#666666"
+                            android:padding="4dp"
+                            android:text="已 选:"
+
 
                             />
 
 
-                        <TextView
-                            android:id="@+id/tv_goods_num"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/ll_choice"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="每次配送: 1份" />
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
 
-                        <TextView
-                            android:id="@+id/tv_goods_total"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="总份数: 52份"
+                            <TextView
+                                android:id="@+id/tv_distr_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@id/iv_location"
+                                android:text="配送时间: 2017-09-10 到 2017-10-31"
 
-                            />
+                                />
+
+
+                            <TextView
+                                android:id="@+id/tv_goods_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="每次配送: 1份" />
+
+
+                            <TextView
+                                android:id="@+id/tv_goods_total"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="总份数: 52份"
+
+                                />
+
+
+                        </LinearLayout>
 
 
                     </LinearLayout>
 
+                </android.support.v7.widget.CardView>
 
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_staff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cv_params"
-                android:layout_margin="5dp"
-                android:elevation="5dp"
-                app:cardCornerRadius="5dp">
-
-                <LinearLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_distr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_below="@id/cv_params"
+                    android:layout_margin="5dp"
+                    android:elevation="5dp"
+                    app:cardCornerRadius="5dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/cv_staff"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:drawableTint="#666666"
-                        android:text="配送方:"
-                        android:padding="4dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:drawableTint="#666666"
+                            android:padding="4dp"
+                            android:text="配送方:"
 
 
-                        />
+                            />
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@id/iv_location"
-                        android:text=" 康源乳业"
-                        android:padding="4dp"
-                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/iv_location"
+                            android:padding="4dp"
+                            android:text=" 康源乳业" />
 
 
-                </LinearLayout>
+                    </LinearLayout>
 
-            </android.support.v7.widget.CardView>
-
-
-            <WebView
-                android:id="@+id/webView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/cv_staff"></WebView>
+                </android.support.v7.widget.CardView>
 
 
+                <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/cv_distr" />
 
-        </RelativeLayout>
+
+            </RelativeLayout>
 
 
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
         <LinearLayout
+
+            android:id="@+id/ll_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
-            android:orientation="horizontal"
             android:layout_alignParentBottom="true"
-            >
+            android:orientation="horizontal">
 
 
             <TextView
+                android:id="@+id/tv_money"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content"
                 android:text="合计金额: 410"
 
                 />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:orientation="horizontal"
 
                 >
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="加入购物车"
-                    />
 
                 <Button
+                    android:id="@+id/btn_shoppingcart"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="立即购买"
-                    />
+                    android:layout_weight="1"
+                    android:text="加入购物车" />
+
+                <Button
+                    android:id="@+id/btn_buy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="立即购买" />
 
 
             </LinearLayout>
 
 
-
         </LinearLayout>
-
 
 
     </RelativeLayout>

@@ -55,7 +55,7 @@ public class UserDao {
         try {
             //请空所有的用户数据，保证数据只有一条
             clearUser();
-            LogHelper.i("用户的默认地址==> "+user.getAddress_content());
+            LogHelper.i("用户的默认地址==> " + user.getAddress_content());
             dao.createOrUpdate(user);
             long count = dao.queryBuilder().countOf();
         } catch (SQLException e) {
@@ -179,16 +179,27 @@ public class UserDao {
      */
     public void setUserDefaultAds(Address address) {
 
+        String address_content;
+
+
+        if (address == null) {
+
+            address_content = "";
+
+
+        } else {
+
+            address_content = address.getConsignee()
+                    + "-" + address.getConsignee_tel() + "-" + address.getAddress_all()
+                    + " " + address.getAddress_content();
+        }
 
 
         try {
             Where<User, Integer> eq = dao.updateBuilder()
-                    .updateColumnValue("address_content", address.getConsignee()
-                            + "-" + address.getConsignee_tel() + "-" + address.getAddress_all()
-                            + " " + address.getAddress_content())
+                    .updateColumnValue("address_content", address_content)
                     .where()
-                    .eq("user_id",getUserInfo().getUser_id());
-
+                    .eq("user_id", getUserInfo().getUser_id());
 
 
         } catch (SQLException e) {

@@ -7,10 +7,10 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.merpyzf.kangyuanmilk.R;
-
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +29,12 @@ public class CalendarPickerFragment extends BottomSheetDialogFragment {
 
     @BindView(R.id.calendarPickerView)
     CalendarPickerView mCalendarPickerView;
+    @BindView(R.id.tv_show_date)
+    TextView tv_show_date;
+    @BindView(R.id.btn_submit)
+    Button btn_submit;
+
+    private String startDate;
 
     @Nullable
     @Override
@@ -37,15 +43,29 @@ public class CalendarPickerFragment extends BottomSheetDialogFragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.activity_calender_view, container, false);
         mUnBinder = ButterKnife.bind(this, view);
 
-        Calendar calendar_start = Calendar.getInstance();
-        calendar_start.set(2017,9,1);
+        btn_submit.setText("取消");
 
 
-        Calendar calendar_end = Calendar.getInstance();
-        calendar_end.set(2017,9,28);
+        mCalendarPickerView.setOnDatePickerListener(new CalendarView.OnDatePickerListener() {
+            @Override
+            public void startDate(String start) {
+                startDate = start;
+                tv_show_date.setText("请选择结束日期");
+                btn_submit.setText("取消");
 
-        CalendarManager.getInstance().setStartDate(calendar_start);
-        CalendarManager.getInstance().setEndDate(calendar_end);
+
+            }
+
+            @Override
+            public void endDate(String end) {
+
+
+                tv_show_date.setText("从 "+startDate+" 到"+end+" 配送");
+                btn_submit.setText("确定");
+
+            }
+        });
+
 
         return view;
     }

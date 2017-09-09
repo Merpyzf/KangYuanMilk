@@ -42,11 +42,13 @@
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
 
 
 
@@ -135,12 +137,10 @@
         <activity android:name=".test.CalenderViewActivity">
 
 
-
         </activity>
 
 
         <activity android:name=".test.Main2Activity">
-
 
 
         </activity>

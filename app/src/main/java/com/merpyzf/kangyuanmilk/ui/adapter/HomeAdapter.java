@@ -139,15 +139,12 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
                 titleList.add(data.getDataInfoList().get(i).getTitle());
             }
 
-            mBanner.post(new Runnable() {
-                @Override
-                public void run() {
+            mBanner.post(() -> {
 
-                    int height = mBanner.getHeight();
-                    LogHelper.i("Banner的高度==>" + height);
+                int height = mBanner.getHeight();
+                LogHelper.i("Banner的高度==>" + height);
 
 
-                }
             });
 
             mBanner.isAutoPlay(true);

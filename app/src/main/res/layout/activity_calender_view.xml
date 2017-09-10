@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:gravity=""
+            android:gravity="center"
             android:layout_weight="3"
             />
 

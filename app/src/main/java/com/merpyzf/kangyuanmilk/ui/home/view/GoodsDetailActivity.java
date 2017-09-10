@@ -3,6 +3,7 @@ package com.merpyzf.kangyuanmilk.ui.home.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 import com.merpyzf.kangyuanmilk.R;
 import com.merpyzf.kangyuanmilk.common.App;
 import com.merpyzf.kangyuanmilk.common.BaseActivity;
+import com.merpyzf.kangyuanmilk.common.widget.CalendarPickerFragment;
 import com.merpyzf.kangyuanmilk.common.widget.GoodsParamsPickerFragment;
 import com.merpyzf.kangyuanmilk.ui.home.contract.IGoodsDetailContract;
 import com.merpyzf.kangyuanmilk.ui.home.presenter.GoodsDetailPresenterImpl;
+import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.db.dao.UserDao;
 import com.merpyzf.kangyuanmilk.utils.ui.GliderImageLoader;
@@ -26,9 +29,13 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.merpyzf.kangyuanmilk.R.id.tv_money;
 
 /**
  * 商品详情
@@ -45,7 +52,6 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
     //商品名称
     @BindView(R.id.tv_goods_name)
     TextView mTvGoodsName;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     //商品价格
@@ -72,7 +78,7 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
     TextView mTvGoodsTotal;
 
     //订单的总金额
-    @BindView(R.id.tv_money)
+    @BindView(tv_money)
     TextView mOrderMoney;
     //加入购物车
     @BindView(R.id.btn_shoppingcart)
@@ -85,9 +91,23 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
     @BindView(R.id.ll_choice)
     LinearLayout mLinearChoice;
 
+    @BindView(R.id.cv_params)
+    CardView mCvParams;
+
+
+    //当前展示详情页的商品id
     private int mGoodsId = 0;
+
     private String mGoodsImage;
     private IGoodsDetailContract.IGoodsDetailPresenter mPresenter;
+    //订奶的开始日期
+    private Date mStartDate;
+    //订奶的结束日期
+    private Date mEndDate;
+    //订购牛奶的份数
+    private int mCopies;
+    private int mGoodNum = 1;
+    private float mGoodsPrice;
 
 
     public static void showAction(Bundle bundle, Context context) {
@@ -102,9 +122,7 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
     @Override
     protected boolean initArgs(Bundle bundle) {
 
-
         mGoodsId = (int) bundle.get("goods_id");
-
         LogHelper.i("商品id==>" + mGoodsId);
 
         return super.initArgs(bundle);
@@ -114,11 +132,13 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
     public int getLayoutId() {
         return R.layout.activity_goods_detail;
     }
+
     @Override
     public void initWidget() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("产品详情");
+
 
     }
 
@@ -126,7 +146,7 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
     public void initEvent() {
         super.initEvent();
 
-        mLinearChoice.setOnClickListener(this);
+        mCvParams.setOnClickListener(this);
         mBtnCart.setOnClickListener(this);
         mBtnBuy.setOnClickListener(this);
 
@@ -191,6 +211,11 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
 
     }
 
+    /**
+     * 显示商品图片
+     *
+     * @param images
+     */
     @Override
     public void fillGoodsBanner(List<String> images) {
 
@@ -203,12 +228,21 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
         mBanner.start();
 
 
-
     }
 
+    /**
+     * 显示商品信息
+     *
+     * @param milkName  商品的名字
+     * @param price     商品价格
+     * @param spec      商品的规格
+     * @param orderSpec 商品订购的规则
+     */
     @Override
     public void fillGoodsInfo(String milkName, String price, String spec, String orderSpec) {
 
+
+        mGoodsPrice = Float.valueOf(price);
 
         mTvGoodsName.setText(milkName);
         mTvPrice.setText(price);
@@ -216,8 +250,15 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
         mTvOrderSpec.setText(orderSpec);
 
 
+        initGoodParams(0);
+
     }
 
+    /**
+     * 显示WebView的内容(商品详情)
+     *
+     * @param html
+     */
     @Override
     public void fillWebView(String html) {
 
@@ -233,12 +274,11 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
         mWebView.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
 
 
-
-
-
-
     }
 
+    /**
+     * 显示配送的地址
+     */
     @Override
     public void showDistrLocation() {
 
@@ -250,7 +290,6 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
             String address_content = UserDao.getInstance().getUserInfo().getAddress_content();
 
             mTvLocation.setText(address_content);
-
 
 
         } else {
@@ -265,9 +304,95 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
 
     }
 
+    /**
+     * 设置商品选择的参数
+     *
+     * @param next 订购几个月
+     * @return
+     */
+    @Override
+    public int initGoodParams(int next) {
+
+        //当前的系统时间
+        Calendar curralendar = Calendar.getInstance();
+        //设置为当前系统的时间
+        curralendar.setTime(new Date(System.currentTimeMillis()));
+
+        curralendar.set(Calendar.MONTH, curralendar.get(Calendar.MONTH) + 1);
+        curralendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        mStartDate = curralendar.getTime();
+
+        String start = CalendarUtils.getDate(mStartDate);
+
+
+        System.out.println("开始日期: " + start);
+
+
+        Calendar cloneCalendar = (Calendar) curralendar.clone();
+
+        //起始的月份
+        int startMonth = cloneCalendar.get(Calendar.MONTH);
+
+        int leftMonth = 11 - startMonth;
+
+        System.out.println("剩下的月份：" + leftMonth);
+
+        if (next > leftMonth) {
+
+            int numYear = (int) Math.ceil((next - leftMonth) / (12 * 1.0f));
+
+
+            System.out.println("几年 == 》" + numYear);
+
+            int numMonth = (next - leftMonth) % 12;
+            System.out.println("几月 == 》" + numMonth);
+
+            cloneCalendar.set(Calendar.YEAR, cloneCalendar.get(Calendar.YEAR) + numYear);
+            cloneCalendar.set(Calendar.MONTH, numMonth - 1);
+            cloneCalendar.set(Calendar.DAY_OF_MONTH, CalendarUtils.getMonthDay(cloneCalendar.get(Calendar.YEAR), cloneCalendar.get(Calendar.MONTH) + 1));
+
+
+        } else {
+
+            //表示仍然在当前的年份当中
+            cloneCalendar.set(Calendar.MONTH, cloneCalendar.get(Calendar.MONTH) + next);
+            //设置月份为当前月的最后一天
+            cloneCalendar.set(Calendar.DAY_OF_MONTH, CalendarUtils.getMonthDay(cloneCalendar.get(Calendar.YEAR), cloneCalendar.get(Calendar.MONTH) + 1));
+
+        }
+
+        //年
+        int year = cloneCalendar.get(Calendar.YEAR);
+        //月
+        int month = cloneCalendar.get(Calendar.MONTH) + 1;
+        //日
+        int day = cloneCalendar.get(Calendar.DAY_OF_MONTH);
+
+        mEndDate = cloneCalendar.getTime();
+
+        String end = CalendarUtils.getDate(cloneCalendar.getTime());
+
+        int intervalDay = CalendarUtils.getIntervalDay(mStartDate, mEndDate);
+
+
+        LogHelper.i("间隔的天数 ==》" + intervalDay + 1);
+
+
+         mTvDistrDate.setText("配送时间: " + start + " 至 " + end);
+
+        mTvGoodsNum.setText("每次配送: " + mGoodNum + " 份");
+
+        mTvGoodsTotal.setText("总份数: " + mGoodNum * (intervalDay + 1) + " 份");
+
+        mOrderMoney.setText("合计金额: " + (mGoodNum * (intervalDay + 1) * mGoodsPrice) + " 元");
+
+
+        return 0;
+    }
+
     @Override
     public void onClick(View view) {
-
 
         switch (view.getId()) {
 
@@ -280,28 +405,68 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
             case R.id.btn_buy:
 
 
+                break;
+
+            //商品参数选择
+            case R.id.cv_params:
+
                 GoodsParamsPickerFragment pickerFragment = new GoodsParamsPickerFragment();
 
 
                 Bundle bundle = new Bundle();
-
-                bundle.putString("goods_name",mTvGoodsName.getText().toString());
-                bundle.putString("goods_spec",mTvGoodsSpec.getText().toString());
-                bundle.putString("goods_image",mGoodsImage);
-                bundle.putInt("goods_price",Integer.valueOf(mTvPrice.getText().toString()));
-
+                bundle.putString("goods_name", mTvGoodsName.getText().toString());
+                bundle.putString("goods_spec", mTvGoodsSpec.getText().toString());
+                bundle.putString("goods_image", mGoodsImage);
+                bundle.putInt("goods_price", Integer.valueOf(mTvPrice.getText().toString()));
 
                 pickerFragment.setArguments(bundle);
-
-                pickerFragment.show(getSupportFragmentManager(),"tag");
-
+                pickerFragment.show(getSupportFragmentManager(), "tag");
 
 
+                pickerFragment.setListener(new GoodsParamsPickerFragment.OnPickerParamsCompleted() {
+                    @Override
+                    public void completed(int num, int TimeChoiceState) {
 
-                break;
+                        mGoodNum = num;
 
-            //商品参数选择
-            case R.id.ll_choice:
+                        initGoodParams(TimeChoiceState);
+
+
+                    }
+
+                    @Override
+                    public void pickerUnCompleted(int num) {
+
+                        mGoodNum = num;
+
+
+                        CalendarPickerFragment calendarPickerFragment = new CalendarPickerFragment();
+                        calendarPickerFragment.show(getSupportFragmentManager(), "tag");
+
+
+                        calendarPickerFragment.setOnPickerDateListener((start, end) -> {
+
+
+
+                            mTvDistrDate.setText("配送时间: " + CalendarUtils.getDate(start) + " 至 " + CalendarUtils.getDate(end));
+
+                            mTvGoodsNum.setText("每次配送: " + mGoodNum + " 份");
+
+                            int intervalDay = CalendarUtils.getIntervalDay(start,end);
+
+                            mTvGoodsTotal.setText("总份数: " + mGoodNum * (intervalDay + 1) + " 份");
+
+                            mOrderMoney.setText("合计金额: " + (mGoodNum * (intervalDay + 1) * mGoodsPrice) + " 元");
+
+
+
+
+                        });
+
+
+
+                    }
+                });
 
                 break;
 
@@ -310,4 +475,12 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
 
 
     }
+
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
 }
+

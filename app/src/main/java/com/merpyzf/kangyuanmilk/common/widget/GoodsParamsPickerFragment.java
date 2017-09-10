@@ -33,7 +33,7 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
     private String mGoodsName;
     private int mGoodsPrice;
     private String mGoodsSpec;
-    private int mGoodsNum; //商品的数量
+    private int mGoodsNum = 1; //商品的数量
 
     private Unbinder mUnbinder;
     @BindView(R.id.btn_next)
@@ -56,6 +56,7 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
     TextView mTvReduce;
     @BindView(R.id.radioGroup)
     RadioGroup mRadioGroup;
+    private OnPickerParamsCompleted mListener;
 
     private int mTimeChoiceState = 0;
 
@@ -63,7 +64,6 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
     public GoodsParamsPickerFragment() {
 
     }
-
 
     @Nullable
     @Override
@@ -97,30 +97,28 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
                 case R.id.rb_picker_calendar:
 
                     LogHelper.i("rb_picker_calendar");
-                    mTimeChoiceState = 0;
+                    mTimeChoiceState = -1;
                     mBtnNext.setText("下一步");
 
                     break;
 
                 case R.id.rb_one_month:
                     LogHelper.i("rb_one_month");
-                    mTimeChoiceState = 1;
+                    mTimeChoiceState = 0;
                     mBtnNext.setText("确定");
 
                     break;
                 case R.id.rb_two_month:
                     LogHelper.i("rb_two_month");
-                    mTimeChoiceState = 2;
+                    mTimeChoiceState = 1;
                     mBtnNext.setText("确定");
                     break;
                 case R.id.rb_three_month:
                     LogHelper.i("rb_three_month");
-                    mTimeChoiceState = 3;
+                    mTimeChoiceState = 2;
                     mBtnNext.setText("确定");
                     break;
-
             }
-
 
         });
 
@@ -152,7 +150,6 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
                 .load(mGoodsImage)
                 .into(imageView);
 
-
     }
 
 
@@ -172,18 +169,25 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
 
                 dismiss();
 
-                if(mTimeChoiceState == 0) {
+                if(mTimeChoiceState == -1) {
 
-                    CalendarPickerFragment calendarPickerFragment = new CalendarPickerFragment();
-                    calendarPickerFragment.show(getFragmentManager(), "tag");
+
+                    if(mListener!=null){
+                        mListener.pickerUnCompleted(mGoodsNum);
+                    }
+
+
+                    return;
 
                 }
 
 
+                if(mListener!=null){
 
 
+                    mListener.completed(mGoodsNum, mTimeChoiceState);
 
-
+                }
 
 
                 // TODO: 2017/9/9 将已经选择的商品参数回调给商品详情的activity
@@ -220,8 +224,18 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
     }
 
 
+    public interface OnPickerParamsCompleted{
+
+        void completed(int num,int TimeChoiceState);
+
+        void pickerUnCompleted(int num);
+
+    }
 
 
+    public void setListener(OnPickerParamsCompleted mListener) {
+        this.mListener = mListener;
+    }
 
     @Override
     public void onDestroy() {

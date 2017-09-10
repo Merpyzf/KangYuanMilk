@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,10 +63,30 @@ public class CalendarPickerFragment extends BottomSheetDialogFragment {
             public void endDate(String end) {
 
 
-                tv_show_date.setText("从 "+startDate+" 到"+end+" 配送");
+                tv_show_date.setText("从 " + startDate + " 到" + end + " 配送");
                 btn_submit.setText("确定");
 
+                if (mListener != null) {
+
+
+                    Date sdate = CalendarUtils.getDate(startDate);
+                    Date edate = CalendarUtils.getDate(end);
+
+                    if (sdate != null && edate != null) {
+
+                        mListener.onPickerDateCompleted(sdate, edate);
+                    }
+
+                }
+
             }
+        });
+
+
+        btn_submit.setOnClickListener(view1 -> {
+
+
+            dismiss();
         });
 
 
@@ -73,6 +96,23 @@ public class CalendarPickerFragment extends BottomSheetDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return super.onCreateDialog(savedInstanceState);
+    }
+
+
+    public interface onPickerCompleted {
+
+
+        void onPickerDateCompleted(Date start, Date end);
+
+
+    }
+
+
+    private onPickerCompleted mListener;
+
+
+    public void setOnPickerDateListener(onPickerCompleted mListener) {
+        this.mListener = mListener;
     }
 
     @Override

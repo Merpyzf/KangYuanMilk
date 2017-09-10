@@ -51,6 +51,9 @@ public class CalendarView extends View {
 
     private OnDatePickerListener mDatePickerListener = null;
 
+
+    private int mCurrentYear;
+
     public List<Cell> getCellList() {
 
         return mCellList;
@@ -80,6 +83,12 @@ public class CalendarView extends View {
 
     public CalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        mCurrentYear = calendar.get(Calendar.YEAR);
+
+
         //初始化画笔
         init();
     }
@@ -358,7 +367,7 @@ public class CalendarView extends View {
         }
 
         //根据设置的月份填充数据
-        for (int i = 1; i <= CalendarUtils.getMonthDay(month); i++) {
+        for (int i = 1; i <= CalendarUtils.getMonthDay(mCurrentYear, month); i++) {
 
             Calendar calendar = Calendar.getInstance();
             calendar.set(CalendarUtils.getCurrentYear(), month - 1, i);

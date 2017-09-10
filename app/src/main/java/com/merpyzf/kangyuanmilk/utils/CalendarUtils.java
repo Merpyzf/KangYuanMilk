@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.R.attr.y;
-
 /**
  * Created by wangke on 2017/9/6.
  * 日期相关的工具类
@@ -34,9 +32,10 @@ public class CalendarUtils {
 
     /**
      * 获取当前所在的月份
+     *
      * @return
      */
-    public static int getCurrentMonth(){
+    public static int getCurrentMonth() {
         Date date = new Date(System.currentTimeMillis());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
@@ -45,7 +44,6 @@ public class CalendarUtils {
 
         return Integer.valueOf(format);
     }
-
 
 
     /**
@@ -96,13 +94,13 @@ public class CalendarUtils {
      * @param month
      * @return
      */
-    public static int getMonthDay(int month) {
+    public static int getMonthDay(int year, int month) {
 
         int months[] = new int[]{31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
         //判断是否闰年
 
-        if ((y % 4 == 0 && y % 100 != 0) || y % 400 == 0) {
+        if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
             months[1] = 29;
         } else {
             months[1] = 28;
@@ -159,6 +157,21 @@ public class CalendarUtils {
 
     }
 
+
+    public static Date getDate(String date) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            return format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return  null;
+    }
+
+
     /**
      * 根据传入的Date类型的日期返回Str类型的 yyyy-MM-dd 时间
      *
@@ -174,6 +187,7 @@ public class CalendarUtils {
 
     /**
      * 计算两个日期间的天数
+     *
      * @param startDate
      * @param endDate
      * @return
@@ -182,13 +196,26 @@ public class CalendarUtils {
 
         int day = (int) ((endDate.getTimeInMillis() - startDate.getTimeInMillis()) / (1000 * 3600 * 24));
 
-        LogHelper.i("日期间的间隔天数==>"+day);
+        LogHelper.i("日期间的间隔天数==>" + day);
 
         return day;
 
     }
+    /**
+     * 计算两个日期间的天数
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static int getIntervalDay(Date startDate, Date endDate) {
 
+        int day = (int) ((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
 
+        LogHelper.i("日期间的间隔天数==>" + day);
 
+        return day;
+
+    }
 
 }

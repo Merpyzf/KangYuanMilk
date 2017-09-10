@@ -20,6 +20,7 @@ public class OrderFragment extends BaseLazyFragment {
     @BindView(R.id.tv_tag_name)
     TextView tv_tag_name;
 
+
     public OrderFragment(String tag) {
         super(tag);
         this.mTag = tag;

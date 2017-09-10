@@ -1,5 +1,8 @@
 package com.merpyzf.kangyuanmilk;
 
+import com.merpyzf.kangyuanmilk.ui.home.view.GoodsDetailActivity;
+import com.merpyzf.kangyuanmilk.utils.CalendarUtils;
+
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -49,6 +52,11 @@ public class ExampleUnitTest {
 
     @Test
     public void myTest1() {
+
+
+        GoodsDetailActivity goodsDetailActivity = new GoodsDetailActivity();
+
+        System.out.println(goodsDetailActivity.initGoodParams(2));
 
 
     }
@@ -150,5 +158,91 @@ public class ExampleUnitTest {
 
 
     }
+
+    @Test
+    public void test(){
+
+
+        //获取当前时间的下一个月的开始与结束时间
+
+        //获取当前时候的下两个月的开始与结束时间
+
+        //获取当前时间的下三个月的开始月结束时间
+
+        getNextMonthStartAndEnd(0);
+
+
+    }
+
+
+    public void getNextMonthStartAndEnd(int next){
+
+        //当前的系统时间
+        Calendar curralendar = Calendar.getInstance();
+        //设置为当前系统的时间
+        curralendar.setTime(new Date(System.currentTimeMillis()));
+
+        curralendar.set(Calendar.MONTH,curralendar.get(Calendar.MONTH)+1);
+        curralendar.set(Calendar.DAY_OF_MONTH,1);
+
+        Date startDate = curralendar.getTime();
+        String start = CalendarUtils.getDate(startDate);
+
+        System.out.println("开始日期: "+start);
+
+
+        Calendar cloneCalendar = (Calendar) curralendar.clone();
+
+        //起始的月份
+        int startMonth  = cloneCalendar.get(Calendar.MONTH);
+
+        int leftMonth = 11-startMonth;
+
+        System.out.println("剩下的月份："+leftMonth);
+
+        if(next>leftMonth){
+
+            int numYear = (int) Math.ceil((next-leftMonth)/(12*1.0f));
+
+
+            System.out.println("几年 == 》"+numYear);
+
+            int numMonth = (next - leftMonth)%12;
+            System.out.println("几月 == 》"+numMonth);
+
+            cloneCalendar.set(Calendar.YEAR, cloneCalendar.get(Calendar.YEAR)+numYear);
+            cloneCalendar.set(Calendar.MONTH,numMonth-1);
+            cloneCalendar.set(Calendar.DAY_OF_MONTH,CalendarUtils.getMonthDay(cloneCalendar.get(Calendar.YEAR), cloneCalendar.get(Calendar.MONTH)+1));
+
+
+        }else {
+
+            //表示仍然在当前的年份当中
+            cloneCalendar.set(Calendar.MONTH,cloneCalendar.get(Calendar.MONTH)+next);
+            //设置月份为当前月的最后一天
+            cloneCalendar.set(Calendar.DAY_OF_MONTH,CalendarUtils.getMonthDay(cloneCalendar.get(Calendar.YEAR), cloneCalendar.get(Calendar.MONTH)+1));
+
+        }
+
+        //年
+        int year = cloneCalendar.get(Calendar.YEAR);
+        //月
+        int month = cloneCalendar.get(Calendar.MONTH)+1;
+        //日
+        int day = cloneCalendar.get(Calendar.DAY_OF_MONTH);
+
+        System.out.println(CalendarUtils.getDate(cloneCalendar.getTime()));
+
+
+
+
+
+
+
+
+
+
+    }
+
 
 }

@@ -42,16 +42,11 @@
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-
-
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
@@ -117,7 +112,6 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.BottomSheetActivity" />
-
         <activity
             android:name=".ui.order.OrderActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -126,21 +120,19 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.home.view.GoodsDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-
-            />
-        <activity android:name=".ui.welcom.SplashActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.welcom.SplashActivity" />
         <activity
             android:name=".ui.welcom.GuideActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".test.RxActivity"></activity>
-        <activity android:name=".test.CalenderViewActivity">
+        <activity android:name=".test.RxActivity" />
+        <activity android:name=".test.CalenderViewActivity"></activity>
+        <activity android:name=".test.Main2Activity"></activity>
+        <activity android:name=".ui.home.view.ContentActivity"
+            android:theme="@style/AppTheme.NoActionBar"
 
+            >
 
-        </activity>
-
-
-        <activity android:name=".test.Main2Activity">
 
 
         </activity>

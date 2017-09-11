@@ -341,12 +341,7 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
         if (next > leftMonth) {
 
             int numYear = (int) Math.ceil((next - leftMonth) / (12 * 1.0f));
-
-
-            System.out.println("几年 == 》" + numYear);
-
             int numMonth = (next - leftMonth) % 12;
-            System.out.println("几月 == 》" + numMonth);
 
             cloneCalendar.set(Calendar.YEAR, cloneCalendar.get(Calendar.YEAR) + numYear);
             cloneCalendar.set(Calendar.MONTH, numMonth - 1);
@@ -375,11 +370,7 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
 
         int intervalDay = CalendarUtils.getIntervalDay(mStartDate, mEndDate);
 
-
-        LogHelper.i("间隔的天数 ==》" + intervalDay + 1);
-
-
-         mTvDistrDate.setText("配送时间: " + start + " 至 " + end);
+        mTvDistrDate.setText("配送时间: " + start + " 至 " + end);
 
         mTvGoodsNum.setText("每次配送: " + mGoodNum + " 份");
 
@@ -447,22 +438,18 @@ public class GoodsDetailActivity extends BaseActivity implements IGoodsDetailCon
                         calendarPickerFragment.setOnPickerDateListener((start, end) -> {
 
 
-
                             mTvDistrDate.setText("配送时间: " + CalendarUtils.getDate(start) + " 至 " + CalendarUtils.getDate(end));
 
                             mTvGoodsNum.setText("每次配送: " + mGoodNum + " 份");
 
-                            int intervalDay = CalendarUtils.getIntervalDay(start,end);
+                            int intervalDay = CalendarUtils.getIntervalDay(start, end);
 
                             mTvGoodsTotal.setText("总份数: " + mGoodNum * (intervalDay + 1) + " 份");
 
                             mOrderMoney.setText("合计金额: " + (mGoodNum * (intervalDay + 1) * mGoodsPrice) + " 元");
 
 
-
-
                         });
-
 
 
                     }

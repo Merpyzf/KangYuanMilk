@@ -1,6 +1,7 @@
 package com.merpyzf.kangyuanmilk.ui.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +17,14 @@ import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.common.widget.RecyclerAdapter;
 import com.merpyzf.kangyuanmilk.common.widget.ViewHolder;
 import com.merpyzf.kangyuanmilk.ui.home.bean.HomeBean;
+import com.merpyzf.kangyuanmilk.ui.home.view.ContentActivity;
+import com.merpyzf.kangyuanmilk.ui.home.view.GoodsDetailActivity;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.GliderImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,6 +165,29 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
             mBtnYoghourt.setOnClickListener(this);
 
 
+            mBanner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+
+
+                    HomeBean.ResponseBean.ResultListBean bean = mDatas.get(position);
+
+                    int activityId = bean.getDataInfoList().get(position).getId();
+
+                    LogHelper.i("活动id==>" + activityId);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putInt("activity_id", activityId);
+
+                    ContentActivity.showAction(bundle, mContext);
+
+
+
+                }
+            });
+
+
         }
 
         @Override
@@ -275,6 +302,26 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
             mBanner.setIndicatorGravity(BannerConfig.RIGHT);
             mBanner.start();
 
+
+            mBanner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+                    HomeBean.ResponseBean.ResultListBean bean = mDatas.get(position);
+
+                    int activityId = bean.getDataInfoList().get(position).getId();
+
+                    LogHelper.i("活动id==>" + activityId);
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putInt("activity_id", activityId);
+
+                    ContentActivity.showAction(bundle, mContext);
+
+                }
+            });
+
+
         }
     }
 
@@ -303,6 +350,27 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
             tv_title.setText(data.getModuleTitle());
             HotSellAdapter adapter = new HotSellAdapter(data.getDataInfoList(), mContext, recyclerView);
             recyclerView.setAdapter(adapter);
+
+            adapter.setOnItemClickListener(new ItemClickListener<HomeBean.ResponseBean.ResultListBean.DataInfoListBean>() {
+                @Override
+                public void onItemClick(ViewHolder viewHolder, HomeBean.ResponseBean.ResultListBean.DataInfoListBean dataInfoListBean, int position) {
+
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("goods_id", dataInfoListBean.getId());
+                    GoodsDetailActivity.showAction(bundle,mContext);
+
+
+                }
+
+                @Override
+                public boolean onItemLongClick(ViewHolder viewHolder, HomeBean.ResponseBean.ResultListBean.DataInfoListBean dataInfoListBean, int position) {
+
+
+                    return false;
+                }
+            });
+
         }
     }
 
@@ -335,6 +403,36 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
             loadImage(iv_small1, dataInfoList.get(1).getImageview());
             loadImage(iv_small2, dataInfoList.get(2).getImageview());
 
+
+            iv_large.setOnClickListener(view -> {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("goods_id", dataInfoList.get(0).getId());
+                GoodsDetailActivity.showAction(bundle,mContext);
+
+
+            });
+
+            iv_small1.setOnClickListener(view -> {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("goods_id", dataInfoList.get(1).getId());
+                GoodsDetailActivity.showAction(bundle,mContext);
+
+
+            });
+            iv_small2.setOnClickListener(view -> {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("goods_id", dataInfoList.get(2).getId());
+                GoodsDetailActivity.showAction(bundle,mContext);
+
+
+            });
+
+
+
+
         }
 
         private void loadImage(ImageView iv_large, String imageview) {
@@ -344,6 +442,12 @@ public class HomeAdapter extends RecyclerAdapter<HomeBean.ResponseBean.ResultLis
                     .centerCrop()
                     .placeholder(R.drawable.ic_avater_default)
                     .into(iv_large);
+
+
+
+
+
+
 
         }
 

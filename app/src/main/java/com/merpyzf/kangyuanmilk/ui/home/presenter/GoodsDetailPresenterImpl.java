@@ -73,9 +73,9 @@ public class GoodsDetailPresenterImpl extends BasePresenter<IGoodsDetailContract
 
 
                                     mMvpView.fillWebView("这是一个商品详情的介绍" +
-                                            "<br>"+"这是一个商品详情的介绍"+"<br>"+"这是一个商品详情的介绍" +
-                                            "<br>"+"这是一个商品详情的介绍"+"<br>"+"这是一个商品详情的介绍" +
-                                            "<br>"+"这是一个商品详情的介绍"+"<br>");
+                                            "<br>" + "这是一个商品详情的介绍" + "<br>" + "这是一个商品详情的介绍" +
+                                            "<br>" + "这是一个商品详情的介绍" + "<br>" + "这是一个商品详情的介绍" +
+                                            "<br>" + "这是一个商品详情的介绍" + "<br>");
 
 
                                 }

@@ -1,5 +1,6 @@
 package com.merpyzf.kangyuanmilk.common.api;
 
+import com.merpyzf.kangyuanmilk.ui.home.bean.ContentBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.CategoryBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.GoodsBean;
 import com.merpyzf.kangyuanmilk.ui.home.bean.GoodsDetailBean;
@@ -156,4 +157,14 @@ public interface KangYuanApi {
 
     @GET("shop/getMilkById/{goodsId}")
     Observable<GoodsDetailBean> getGoodsDetailById(@Path("goodsId") String goodsId);
+
+    /**
+     * 根据id获取活动信息
+     *
+     * @param activityId
+     * @return
+     */
+    @GET("shop/getActivityById/{id}")
+    Observable<ContentBean> getActivityById(@Path("id") String activityId);
+
 }

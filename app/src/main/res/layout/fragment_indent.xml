@@ -1,13 +1,69 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.merpyzf.kangyuanmilk.ui.home.view.IndentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/recycler_shoppingcart"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+</android.support.v7.widget.RecyclerView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="110dp"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="合计金额:"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=" 211"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:gravity="center_vertical"
+
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_pay"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@color/red_a700"
+            android:text="去结算"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            />
+
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

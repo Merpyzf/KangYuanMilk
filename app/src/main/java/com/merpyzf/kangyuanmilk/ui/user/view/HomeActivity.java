@@ -129,6 +129,12 @@ public class HomeActivity extends BaseActivity
         getMaxMemoryInfo();
 
         mCategoryPickerFragment = new CategoryPickerFragment();
+
+
+
+
+
+
     }
 
     /**

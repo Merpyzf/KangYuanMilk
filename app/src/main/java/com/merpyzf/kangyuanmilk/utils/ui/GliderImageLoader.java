@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -27,7 +28,7 @@ public class GliderImageLoader extends ImageLoader {
 
 
         Glide.with(context)
-                .load((String) path)
+                .load(Common.OUTSIDE_CHAIN+path)
                 .centerCrop()
                 .placeholder(R.drawable.ic_avater_default)
                 .into(imageView);

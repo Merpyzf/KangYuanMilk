@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.merpyzf.kangyuanmilk.R;
+import com.merpyzf.kangyuanmilk.common.data.Common;
 import com.merpyzf.kangyuanmilk.utils.LogHelper;
 import com.merpyzf.kangyuanmilk.utils.ui.TransStatusBottomSheetDialog;
 
@@ -147,7 +148,7 @@ public class GoodsParamsPickerFragment extends BottomSheetDialogFragment impleme
 
 
         Glide.with(getContext())
-                .load(mGoodsImage)
+                .load(Common.OUTSIDE_CHAIN+mGoodsImage)
                 .into(imageView);
 
     }

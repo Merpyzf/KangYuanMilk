@@ -126,16 +126,14 @@
             android:name=".ui.welcom.GuideActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.RxActivity" />
-        <activity android:name=".test.CalenderViewActivity"></activity>
-        <activity android:name=".test.Main2Activity"></activity>
-        <activity android:name=".ui.home.view.ContentActivity"
+        <activity android:name=".test.CalenderViewActivity" />
+        <activity android:name=".test.Main2Activity" />
+        <activity
+            android:name=".ui.home.view.ContentActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ui.home.view.PayActivity"
             android:theme="@style/AppTheme.NoActionBar"
-
-            >
-
-
-
-        </activity>
+            ></activity>
     </application>
 
 </manifest>

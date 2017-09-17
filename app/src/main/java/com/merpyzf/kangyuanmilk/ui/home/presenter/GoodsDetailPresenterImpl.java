@@ -66,16 +66,21 @@ public class GoodsDetailPresenterImpl extends BasePresenter<IGoodsDetailContract
 
                                     List<String> bannerImages = new ArrayList<>();
 
-                                    bannerImages.add("http://otdmrup4y.bkt.clouddn.com/1.png");
-                                    bannerImages.add("http://otdmrup4y.bkt.clouddn.com/10.png");
+                                    bannerImages.add("/header/IMG_20160310_082752.jpg");
+                                    bannerImages.add("/header/IMG_20160310_082752.jpg");
                                     mMvpView.fillGoodsBanner(bannerImages);
                                     mMvpView.showDistrLocation();
 
-
-                                    mMvpView.fillWebView("这是一个商品详情的介绍" +
-                                            "<br>" + "这是一个商品详情的介绍" + "<br>" + "这是一个商品详情的介绍" +
-                                            "<br>" + "这是一个商品详情的介绍" + "<br>" + "这是一个商品详情的介绍" +
-                                            "<br>" + "这是一个商品详情的介绍" + "<br>");
+//
+//
+                                    mMvpView.fillWebView(
+                                            "<!DOCTYPE HTML><html>" +
+                                                    "<head> <meta chartset=\"utf-8\"> " +
+                                                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/></head>"
+                                                    +"这是一个商品详情的介绍" +
+                                            "<br>" + "<img src=\"http://otdmrup4y.bkt.clouddn.com/Screenshot_2017-09-15-18-38-21-233_%E5%85%89%E6%98%8E%E9%9A%8F%E5%BF%83%E8%AE%A2.png \">" + "<br>" + "这是一个商品详情的介绍" +
+                                            "<br>" + "<img src=\" http://otdmrup4y.bkt.clouddn.com/Screenshot_2017-09-15-18-38-12-431_%E5%85%89%E6%98%8E%E9%9A%8F%E5%BF%83%E8%AE%A2.png\">" + "<br>" + "这是一个商品详情的介绍" +
+                                            "<br>" + "这是一个商品详情的介绍" + "<br>"+"</html>");
 
 
                                 }
